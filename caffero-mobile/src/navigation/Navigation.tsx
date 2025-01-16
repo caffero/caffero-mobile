@@ -83,10 +83,60 @@ export const Navigation = () => {
         </View>
       ) : (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {user ? (
+          {!user ? (
+            // Auth Stack
             <>
-              <Stack.Screen name="MainTabs" component={MainTabs} />
-              
+              <Stack.Screen 
+                name="Login" 
+                component={LoginScreen}
+                options={{
+                  animationTypeForReplace: !user ? 'pop' : 'push',
+                }}
+              />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+            </>
+          ) : (
+            // Main App Stack
+            <>
+              <Stack.Screen name="MainTabs">
+                {() => (
+                  <Tab.Navigator
+                    screenOptions={({ route }) => ({
+                      headerShown: false,
+                      tabBarIcon: ({ color, size }) => {
+                        let iconName: string;
+                        switch (route.name) {
+                          case 'Home':
+                            iconName = 'home';
+                            break;
+                          case 'Shelf':
+                            iconName = 'inventory';
+                            break;
+                          case 'Scan':
+                            iconName = 'qr-code-scanner';
+                            break;
+                          case 'Premium':
+                            iconName = 'star';
+                            break;
+                          case 'Profile':
+                            iconName = 'person';
+                            break;
+                          default:
+                            iconName = 'help';
+                        }
+                        return <Icon name={iconName} size={size} color={color} />;
+                      },
+                    })}
+                  >
+                    <Tab.Screen name="Home" component={HomeScreen} />
+                    <Tab.Screen name="Shelf" component={ShelfScreen} />
+                    <Tab.Screen name="Scan" component={ScanScreen} />
+                    <Tab.Screen name="Premium" component={PremiumScreen} />
+                    <Tab.Screen name="Profile" component={ProfileScreen} />
+                  </Tab.Navigator>
+                )}
+              </Stack.Screen>
+
               <Stack.Group screenOptions={{ presentation: 'card' }}>
                 <Stack.Screen name="WhatIBrew" component={WhatIBrewScreen} />
                 <Stack.Screen name="CoffeeBeanDetail" component={CoffeeBeanDetailScreen} />
@@ -108,17 +158,6 @@ export const Navigation = () => {
                 <Stack.Screen name="UpdateRecipe" component={UpdateRecipeScreen} />
                 <Stack.Screen name="DeleteRecipe" component={DeleteRecipeScreen} />
               </Stack.Group>
-            </>
-          ) : (
-            <>
-              <Stack.Screen 
-                name="Login" 
-                component={LoginScreen}
-                options={{
-                  animationTypeForReplace: !user ? 'pop' : 'push',
-                }}
-              />
-              <Stack.Screen name="Register" component={RegisterScreen} />
             </>
           )}
         </Stack.Navigator>
