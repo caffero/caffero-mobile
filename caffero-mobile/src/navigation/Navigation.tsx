@@ -2,12 +2,11 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-// import Icon from 'react-native-vector-icons/MaterialIcons';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useAuth } from '../contexts/AuthContext';
-// import { RootStackParamList, BottomTabParamList } from './types';
+import { RootStackParamList, BottomTabParamList } from './types';
 
-/* Screen imports commented for debugging
 import { LoginScreen } from '../screens/LoginScreen';
 import { RegisterScreen } from '../screens/RegisterScreen';
 import { HomeScreen } from '../screens/HomeScreen';
@@ -29,33 +28,10 @@ import { DeleteEquipmentScreen } from '../screens/DeleteEquipmentScreen';
 import { HowIBrewScreen } from '../screens/HowIBrewScreen';
 import { CreateRecipeScreen } from '../screens/CreateRecipeScreen';
 import { DeleteRecipeScreen } from '../screens/DeleteRecipeScreen';
-*/
 
-// Temporarily remove type parameters while debugging
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
-// Temporary components for testing navigation
-const LoadingMessage = () => (
-  <View style={styles.container}>
-    <ActivityIndicator size="large" color="#8B4513" />
-    <Text>Loading...</Text>
-  </View>
-);
-
-const AuthMessage = () => (
-  <View style={styles.container}>
-    <Text>Auth State: Authenticated</Text>
-  </View>
-);
-
-const NoAuthMessage = () => (
-  <View style={styles.container}>
-    <Text>Auth State: Not Authenticated</Text>
-  </View>
-);
-
-/* Original MainTabs component commented for debugging
 const MainTabs = () => {
   return (
     <Tab.Navigator
@@ -95,7 +71,6 @@ const MainTabs = () => {
     </Tab.Navigator>
   );
 };
-*/
 
 export const Navigation = () => {
   const { user, isLoading } = useAuth();
@@ -103,7 +78,9 @@ export const Navigation = () => {
   if (isLoading) {
     return (
       <NavigationContainer>
-        <LoadingMessage />
+        <View style={styles.container}>
+          <ActivityIndicator size="large" color="#8B4513" />
+        </View>
       </NavigationContainer>
     );
   }
@@ -111,18 +88,6 @@ export const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {user ? (
-          <Stack.Screen 
-            name="AuthMessage" 
-            component={AuthMessage}
-          />
-        ) : (
-          <Stack.Screen 
-            name="NoAuthMessage" 
-            component={NoAuthMessage}
-          />
-        )}
-        {/* Original screens commented for debugging
         {user ? (
           <>
             <Stack.Screen name="MainTabs" component={MainTabs} />
@@ -161,7 +126,6 @@ export const Navigation = () => {
             <Stack.Screen name="Register" component={RegisterScreen} />
           </>
         )}
-        */}
       </Stack.Navigator>
     </NavigationContainer>
   );
