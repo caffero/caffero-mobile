@@ -75,58 +75,54 @@ const MainTabs = () => {
 export const Navigation = () => {
   const { user, isLoading } = useAuth();
 
-  if (isLoading) {
-    return (
-      <NavigationContainer>
+  return (
+    <NavigationContainer>
+      {isLoading ? (
         <View style={styles.container}>
           <ActivityIndicator size="large" color="#8B4513" />
         </View>
-      </NavigationContainer>
-    );
-  }
+      ) : (
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {user ? (
+            <>
+              <Stack.Screen name="MainTabs" component={MainTabs} />
+              
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="WhatIBrew" component={WhatIBrewScreen} />
+                <Stack.Screen name="CoffeeBeanDetail" component={CoffeeBeanDetailScreen} />
+                <Stack.Screen name="AddCoffeeBean" component={AddCoffeeBeanScreen} />
+              </Stack.Group>
 
-  return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {user ? (
-          <>
-            <Stack.Screen name="MainTabs" component={MainTabs} />
-            
-            <Stack.Group screenOptions={{ presentation: 'card' }}>
-              <Stack.Screen name="WhatIBrew" component={WhatIBrewScreen} />
-              <Stack.Screen name="CoffeeBeanDetail" component={CoffeeBeanDetailScreen} />
-              <Stack.Screen name="AddCoffeeBean" component={AddCoffeeBeanScreen} />
-            </Stack.Group>
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="WhatIBrewWith" component={WhatIBrewWithScreen} />
+                <Stack.Screen name="EquipmentDetail" component={EquipmentDetailScreen} />
+                <Stack.Screen name="CreateEquipment" component={CreateEquipmentScreen} />
+                <Stack.Screen name="UpdateEquipment" component={UpdateEquipmentScreen} />
+                <Stack.Screen name="DeleteEquipment" component={DeleteEquipmentScreen} />
+              </Stack.Group>
 
-            <Stack.Group screenOptions={{ presentation: 'card' }}>
-              <Stack.Screen name="WhatIBrewWith" component={WhatIBrewWithScreen} />
-              <Stack.Screen name="EquipmentDetail" component={EquipmentDetailScreen} />
-              <Stack.Screen name="CreateEquipment" component={CreateEquipmentScreen} />
-              <Stack.Screen name="UpdateEquipment" component={UpdateEquipmentScreen} />
-              <Stack.Screen name="DeleteEquipment" component={DeleteEquipmentScreen} />
-            </Stack.Group>
-
-            <Stack.Group screenOptions={{ presentation: 'card' }}>
-              <Stack.Screen name="HowIBrew" component={HowIBrewScreen} />
-              <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
-              <Stack.Screen name="CreateRecipe" component={CreateRecipeScreen} />
-              <Stack.Screen name="UpdateRecipe" component={UpdateRecipeScreen} />
-              <Stack.Screen name="DeleteRecipe" component={DeleteRecipeScreen} />
-            </Stack.Group>
-          </>
-        ) : (
-          <>
-            <Stack.Screen 
-              name="Login" 
-              component={LoginScreen}
-              options={{
-                animationTypeForReplace: !user ? 'pop' : 'push',
-              }}
-            />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-          </>
-        )}
-      </Stack.Navigator>
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="HowIBrew" component={HowIBrewScreen} />
+                <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
+                <Stack.Screen name="CreateRecipe" component={CreateRecipeScreen} />
+                <Stack.Screen name="UpdateRecipe" component={UpdateRecipeScreen} />
+                <Stack.Screen name="DeleteRecipe" component={DeleteRecipeScreen} />
+              </Stack.Group>
+            </>
+          ) : (
+            <>
+              <Stack.Screen 
+                name="Login" 
+                component={LoginScreen}
+                options={{
+                  animationTypeForReplace: !user ? 'pop' : 'push',
+                }}
+              />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+            </>
+          )}
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 };
