@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -54,11 +54,16 @@ export const Header: React.FC<HeaderProps> = ({
   );
 };
 
+const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 44 : StatusBar.currentHeight || 0;
+
 const styles = StyleSheet.create({
   header: {
-    height: 56,
+    height: 56 + STATUSBAR_HEIGHT,
+    paddingTop: STATUSBAR_HEIGHT,
     alignItems: 'flex-end',
     justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0, 0, 0, 0.1)',
   },
   container: {
     height: 56,
@@ -70,6 +75,8 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '600',
   },
   backButton: {
     width: 56,

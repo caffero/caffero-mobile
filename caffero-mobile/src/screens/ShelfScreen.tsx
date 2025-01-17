@@ -50,7 +50,11 @@ export const ShelfScreen = () => {
         style={styles.content}
         contentContainerStyle={[
           styles.scrollContent,
-          { padding: spacing.md }
+          { 
+            paddingHorizontal: spacing.md,
+            paddingTop: spacing.md,
+            paddingBottom: spacing.xl + 56, // Add extra padding for bottom tab bar
+          }
         ]}
         showsVerticalScrollIndicator={false}
       >
@@ -75,6 +79,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: spacing.xl,
+    flexGrow: 1,
   },
 }); 
