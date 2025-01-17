@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Switch, ScrollView, Platform } from 'react-native';
 import { Header } from '../components/Header';
+import { useTheme } from '../contexts/ThemeContext';
+import { spacing, typography, borderRadius, shadows } from '../theme';
 
 export const AppSettingsScreen = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { theme, isDark, toggleTheme } = useTheme();
 
   const appInfo = {
     version: '1.0.0',
@@ -13,28 +15,30 @@ export const AppSettingsScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title="App Settings" showBack />
       <ScrollView style={styles.content}>
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Theme</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.surface.secondary }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>Theme</Text>
           <View style={styles.row}>
-            <Text style={styles.label}>Dark Mode</Text>
+            <Text style={[styles.label, { color: theme.colors.text.primary }]}>Dark Mode</Text>
             <Switch
-              value={isDarkMode}
-              onValueChange={setIsDarkMode}
+              value={isDark}
+              onValueChange={toggleTheme}
+              trackColor={{ false: theme.colors.border.light, true: theme.colors.vibrantAqua }}
+              thumbColor={isDark ? theme.colors.background.primary : theme.colors.background.primary}
             />
           </View>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>App Information</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.surface.secondary }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>App Information</Text>
           {Object.entries(appInfo).map(([key, value]) => (
-            <View key={key} style={styles.infoRow}>
-              <Text style={styles.infoLabel}>
+            <View key={key} style={[styles.infoRow, { borderBottomColor: theme.colors.border.light }]}>
+              <Text style={[styles.infoLabel, { color: theme.colors.text.primary }]}>
                 {key.charAt(0).toUpperCase() + key.slice(1)}
               </Text>
-              <Text style={styles.infoValue}>{value}</Text>
+              <Text style={[styles.infoValue, { color: theme.colors.text.secondary }]}>{value}</Text>
             </View>
           ))}
         </View>
@@ -46,47 +50,40 @@ export const AppSettingsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
   },
   section: {
-    padding: 16,
-    backgroundColor: '#f5f5f5',
-    marginBottom: 16,
-    marginHorizontal: 16,
-    borderRadius: 8,
+    padding: spacing.md,
+    marginBottom: spacing.md,
+    marginHorizontal: spacing.md,
+    borderRadius: borderRadius.md,
+    ...shadows.small,
   },
   sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#333',
+    ...typography.title3,
+    marginBottom: spacing.md,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: spacing.xs,
   },
   label: {
-    fontSize: 16,
-    color: '#444',
+    ...typography.body.large,
   },
   infoRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 8,
+    paddingVertical: spacing.xs,
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
   },
   infoLabel: {
-    fontSize: 16,
-    color: '#444',
+    ...typography.body.large,
   },
   infoValue: {
-    fontSize: 16,
-    color: '#666',
+    ...typography.body.large,
   },
 }); 

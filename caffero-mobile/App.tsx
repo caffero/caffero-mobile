@@ -1,12 +1,15 @@
 import React from 'react';
 import { AuthProvider } from './src/contexts/AuthContext';
+import { ThemeProvider } from './src/contexts/ThemeContext';
 import { Navigation } from './src/navigation/Navigation';
 
 const App = () => {
   return (
-    <AuthProvider>
-      <Navigation />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Navigation />
+      </AuthProvider>
+    </ThemeProvider>
   );
 };
 
