@@ -10,6 +10,13 @@ export type RootStackParamList = {
   MainTabs: undefined;
   Scan: undefined;
 
+  // Profile screens
+  EditProfile: undefined;
+  AppSettings: undefined;
+  NotificationSettings: undefined;
+  Privacy: undefined;
+  ContactUs: undefined;
+
   // Main screens
   WhatIBrew: undefined;
   CoffeeBeanDetail: { id: string };
