@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { RootStackParamList, BottomTabParamList } from './types';
 
 import { LoginScreen } from '../screens/LoginScreen';
@@ -38,10 +39,18 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const MainTabs = () => {
+  const { theme } = useTheme();
+  
   return (
     <Tab.Navigator
       screenOptions={({ route }: { route: { name: string } }) => ({
         headerShown: false,
+        tabBarStyle: {
+          backgroundColor: theme.colors.background.primary,
+          borderTopColor: theme.colors.border.light,
+        },
+        tabBarActiveTintColor: theme.colors.vibrantAqua,
+        tabBarInactiveTintColor: theme.colors.text.tertiary,
         tabBarIcon: ({ color, size }: { color: string; size: number }) => {
           let iconName: string;
           const routeName = route.name as keyof BottomTabParamList;
@@ -79,15 +88,33 @@ const MainTabs = () => {
 
 export const Navigation = () => {
   const { user, isLoading } = useAuth();
+  const { theme } = useTheme();
+
+  const navigationTheme = {
+    dark: false,
+    colors: {
+      primary: theme.colors.vibrantAqua,
+      background: theme.colors.background.primary,
+      card: theme.colors.surface.primary,
+      text: theme.colors.text.primary,
+      border: theme.colors.border.light,
+      notification: theme.colors.status.error,
+    },
+  };
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={navigationTheme}>
       {isLoading ? (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" color="#8B4513" />
+        <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+          <ActivityIndicator size="large" color={theme.colors.vibrantAqua} />
         </View>
       ) : (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator 
+          screenOptions={{ 
+            headerShown: false,
+            contentStyle: { backgroundColor: theme.colors.background.primary },
+          }}
+        >
           {!user ? (
             // Auth Stack
             <>
@@ -147,6 +174,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
   },
 }); 

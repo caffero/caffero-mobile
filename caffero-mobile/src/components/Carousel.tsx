@@ -12,7 +12,8 @@ import {
   ViewStyle,
   Animated,
 } from 'react-native';
-import { colors, typography, spacing, borderRadius, shadows, layout } from '../theme';
+import { spacing, borderRadius, layout } from '../theme';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface CarouselItem {
   id: string;
@@ -33,10 +34,11 @@ const SPACING = spacing.md;
 
 export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress }) => {
   const scrollX = React.useRef(new Animated.Value(0)).current;
+  const { theme } = useTheme();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={[styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
       <View>
         <Animated.ScrollView
           horizontal
@@ -83,16 +85,16 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
                 <TouchableOpacity
                   activeOpacity={0.9}
                   onPress={() => onItemPress(item.id)}
-                  style={styles.touchable}
+                  style={[styles.touchable, { ...theme.shadows.medium }]}
                 >
                   <Image
                     source={{ uri: item.imageUrl }}
                     style={styles.image}
                     resizeMode="cover"
                   />
-                  <View style={styles.overlay}>
-                    <View style={styles.contentContainer}>
-                      <Text style={styles.itemTitle} numberOfLines={2}>
+                  <View style={[styles.overlay, { backgroundColor: theme.colors.deepNavyAlpha[60] }]}>
+                    <View style={[styles.contentContainer, { backgroundColor: theme.colors.deepNavyAlpha[60] }]}>
+                      <Text style={[styles.itemTitle, { color: theme.colors.text.inverse }]}>
                         {item.title}
                       </Text>
                     </View>
@@ -112,8 +114,9 @@ const styles = StyleSheet.create({
     marginVertical: spacing.lg,
   } as ViewStyle,
   title: {
-    ...typography.title3,
-    color: colors.text.primary,
+    fontSize: 22,
+    lineHeight: 28,
+    fontWeight: '600',
     marginHorizontal: spacing.gutter,
     marginBottom: spacing.md,
   } as TextStyle,
@@ -129,7 +132,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: borderRadius.lg,
     overflow: 'hidden',
-    ...shadows.medium,
   } as ViewStyle,
   image: {
     width: '100%',
@@ -137,17 +139,16 @@ const styles = StyleSheet.create({
   } as ImageStyle,
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: colors.deepNavyAlpha[60],
     justifyContent: 'flex-end',
   } as ViewStyle,
   contentContainer: {
     padding: spacing.md,
     paddingBottom: spacing.lg,
-    backgroundColor: colors.deepNavyAlpha[60],
   } as ViewStyle,
   itemTitle: {
-    ...typography.headline,
-    color: colors.text.inverse,
+    fontSize: 17,
+    lineHeight: 22,
+    fontWeight: '600',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,

@@ -11,7 +11,8 @@ import { Header } from '../components/Header';
 import { Carousel } from '../components/Carousel';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigator } from '../navigation/types';
-import { colors, spacing, layout } from '../theme';
+import { spacing, layout } from '../theme';
+import { useTheme } from '../contexts/ThemeContext';
 
 // Dummy data (replace with API calls later)
 const trendingRecipes = [
@@ -71,6 +72,7 @@ const blogPosts = [
 export const HomeScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
   const [refreshing, setRefreshing] = React.useState(false);
+  const { theme, isDark } = useTheme();
 
   const handleTrendingPress = (id: string) => {
     navigation.navigate('RecipeDetail', { id });
@@ -95,10 +97,10 @@ export const HomeScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <StatusBar
-        barStyle="dark-content"
-        backgroundColor={colors.background.primary}
+        barStyle={isDark ? "light-content" : "dark-content"}
+        backgroundColor={theme.colors.background.primary}
       />
       <Header title="Caffero" />
       <ScrollView
@@ -109,12 +111,17 @@ export const HomeScreen = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={colors.deepNavy}
-            colors={[colors.deepNavy]}
+            tintColor={theme.colors.vibrantAqua}
+            colors={[theme.colors.vibrantAqua]}
           />
         }
       >
-        <View style={styles.carouselContainer}>
+        <View style={[styles.carouselContainer, { 
+          backgroundColor: Platform.select({
+            ios: theme.colors.background.primary,
+            android: theme.colors.background.secondary,
+          })
+        }]}>
           <Carousel
             title="Trending"
             items={trendingRecipes}
@@ -139,7 +146,6 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background.primary,
   },
   content: {
     flex: 1,
@@ -149,10 +155,5 @@ const styles = StyleSheet.create({
   },
   carouselContainer: {
     paddingTop: spacing.md,
-    // Add subtle gradient background
-    backgroundColor: Platform.select({
-      ios: colors.background.primary,
-      android: colors.background.secondary,
-    }),
   },
 }); 
