@@ -6,14 +6,36 @@ import { colors, fonts, typography, spacing, borderRadius, shadows, layout } fro
 export const lightTheme = {
   colors: {
     ...colors,
+    primary: {
+      main: colors.vibrantAqua,
+      light: colors.vibrantAqua + '80',
+      dark: colors.deepNavy,
+      contrastText: '#FFFFFF',
+    },
     background: colors.background,
     surface: colors.surface,
     text: colors.text,
-    border: colors.border,
+    border: {
+      primary: colors.border.light,
+      secondary: colors.border.medium,
+      dark: colors.border.dark,
+    },
     status: colors.status,
+    disabled: {
+      main: colors.border.light,
+      contrastText: colors.text.tertiary,
+    },
   },
   fonts,
-  typography,
+  typography: {
+    ...typography,
+    body1: typography.body.large,
+    body2: typography.body.medium,
+    button: typography.button.medium,
+    h1: typography.title1,
+    h2: typography.title2,
+    h3: typography.title3,
+  },
   spacing,
   borderRadius,
   shadows: {
@@ -42,11 +64,17 @@ export const darkTheme = {
   ...lightTheme,
   colors: {
     ...colors,
+    primary: {
+      main: colors.vibrantAqua,
+      light: colors.vibrantAqua + '80',
+      dark: colors.deepNavy,
+      contrastText: '#FFFFFF',
+    },
     background: {
       primary: colors.deepNavy,
       secondary: '#1F2937',
       tertiary: '#111827',
-      accent: `${colors.vibrantAqua}14`, // vibrantAqua with 8% opacity
+      accent: `${colors.vibrantAqua}14`,
     },
     surface: {
       primary: colors.deepNavy,
@@ -60,11 +88,15 @@ export const darkTheme = {
       inverse: colors.deepNavy,
     },
     border: {
-      light: '#374151',
-      medium: '#4B5563',
+      primary: '#374151',
+      secondary: '#4B5563',
       dark: '#6B7280',
     },
     status: colors.status,
+    disabled: {
+      main: '#374151',
+      contrastText: '#6B7280',
+    },
   },
   shadows: {
     ...shadows,

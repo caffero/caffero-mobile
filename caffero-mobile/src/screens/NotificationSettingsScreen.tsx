@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
 import { Header } from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '../contexts/ThemeContext';
+import { spacing } from '../theme';
 
 export const NotificationSettingsScreen = () => {
   const navigation = useNavigation();
+  const { theme } = useTheme();
   const [pushEnabled, setPushEnabled] = useState(true);
   const [emailEnabled, setEmailEnabled] = useState(true);
   const [smsEnabled, setSmsEnabled] = useState(false);
@@ -26,45 +29,96 @@ export const NotificationSettingsScreen = () => {
   };
 
   const handleSubmit = () => {
-    // TODO: Implement saving notification preferences
+    // TODO: Implement save logic
     setHasChanges(false);
-    navigation.goBack();
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title="Manage Notifications" showBack />
-      <View style={styles.content}>
-        <View style={styles.section}>
-          <View style={styles.row}>
-            <Text style={styles.label}>Push Notifications</Text>
+      <View style={[styles.content, { padding: theme.spacing.md }]}>
+        <View style={[
+          styles.section,
+          {
+            backgroundColor: theme.colors.surface.primary,
+            borderRadius: theme.borderRadius.md,
+            ...theme.shadows.small,
+          }
+        ]}>
+          <View style={[styles.row, { borderBottomColor: theme.colors.border.primary }]}>
+            <Text style={[
+              styles.label,
+              theme.typography.body1,
+              { color: theme.colors.text.primary }
+            ]}>
+              Push Notifications
+            </Text>
             <Switch
               value={pushEnabled}
               onValueChange={(value) => handleToggle('push', value)}
+              trackColor={{
+                false: theme.colors.border.primary,
+                true: theme.colors.primary.main,
+              }}
+              thumbColor={theme.colors.background.primary}
             />
           </View>
-          <View style={styles.row}>
-            <Text style={styles.label}>Email Notifications</Text>
+          <View style={[styles.row, { borderBottomColor: theme.colors.border.primary }]}>
+            <Text style={[
+              styles.label,
+              theme.typography.body1,
+              { color: theme.colors.text.primary }
+            ]}>
+              Email Notifications
+            </Text>
             <Switch
               value={emailEnabled}
               onValueChange={(value) => handleToggle('email', value)}
+              trackColor={{
+                false: theme.colors.border.primary,
+                true: theme.colors.primary.main,
+              }}
+              thumbColor={theme.colors.background.primary}
             />
           </View>
-          <View style={styles.row}>
-            <Text style={styles.label}>SMS Notifications</Text>
+          <View style={[styles.row, { borderBottomColor: theme.colors.border.primary }]}>
+            <Text style={[
+              styles.label,
+              theme.typography.body1,
+              { color: theme.colors.text.primary }
+            ]}>
+              SMS Notifications
+            </Text>
             <Switch
               value={smsEnabled}
               onValueChange={(value) => handleToggle('sms', value)}
+              trackColor={{
+                false: theme.colors.border.primary,
+                true: theme.colors.primary.main,
+              }}
+              thumbColor={theme.colors.background.primary}
             />
           </View>
         </View>
 
         <TouchableOpacity
-          style={[styles.submitButton, !hasChanges && styles.submitButtonDisabled]}
+          style={[
+            styles.submitButton,
+            {
+              backgroundColor: hasChanges ? theme.colors.primary.main : theme.colors.disabled.main,
+              borderRadius: theme.borderRadius.md,
+            }
+          ]}
           onPress={handleSubmit}
           disabled={!hasChanges}
         >
-          <Text style={styles.submitButtonText}>Save Changes</Text>
+          <Text style={[
+            styles.submitButtonText,
+            theme.typography.button,
+            { color: hasChanges ? theme.colors.primary.contrastText : theme.colors.disabled.contrastText }
+          ]}>
+            Save Changes
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -74,42 +128,30 @@ export const NotificationSettingsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
-    padding: 16,
   },
   section: {
-    backgroundColor: '#f5f5f5',
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 24,
+    marginBottom: spacing.lg,
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
+    justifyContent: 'space-between',
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
   },
   label: {
-    fontSize: 16,
-    color: '#333',
+    flex: 1,
+    marginRight: spacing.md,
   },
   submitButton: {
-    backgroundColor: '#007AFF',
-    padding: 16,
-    borderRadius: 8,
+    paddingVertical: spacing.md,
     alignItems: 'center',
   },
-  submitButtonDisabled: {
-    backgroundColor: '#ccc',
-  },
   submitButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    textAlign: 'center',
   },
 }); 

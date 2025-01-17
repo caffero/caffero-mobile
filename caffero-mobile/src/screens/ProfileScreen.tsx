@@ -1,91 +1,121 @@
 import React from 'react';
-import { 
-  View, 
-  ScrollView, 
-  Text, 
-  StyleSheet, 
-  Image, 
-  TouchableOpacity 
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 import { Header } from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigator } from '../navigation/types';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
+import { spacing } from '../theme';
 
 interface SettingsTabProps {
   title: string;
   onPress: () => void;
 }
 
-const SettingsTab: React.FC<SettingsTabProps> = ({ title, onPress }) => (
-  <TouchableOpacity style={styles.settingsTab} onPress={onPress}>
-    <Text style={styles.settingsTabText}>{title}</Text>
-  </TouchableOpacity>
-);
+const SettingsTab: React.FC<SettingsTabProps> = ({ title, onPress }) => {
+  const { theme } = useTheme();
+  return (
+    <TouchableOpacity 
+      style={[styles.settingsTab, { borderBottomColor: theme.colors.border.primary }]} 
+      onPress={onPress}
+    >
+      <Text style={[
+        styles.settingsTabText,
+        theme.typography.body1,
+        { color: theme.colors.text.primary }
+      ]}>
+        {title}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
 export const ProfileScreen = () => {
+  const { theme } = useTheme();
   const navigation = useNavigation<RootStackNavigator>();
   const { user, logout } = useAuth();
-  const isPremium = false; // This should come from your auth context or API
+  const isPremium = false;
 
   const settingsTabs = [
-    { id: 'edit-profile', title: 'Edit Profile' },
-    { id: 'app-settings', title: 'Application Settings' },
-    { id: 'notifications', title: 'Notification Settings' },
-    { id: 'privacy', title: 'Personal Info Usage' },
-    { id: 'contact', title: 'Contact Us' },
-    { id: 'logout', title: 'Logout' },
+    {
+      title: 'Edit Profile',
+      onPress: () => navigation.navigate('EditProfile'),
+    },
+    {
+      title: 'App Settings',
+      onPress: () => navigation.navigate('AppSettings'),
+    },
+    {
+      title: 'Notification Settings',
+      onPress: () => navigation.navigate('NotificationSettings'),
+    },
+    {
+      title: 'Privacy',
+      onPress: () => navigation.navigate('Privacy'),
+    },
+    {
+      title: 'Contact Us',
+      onPress: () => navigation.navigate('ContactUs'),
+    },
+    {
+      title: 'Logout',
+      onPress: logout,
+    },
   ];
 
-  const handleTabPress = (tabId: string) => {
-    switch (tabId) {
-      case 'edit-profile':
-        navigation.navigate('EditProfile');
-        break;
-      case 'app-settings':
-        navigation.navigate('AppSettings');
-        break;
-      case 'notifications':
-        navigation.navigate('NotificationSettings');
-        break;
-      case 'privacy':
-        navigation.navigate('Privacy');
-        break;
-      case 'contact':
-        navigation.navigate('ContactUs');
-        break;
-      case 'logout':
-        logout();
-        break;
-      default:
-        console.log(`Navigate to ${tabId}`);
-    }
-  };
-
   return (
-    <View style={styles.container}>
-      <Header title="Caffero" />
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+      <Header title="Profile" />
       <ScrollView style={styles.content}>
-        <View style={styles.profileHeader}>
+        <View style={[styles.profileHeader, { borderBottomColor: theme.colors.border.primary }]}>
           <Image
             source={{ uri: 'https://example.com/default-avatar.jpg' }}
             style={styles.profileImage}
           />
-          <Text style={styles.username}>{user?.username || 'User'}</Text>
-          <Text style={styles.email}>{user?.email || 'email@example.com'}</Text>
-          <View style={styles.premiumBadge}>
-            <Text style={styles.premiumText}>
+          <Text style={[
+            styles.username,
+            theme.typography.h1,
+            { color: theme.colors.text.primary }
+          ]}>
+            {user?.username || 'User'}
+          </Text>
+          <Text style={[
+            styles.email,
+            theme.typography.body1,
+            { color: theme.colors.text.secondary }
+          ]}>
+            {user?.email || 'email@example.com'}
+          </Text>
+          <View style={[
+            styles.premiumBadge,
+            {
+              backgroundColor: theme.colors.primary.main,
+              borderRadius: theme.borderRadius.round,
+            }
+          ]}>
+            <Text style={[
+              styles.premiumText,
+              theme.typography.button,
+              { color: theme.colors.primary.contrastText }
+            ]}>
               {isPremium ? 'Premium User' : 'Free User'}
             </Text>
           </View>
         </View>
 
         <View style={styles.settingsContainer}>
-          {settingsTabs.map((tab) => (
+          {settingsTabs.map((tab, index) => (
             <SettingsTab
-              key={tab.id}
+              key={index}
               title={tab.title}
-              onPress={() => handleTabPress(tab.id)}
+              onPress={tab.onPress}
             />
           ))}
         </View>
@@ -97,50 +127,41 @@ export const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
   },
   profileHeader: {
+    padding: spacing.lg,
     alignItems: 'center',
-    padding: 24,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
   profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginBottom: 16,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: spacing.md,
   },
   username: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: spacing.xs,
   },
   email: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 16,
+    marginBottom: spacing.md,
   },
   premiumBadge: {
-    backgroundColor: '#FFD700',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 16,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
   },
   premiumText: {
-    fontSize: 14,
-    fontWeight: 'bold',
+    textAlign: 'center',
   },
   settingsContainer: {
-    padding: 16,
+    paddingTop: spacing.md,
   },
   settingsTab: {
-    paddingVertical: 16,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
   settingsTabText: {
     fontSize: 16,

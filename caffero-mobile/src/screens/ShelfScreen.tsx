@@ -1,56 +1,63 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Header } from '../components/Header';
-import { ShelfItem } from '../components/ShelfItem';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackNavigator, RootStackParamList } from '../navigation/types';
+import { RootStackNavigator } from '../navigation/types';
+import { useTheme } from '../contexts/ThemeContext';
+import { spacing } from '../theme';
 
 interface ShelfItemType {
   id: string;
   title: string;
-  image: string;
-  route: keyof RootStackParamList;
-  params?: any;
+  type: 'bean' | 'equipment' | 'recipe';
 }
 
 const shelfItems: ShelfItemType[] = [
-  {
-    id: 'what-i-brew',
-    title: 'What I Brew',
-    image: 'https://example.com/coffee-beans.jpg',
-    route: 'WhatIBrew',
-    params: undefined,
-  },
-  {
-    id: 'what-i-brew-with',
-    title: 'What I Brew With',
-    image: 'https://example.com/equipment.jpg',
-    route: 'WhatIBrewWith',
-    params: undefined,
-  },
-  {
-    id: 'how-i-brew',
-    title: 'How I Brew',
-    image: 'https://example.com/brewing.jpg',
-    route: 'HowIBrew',
-    params: undefined,
-  },
+  { id: '1', title: 'Ethiopian Yirgacheffe', type: 'bean' },
+  { id: '2', title: 'Hario V60', type: 'equipment' },
+  { id: '3', title: 'Pour Over Recipe', type: 'recipe' },
 ];
 
 export const ShelfScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
+  const { theme } = useTheme();
+
+  const handleItemPress = (item: ShelfItemType) => {
+    switch (item.type) {
+      case 'bean':
+        navigation.navigate('CoffeeBeanDetail', { id: item.id });
+        break;
+      case 'equipment':
+        navigation.navigate('EquipmentDetail', { id: item.id });
+        break;
+      case 'recipe':
+        navigation.navigate('RecipeDetail', { id: item.id });
+        break;
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <Header title="Caffero" />
-      <ScrollView style={styles.content}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+      <Header title="My Shelf" />
+      <ScrollView 
+        style={styles.content}
+        contentContainerStyle={{ padding: theme.spacing.md }}
+      >
         {shelfItems.map((item) => (
-          <ShelfItem
+          <TouchableOpacity
             key={item.id}
-            title={item.title}
-            backgroundImage={item.image}
-            onPress={() => navigation.navigate(item.route, item.params)}
-          />
+            style={[
+              styles.shelfItem,
+              {
+                backgroundColor: theme.colors.surface.primary,
+                borderRadius: theme.borderRadius.md,
+                ...theme.shadows.small,
+              }
+            ]}
+            onPress={() => handleItemPress(item)}
+          >
+            {/* ShelfItem component content */}
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </View>
@@ -60,10 +67,12 @@ export const ShelfScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
-    paddingVertical: 16,
+  },
+  shelfItem: {
+    marginBottom: spacing.md,
+    padding: spacing.md,
   },
 }); 
