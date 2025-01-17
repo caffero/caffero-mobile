@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
+import { useTheme } from '../contexts/ThemeContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -44,27 +45,39 @@ const recipes: Recipe[] = [
 
 export const HowIBrewScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { theme } = useTheme();
 
   const renderRecipe = ({ item }: { item: Recipe }) => (
     <TouchableOpacity
-      style={styles.recipeCard}
+      style={[styles.recipeCard, { 
+        backgroundColor: theme.colors.surface.primary,
+        borderColor: theme.colors.border.primary,
+      }]}
       onPress={() => navigation.navigate('RecipeDetail', { id: item.id })}
     >
-      <View style={styles.recipeContent}>
-        <Text style={styles.recipeTitle}>{item.title}</Text>
+      <View style={[styles.recipeContent, { backgroundColor: theme.colors.surface.primary }]}>
+        <Text style={[styles.recipeTitle, { color: theme.colors.text.primary }]}>
+          {item.title}
+        </Text>
         <View style={styles.recipeDetails}>
-          <Text style={styles.recipeInfo}>{item.equipment}</Text>
-          <Text style={styles.dot}>•</Text>
-          <Text style={styles.recipeInfo}>{item.coffee}</Text>
+          <Text style={[styles.recipeInfo, { color: theme.colors.text.secondary }]}>
+            {item.equipment}
+          </Text>
+          <Text style={[styles.dot, { color: theme.colors.text.secondary }]}>•</Text>
+          <Text style={[styles.recipeInfo, { color: theme.colors.text.secondary }]}>
+            {item.coffee}
+          </Text>
         </View>
-        <Text style={styles.steps}>{item.steps} steps</Text>
+        <Text style={[styles.steps, { color: theme.colors.text.tertiary }]}>
+          {item.steps} steps
+        </Text>
       </View>
-      <View style={styles.notePaper} />
+      <View style={[styles.notePaper, { backgroundColor: theme.colors.primary.light }]} />
     </TouchableOpacity>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title="How I Brew"
         showBack
@@ -80,10 +93,10 @@ export const HowIBrewScreen = () => {
         contentContainerStyle={styles.listContent}
       />
       <TouchableOpacity
-        style={styles.fab}
+        style={[styles.fab, { backgroundColor: theme.colors.primary.main }]}
         onPress={() => navigation.navigate('CreateRecipe')}
       >
-        <Icon name="add" size={24} color="#fff" />
+        <Icon name="add" size={24} color={theme.colors.text.inverse} />
       </TouchableOpacity>
     </View>
   );
@@ -92,7 +105,6 @@ export const HowIBrewScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   listContent: {
     padding: 8,
@@ -101,8 +113,8 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 8,
     height: 180,
-    backgroundColor: '#fff',
     borderRadius: 8,
+    borderWidth: 1,
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -113,13 +125,12 @@ const styles = StyleSheet.create({
   recipeContent: {
     flex: 1,
     padding: 12,
-    backgroundColor: '#fffaf0', // Antique white color for notepad effect
   },
   recipeTitle: {
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 8,
-    fontFamily: 'System', // Consider using a handwriting font
+    fontFamily: 'System',
   },
   recipeDetails: {
     flexDirection: 'row',
@@ -128,19 +139,15 @@ const styles = StyleSheet.create({
   },
   recipeInfo: {
     fontSize: 14,
-    color: '#666',
   },
   dot: {
     marginHorizontal: 4,
-    color: '#666',
   },
   steps: {
     fontSize: 12,
-    color: '#999',
   },
   notePaper: {
     height: 4,
-    backgroundColor: '#f0e68c', // Khaki color for notepad edge
   },
   fab: {
     position: 'absolute',
@@ -149,7 +156,6 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#007AFF',
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,

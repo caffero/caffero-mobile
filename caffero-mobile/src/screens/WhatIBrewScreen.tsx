@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
+import { useTheme } from '../contexts/ThemeContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -42,25 +43,33 @@ const coffeeBeans: CoffeeBean[] = [
 
 export const WhatIBrewScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { theme } = useTheme();
 
   const renderCoffeeBean = ({ item }: { item: CoffeeBean }) => (
     <TouchableOpacity 
-      style={styles.coffeeCard}
+      style={[styles.coffeeCard, { 
+        backgroundColor: theme.colors.surface.primary,
+        borderColor: theme.colors.border.primary,
+      }]}
       onPress={() => navigation.navigate('CoffeeBeanDetail', { id: item.id })}
     >
       <Image source={{ uri: item.imageUrl }} style={styles.coffeeImage} />
       <View style={styles.coffeeInfo}>
-        <Text style={styles.coffeeName} numberOfLines={2}>{item.name}</Text>
+        <Text style={[styles.coffeeName, { color: theme.colors.text.primary }]} numberOfLines={2}>
+          {item.name}
+        </Text>
         <View style={styles.ratingContainer}>
-          <Icon name="coffee" size={20} color="#8B4513" />
-          <Text style={styles.ratingText}>{item.rating}</Text>
+          <Icon name="coffee" size={20} color={theme.colors.primary.main} />
+          <Text style={[styles.ratingText, { color: theme.colors.text.secondary }]}>
+            {item.rating}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header 
         title="What I Brew" 
         showBack 
@@ -76,7 +85,7 @@ export const WhatIBrewScreen = () => {
         keyExtractor={(item) => item.id}
       />
       <TouchableOpacity 
-        style={styles.fab}
+        style={[styles.fab, { backgroundColor: theme.colors.primary.main }]}
         onPress={() => {
           Alert.alert(
             'Add Coffee Bean',
@@ -94,7 +103,7 @@ export const WhatIBrewScreen = () => {
           );
         }}
       >
-        <Icon name="add" size={24} color="#fff" />
+        <Icon name="add" size={24} color={theme.colors.text.inverse} />
       </TouchableOpacity>
     </View>
   );
@@ -103,7 +112,6 @@ export const WhatIBrewScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   listContent: {
     padding: 8,
@@ -112,7 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 8,
     borderRadius: 8,
-    backgroundColor: '#fff',
+    borderWidth: 1,
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -140,7 +148,6 @@ const styles = StyleSheet.create({
   ratingText: {
     marginLeft: 4,
     fontSize: 14,
-    color: '#666',
   },
   fab: {
     position: 'absolute',
@@ -149,7 +156,6 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#007AFF',
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,
