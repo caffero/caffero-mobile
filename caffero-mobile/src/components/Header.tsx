@@ -19,26 +19,28 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   return (
     <View style={styles.header}>
-      {showBack && (
-        <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Icon name="arrow-back" size={24} color="#000" />
-        </TouchableOpacity>
-      )}
-      <Text style={styles.title}>{title}</Text>
-      {rightIcon && (
-        <TouchableOpacity onPress={onRightPress} style={styles.rightButton}>
-          <Icon name={rightIcon} size={24} color="#000" />
-        </TouchableOpacity>
-      )}
+      <View style={styles.container}>
+        {showBack && (
+          <TouchableOpacity onPress={onBack} style={styles.backButton}>
+            <Icon name="arrow-back" size={24} color="#000" />
+          </TouchableOpacity>
+        )}
+        <Text style={styles.title}>{title}</Text>
+        {rightIcon && (
+          <TouchableOpacity onPress={onRightPress} style={styles.rightButton}>
+            <Icon name={rightIcon} size={24} color="#000" />
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   header: {
-    height: 56,
+    height: 100,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'center',
     backgroundColor: '#fff',
     elevation: 4,
@@ -46,6 +48,14 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
+  },
+  container: {
+    height: 56,
+    width: 375,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
   title: {
     fontSize: 20,

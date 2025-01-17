@@ -48,7 +48,7 @@ export const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="Profile" />
+      <Header title="Caffero" />
       <ScrollView style={styles.content}>
         <View style={styles.profileHeader}>
           <Image

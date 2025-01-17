@@ -125,7 +125,7 @@ export const PremiumScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="Premium" />
+      <Header title="Caffero" />
       {isPremium ? <PremiumContent /> : <FreeUserContent />}
     </View>
   );

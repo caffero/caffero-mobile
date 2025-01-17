@@ -43,7 +43,7 @@ export const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="Coffee App" />
+      <Header title="Caffero" />
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <Carousel
           title="Trending"

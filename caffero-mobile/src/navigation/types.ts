@@ -8,11 +8,13 @@ export type RootStackParamList = {
   
   // Main tabs
   MainTabs: undefined;
+  Scan: undefined;
 
   // Main screens
   WhatIBrew: undefined;
   CoffeeBeanDetail: { id: string };
   AddCoffeeBean: undefined;
+  RemoveCoffeeBean: undefined;
   WhatIBrewWith: undefined;
   EquipmentDetail: { id: string };
   CreateEquipment: undefined;

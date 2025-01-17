@@ -195,7 +195,7 @@ export const AddCoffeeBeanScreen = () => {
   return (
     <View style={styles.container}>
       <Header
-        title="Add Coffee Beans"
+        title="Add Coffee Bean"
         showBack
         onBack={() => navigation.goBack()}
       />

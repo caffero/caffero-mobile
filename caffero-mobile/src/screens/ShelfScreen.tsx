@@ -3,7 +3,7 @@ import { View, ScrollView, StyleSheet } from 'react-native';
 import { Header } from '../components/Header';
 import { ShelfItem } from '../components/ShelfItem';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackNavigator } from '../navigation/types';
+import { RootStackNavigator, RootStackParamList } from '../navigation/types';
 
 interface ShelfItemType {
   id: string;
@@ -42,7 +42,7 @@ export const ShelfScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="My Shelf" />
+      <Header title="Caffero" />
       <ScrollView style={styles.content}>
         {shelfItems.map((item) => (
           <ShelfItem

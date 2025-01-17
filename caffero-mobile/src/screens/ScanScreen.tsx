@@ -43,7 +43,7 @@ export const ScanScreen = () => {
   if (hasPermission === false) {
     return (
       <View style={styles.container}>
-        <Header title="Scan" />
+        <Header title="Caffero" />
         <View style={styles.content}>
           <Text>No access to camera</Text>
         </View>
@@ -53,7 +53,7 @@ export const ScanScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="Scan" />
+      <Header title="Caffero" />
       <View style={styles.content}>
         <Camera
           style={styles.camera}
