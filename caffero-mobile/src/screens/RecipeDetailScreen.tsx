@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
+import { useTheme } from '../contexts/ThemeContext';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'RecipeDetail'>['route'];
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -42,6 +43,7 @@ const getRecipe = (id: string) => ({
 });
 
 export const RecipeDetailScreen = () => {
+  const { theme } = useTheme();
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProps>();
   const { id } = route.params;
@@ -49,51 +51,85 @@ export const RecipeDetailScreen = () => {
   const recipe = getRecipe(id);
 
   const renderPouringStep = (step: PouringStep, index: number) => (
-    <View key={index} style={styles.stepContainer}>
-      <Text style={styles.stepNumber}>{index + 1}.</Text>
+    <View key={index} style={[styles.stepContainer, { borderBottomColor: theme.colors.border.primary }]}>
+      <Text style={[styles.stepNumber, { color: theme.colors.primary.main }]}>
+        {index + 1}
+      </Text>
       <View style={styles.stepDetails}>
         <View style={styles.stepRow}>
-          <Text style={styles.stepLabel}>Water Volume:</Text>
-          <Text style={styles.stepValue}>{step.volume}ml</Text>
+          <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
+            Water Volume:
+          </Text>
+          <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
+            {step.volume}ml
+          </Text>
         </View>
         <View style={styles.stepRow}>
-          <Text style={styles.stepLabel}>Time:</Text>
-          <Text style={styles.stepValue}>{step.time}s</Text>
+          <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
+            Time:
+          </Text>
+          <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
+            {step.time}s
+          </Text>
         </View>
         <View style={styles.stepRow}>
-          <Text style={styles.stepLabel}>Temperature:</Text>
-          <Text style={styles.stepValue}>{step.temperature}°C</Text>
+          <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
+            Temperature:
+          </Text>
+          <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
+            {step.temperature}°C
+          </Text>
         </View>
       </View>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <ScrollView style={styles.content}>
-        <Text style={styles.title}>{recipe.title}</Text>
+        <Text style={[styles.title, { color: theme.colors.text.primary }]}>
+          {recipe.title}
+        </Text>
         
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Equipment</Text>
-          <Text style={styles.sectionText}>{recipe.equipment}</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+            Equipment
+          </Text>
+          <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
+            {recipe.equipment}
+          </Text>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Coffee</Text>
-          <Text style={styles.sectionText}>{recipe.coffee.name}</Text>
-          <Text style={styles.sectionSubtext}>Amount: {recipe.coffee.amount}</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+            Coffee
+          </Text>
+          <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
+            {recipe.coffee.name}
+          </Text>
+          <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
+            Amount: {recipe.coffee.amount}
+          </Text>
         </View>
 
         {recipe.useMilk && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Milk</Text>
-            <Text style={styles.sectionText}>Volume: {recipe.milk.volume}ml</Text>
-            <Text style={styles.sectionText}>Temperature: {recipe.milk.temperature}°C</Text>
+          <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+              Milk
+            </Text>
+            <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
+              Volume: {recipe.milk.volume}ml
+            </Text>
+            <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
+              Temperature: {recipe.milk.temperature}°C
+            </Text>
           </View>
         )}
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Pouring Steps</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+            Pouring Steps
+          </Text>
           {recipe.pouringSteps.map((step, index) => renderPouringStep(step, index))}
         </View>
       </ScrollView>
@@ -111,7 +147,6 @@ export const RecipeDetailScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fffaf0', // Antique white for notepad effect
   },
   content: {
     flex: 1,
@@ -123,7 +158,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     textAlign: 'center',
     fontFamily: 'System', // Consider using a handwriting font
-    color: '#2c3e50',
   },
   section: {
     marginBottom: 24,

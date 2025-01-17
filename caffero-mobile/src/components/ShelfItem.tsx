@@ -6,7 +6,8 @@ import {
   StyleSheet, 
   Dimensions 
 } from 'react-native';
-import { useTheme } from '../theme/ThemeContext';
+import { useTheme } from '../contexts/ThemeContext';
+import { spacing } from '../theme';
 
 interface ShelfItemProps {
   title: string;
@@ -21,20 +22,25 @@ export const ShelfItem: React.FC<ShelfItemProps> = ({
   backgroundImage,
   onPress,
 }) => {
-  const theme = useTheme();
+  const { theme } = useTheme();
 
   return (
     <TouchableOpacity onPress={onPress}>
       <ImageBackground
         source={{ uri: backgroundImage }}
         style={styles.container}
-        imageStyle={[styles.backgroundImage, { borderRadius: theme.borderRadius.medium }]}
+        imageStyle={[
+          styles.backgroundImage,
+          { borderRadius: theme.borderRadius.md }
+        ]}
       >
         <Text style={[
-          styles.title, 
+          styles.title,
           theme.typography.h2,
-          { color: theme.colors.white,
-            textShadowColor: theme.colors.shadowDark }
+          {
+            color: theme.colors.text.inverse,
+            textShadowColor: 'rgba(0, 0, 0, 0.75)',
+          }
         ]}>
           {title}
         </Text>
@@ -47,8 +53,8 @@ const styles = StyleSheet.create({
   container: {
     width: width - 32,
     height: 120,
-    marginHorizontal: theme.spacing.medium,
-    marginVertical: theme.spacing.small,
+    marginHorizontal: spacing.md,
+    marginVertical: spacing.sm,
     justifyContent: 'center',
     alignItems: 'center',
   },

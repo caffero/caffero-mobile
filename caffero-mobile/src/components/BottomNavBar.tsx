@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useTheme } from '../theme/ThemeContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { BottomTabParamList } from '../navigation/types';
+import { spacing } from '../theme';
 
 interface BottomNavBarProps {
   currentRoute: keyof BottomTabParamList;
@@ -13,7 +14,7 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
   currentRoute,
   onNavigate,
 }) => {
-  const theme = useTheme();
+  const { theme } = useTheme();
   
   const navItems = [
     { name: 'Home' as const, icon: 'home' },
@@ -24,22 +25,25 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
   ];
 
   return (
-    <View style={[styles.container, { 
-      backgroundColor: theme.colors.background,
-      borderTopColor: theme.colors.border 
-    }]}>
+    <View style={[
+      styles.container,
+      {
+        backgroundColor: theme.colors.background.primary,
+        borderTopColor: theme.colors.border.primary,
+      }
+    ]}>
       {navItems.map((item) => (
         <TouchableOpacity
           key={item.name}
           style={styles.navItem}
-          onPress={() => onNavigate(item.name as keyof BottomTabParamList)}
+          onPress={() => onNavigate(item.name)}
         >
           <Icon
             name={item.icon}
             size={24}
             color={currentRoute === item.name 
-              ? theme.colors.primary 
-              : theme.colors.textSecondary}
+              ? theme.colors.primary.main
+              : theme.colors.text.tertiary}
           />
         </TouchableOpacity>
       ))}
@@ -57,5 +61,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: spacing.sm,
   },
 }); 

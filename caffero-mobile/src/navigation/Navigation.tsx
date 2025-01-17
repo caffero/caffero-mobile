@@ -47,7 +47,7 @@ const MainTabs = () => {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: theme.colors.background.primary,
-          borderTopColor: theme.colors.border.light,
+          borderTopColor: theme.colors.border.primary,
         },
         tabBarActiveTintColor: theme.colors.vibrantAqua,
         tabBarInactiveTintColor: theme.colors.text.tertiary,
@@ -97,7 +97,7 @@ export const Navigation = () => {
       background: theme.colors.background.primary,
       card: theme.colors.surface.primary,
       text: theme.colors.text.primary,
-      border: theme.colors.border.light,
+      border: theme.colors.border.primary,
       notification: theme.colors.status.error,
     },
   };

@@ -25,7 +25,7 @@ export const AppSettingsScreen = () => {
             <Switch
               value={isDark}
               onValueChange={toggleTheme}
-              trackColor={{ false: theme.colors.border.light, true: theme.colors.vibrantAqua }}
+              trackColor={{ false: theme.colors.border.primary, true: theme.colors.vibrantAqua }}
               thumbColor={isDark ? theme.colors.background.primary : theme.colors.background.primary}
             />
           </View>
@@ -34,7 +34,7 @@ export const AppSettingsScreen = () => {
         <View style={[styles.section, { backgroundColor: theme.colors.surface.secondary }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>App Information</Text>
           {Object.entries(appInfo).map(([key, value]) => (
-            <View key={key} style={[styles.infoRow, { borderBottomColor: theme.colors.border.light }]}>
+            <View key={key} style={[styles.infoRow, { borderBottomColor: theme.colors.border.primary }]}>
               <Text style={[styles.infoLabel, { color: theme.colors.text.primary }]}>
                 {key.charAt(0).toUpperCase() + key.slice(1)}
               </Text>
