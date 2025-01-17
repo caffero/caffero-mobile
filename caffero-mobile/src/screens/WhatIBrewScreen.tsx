@@ -47,15 +47,26 @@ export const WhatIBrewScreen = () => {
 
   const renderCoffeeBean = ({ item }: { item: CoffeeBean }) => (
     <TouchableOpacity 
-      style={[styles.coffeeCard, { 
-        backgroundColor: theme.colors.surface.primary,
-        borderColor: theme.colors.border.primary,
-      }]}
+      style={[
+        styles.coffeeCard,
+        {
+          backgroundColor: theme.colors.surface.elevated,
+          borderColor: theme.colors.border.primary,
+          ...theme.shadows.medium,
+        }
+      ]}
       onPress={() => navigation.navigate('CoffeeBeanDetail', { id: item.id })}
     >
       <Image source={{ uri: item.imageUrl }} style={styles.coffeeImage} />
-      <View style={styles.coffeeInfo}>
-        <Text style={[styles.coffeeName, { color: theme.colors.text.primary }]} numberOfLines={2}>
+      <View style={[styles.coffeeInfo, { backgroundColor: theme.colors.surface.elevated }]}>
+        <Text 
+          style={[
+            styles.coffeeName,
+            theme.typography.headline,
+            { color: theme.colors.text.primary }
+          ]}
+          numberOfLines={2}
+        >
           {item.name}
         </Text>
         <View style={styles.ratingContainer}>
@@ -121,11 +132,8 @@ const styles = StyleSheet.create({
     margin: 8,
     borderRadius: 8,
     borderWidth: 1,
+    overflow: 'hidden',
     elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
   },
   coffeeImage: {
     width: '100%',
@@ -137,8 +145,6 @@ const styles = StyleSheet.create({
     padding: 12,
   },
   coffeeName: {
-    fontSize: 16,
-    fontWeight: '500',
     marginBottom: 8,
   },
   ratingContainer: {
