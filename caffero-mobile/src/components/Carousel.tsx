@@ -12,7 +12,6 @@ import {
   ViewStyle,
   Animated,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import { spacing, borderRadius, layout } from '../theme';
 import { useTheme } from '../contexts/ThemeContext';
 
@@ -50,9 +49,11 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
           style={styles.image}
           resizeMode="cover"
         />
-        <LinearGradient
-          colors={['transparent', theme.colors.deepNavyAlpha[80]]}
-          style={styles.overlay}
+        <View
+          style={[
+            styles.overlay,
+            { backgroundColor: 'rgba(0, 0, 0, 0.5)' }
+          ]}
         >
           <View style={styles.contentContainer}>
             <Text 
@@ -86,7 +87,7 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
               </Text>
             )}
           </View>
-        </LinearGradient>
+        </View>
       </TouchableOpacity>
     </Animated.View>
   );
