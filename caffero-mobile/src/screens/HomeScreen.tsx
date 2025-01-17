@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Header } from '../components/Header';
-import { BottomNavBar } from '../components/BottomNavBar';
 import { Carousel } from '../components/Carousel';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList, BottomTabParamList, RootStackNavigator, BottomTabNavigator } from '../navigation/types';
+import { RootStackNavigator } from '../navigation/types';
 
 // Dummy data (replace with API calls later)
 const trendingRecipes = [
@@ -27,7 +26,6 @@ const blogPosts = [
 
 export const HomeScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
-  const bottomNavigator = useNavigation<BottomTabNavigator>();
 
   const handleTrendingPress = (id: string) => {
     navigation.navigate('RecipeDetail', { id });
@@ -63,10 +61,6 @@ export const HomeScreen = () => {
           onItemPress={handleBlogPress}
         />
       </ScrollView>
-      <BottomNavBar
-        currentRoute="Home"
-        onNavigate={(screen) => bottomNavigator.navigate(screen)}
-      />
     </View>
   );
 };

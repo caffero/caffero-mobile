@@ -98,44 +98,7 @@ export const Navigation = () => {
           ) : (
             // Main App Stack
             <>
-              <Stack.Screen name="MainTabs">
-                {() => (
-                  <Tab.Navigator
-                    screenOptions={({ route }) => ({
-                      headerShown: false,
-                      tabBarIcon: ({ color, size }) => {
-                        let iconName: string;
-                        switch (route.name) {
-                          case 'Home':
-                            iconName = 'home';
-                            break;
-                          case 'Shelf':
-                            iconName = 'inventory';
-                            break;
-                          case 'Scan':
-                            iconName = 'qr-code-scanner';
-                            break;
-                          case 'Premium':
-                            iconName = 'star';
-                            break;
-                          case 'Profile':
-                            iconName = 'person';
-                            break;
-                          default:
-                            iconName = 'help';
-                        }
-                        return <Icon name={iconName} size={size} color={color} />;
-                      },
-                    })}
-                  >
-                    <Tab.Screen name="Home" component={HomeScreen} />
-                    <Tab.Screen name="Shelf" component={ShelfScreen} />
-                    <Tab.Screen name="Scan" component={ScanScreen} />
-                    <Tab.Screen name="Premium" component={PremiumScreen} />
-                    <Tab.Screen name="Profile" component={ProfileScreen} />
-                  </Tab.Navigator>
-                )}
-              </Stack.Screen>
+              <Stack.Screen name="MainTabs" component={MainTabs} />
 
               <Stack.Group screenOptions={{ presentation: 'card' }}>
                 <Stack.Screen name="WhatIBrew" component={WhatIBrewScreen} />

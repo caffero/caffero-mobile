@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert, Text } from 'react-native';
 import { Header } from '../components/Header';
-import { BottomNavBar } from '../components/BottomNavBar';
 import { Camera, CameraType } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList, BottomTabParamList, RootStackNavigator, BottomTabNavigator } from '../navigation/types';
+import { RootStackNavigator } from '../navigation/types';
 
 export const ScanScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
-  const bottomNavigator = useNavigation<BottomTabNavigator>();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 
   React.useEffect(() => {
@@ -49,10 +47,6 @@ export const ScanScreen = () => {
         <View style={styles.content}>
           <Text>No access to camera</Text>
         </View>
-        <BottomNavBar
-          currentRoute="Scan"
-          onNavigate={(screen) => bottomNavigator.navigate(screen)}
-        />
       </View>
     );
   }
@@ -67,10 +61,6 @@ export const ScanScreen = () => {
           onBarCodeScanned={handleBarCodeScanned}
         />
       </View>
-      <BottomNavBar
-        currentRoute="Scan"
-        onNavigate={(screen) => bottomNavigator.navigate(screen)}
-      />
     </View>
   );
 };

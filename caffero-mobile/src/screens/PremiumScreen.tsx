@@ -9,9 +9,8 @@ import {
   Dimensions 
 } from 'react-native';
 import { Header } from '../components/Header';
-import { BottomNavBar } from '../components/BottomNavBar';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList, BottomTabParamList, RootStackNavigator, BottomTabNavigator } from '../navigation/types';
+import { RootStackNavigator } from '../navigation/types';
 
 const { width } = Dimensions.get('window');
 
@@ -122,17 +121,12 @@ const FreeUserContent = () => {
 
 export const PremiumScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
-  const bottomNavigator = useNavigation<BottomTabNavigator>();
   const isPremium = false; // This should come from your auth context or API
 
   return (
     <View style={styles.container}>
       <Header title="Premium" />
       {isPremium ? <PremiumContent /> : <FreeUserContent />}
-      <BottomNavBar
-        currentRoute="Premium"
-        onNavigate={(screen) => bottomNavigator.navigate(screen)}
-      />
     </View>
   );
 };

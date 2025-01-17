@@ -1,11 +1,9 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Header } from '../components/Header';
-import { BottomNavBar } from '../components/BottomNavBar';
 import { ShelfItem } from '../components/ShelfItem';
 import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList, BottomTabParamList, RootStackNavigator, BottomTabNavigator } from '../navigation/types';
+import { RootStackNavigator } from '../navigation/types';
 
 interface ShelfItemType {
   id: string;
@@ -41,7 +39,6 @@ const shelfItems: ShelfItemType[] = [
 
 export const ShelfScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
-  const bottomNavigator = useNavigation<BottomTabNavigator>();
 
   return (
     <View style={styles.container}>
@@ -56,11 +53,6 @@ export const ShelfScreen = () => {
           />
         ))}
       </ScrollView>
-      <BottomNavBar
-        currentRoute="Shelf"
-        onNavigate={(screen) => {bottomNavigator.navigate(screen);
-        }}
-      />
     </View>
   );
 };
