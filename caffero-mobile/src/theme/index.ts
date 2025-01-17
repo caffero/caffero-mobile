@@ -14,48 +14,60 @@ export const fonts = {
 
 export const colors = {
   // Primary palette
-  deepNavy: '#2E4057',
-  deepNavyAlpha: {
-    95: 'rgba(46, 64, 87, 0.95)',
-    90: 'rgba(46, 64, 87, 0.90)',
-    80: 'rgba(46, 64, 87, 0.80)',
-    60: 'rgba(46, 64, 87, 0.60)',
-    40: 'rgba(46, 64, 87, 0.40)',
-    20: 'rgba(46, 64, 87, 0.20)',
-    10: 'rgba(46, 64, 87, 0.10)',
+  navy: '#1E2B3D',
+  navyAlpha: {
+    95: 'rgba(30, 43, 61, 0.95)',
+    90: 'rgba(30, 43, 61, 0.90)',
+    80: 'rgba(30, 43, 61, 0.80)',
+    60: 'rgba(30, 43, 61, 0.60)',
+    40: 'rgba(30, 43, 61, 0.40)',
+    20: 'rgba(30, 43, 61, 0.20)',
+    10: 'rgba(30, 43, 61, 0.10)',
   },
-  mutedTeal: '#66A182',
-  vibrantAqua: '#119DA4',
-  brightYellow: '#FFC857',
+  teal: '#4FB8B1',
+  tealAlpha: {
+    95: 'rgba(79, 184, 177, 0.95)',
+    90: 'rgba(79, 184, 177, 0.90)',
+    80: 'rgba(79, 184, 177, 0.80)',
+    60: 'rgba(79, 184, 177, 0.60)',
+    40: 'rgba(79, 184, 177, 0.40)',
+    20: 'rgba(79, 184, 177, 0.20)',
+    10: 'rgba(79, 184, 177, 0.10)',
+  },
+  cream: '#F5D6A7',
+  darkCream: '#E6C38E',
+  coffee: '#4A3B2F',
   
   // UI colors
   background: {
-    primary: '#FFFFFF',
-    secondary: '#F8F9FA',
-    tertiary: '#F1F3F5',
-    accent: 'rgba(17, 157, 164, 0.08)', // vibrantAqua with opacity
+    primary: '#1E2B3D', // navy background
+    secondary: '#243447', // lighter navy
+    tertiary: '#2A3C52', // even lighter navy
+    accent: 'rgba(79, 184, 177, 0.12)', // teal with opacity
   },
   surface: {
-    primary: '#FFFFFF',
-    secondary: '#F8F9FA',
-    elevated: '#FFFFFF',
+    primary: '#243447', // lighter navy
+    secondary: '#4FB8B1', // teal
+    elevated: '#2A3C52', // even lighter navy
+    card: '#F5D6A7', // cream for cards
   },
   text: {
-    primary: '#2E4057',
-    secondary: '#66768E',
-    tertiary: '#8E99AB',
-    inverse: '#FFFFFF',
+    primary: '#FFFFFF',
+    secondary: 'rgba(255, 255, 255, 0.8)',
+    tertiary: 'rgba(255, 255, 255, 0.6)',
+    inverse: '#1E2B3D', // navy
+    accent: '#4FB8B1', // teal
   },
   border: {
-    light: '#E1E4E8',
-    medium: '#D1D5DB',
-    dark: '#9CA3AF',
+    light: 'rgba(255, 255, 255, 0.1)',
+    medium: 'rgba(255, 255, 255, 0.15)',
+    dark: 'rgba(255, 255, 255, 0.2)',
   },
   status: {
-    error: '#DC3545',
-    success: '#66A182',
-    warning: '#FFC857',
-    info: '#119DA4',
+    error: '#FF6B6B',
+    success: '#4FB8B1', // teal
+    warning: '#F5D6A7', // cream
+    info: '#4FB8B1', // teal
   }
 };
 
@@ -172,34 +184,34 @@ export const borderRadius = {
 // Following Apple's guidelines for elevation and depth
 export const shadows = {
   small: {
-    shadowColor: colors.deepNavy,
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.15,
     shadowRadius: 4,
     elevation: 2,
   },
   medium: {
-    shadowColor: colors.deepNavy,
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.12,
+    shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 4,
   },
   large: {
-    shadowColor: colors.deepNavy,
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.16,
+    shadowOpacity: 0.25,
     shadowRadius: 16,
     elevation: 8,
   },
   // Glass effect for modern UI elements
   glass: {
-    shadowColor: colors.deepNavy,
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.15,
     shadowRadius: 12,
     elevation: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    backgroundColor: 'rgba(36, 52, 71, 0.85)', // semi-transparent navy
   }
 };
 
