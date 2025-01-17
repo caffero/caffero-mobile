@@ -1,63 +1,66 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import { Header } from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigator } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
 import { spacing } from '../theme';
+import { ShelfItem } from '../components/ShelfItem';
 
 interface ShelfItemType {
   id: string;
   title: string;
-  type: 'bean' | 'equipment' | 'recipe';
+  route: 'WhatIBrew' | 'WhatIBrewWith' | 'HowIBrew';
+  imageUrl: string;
 }
 
 const shelfItems: ShelfItemType[] = [
-  { id: '1', title: 'Ethiopian Yirgacheffe', type: 'bean' },
-  { id: '2', title: 'Hario V60', type: 'equipment' },
-  { id: '3', title: 'Pour Over Recipe', type: 'recipe' },
+  { 
+    id: '1', 
+    title: 'What I Brew', 
+    route: 'WhatIBrew',
+    imageUrl: 'https://images.unsplash.com/photo-1524350876685-274059332603', // Coffee beans spilled
+  },
+  { 
+    id: '2', 
+    title: 'What I Brew With', 
+    route: 'WhatIBrewWith',
+    imageUrl: 'https://images.unsplash.com/photo-1516315720917-231ef9acce48', // Coffee equipment
+  },
+  { 
+    id: '3', 
+    title: 'How I Brew', 
+    route: 'HowIBrew',
+    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085', // Pour over brewing
+  },
 ];
 
 export const ShelfScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
   const { theme } = useTheme();
 
-  const handleItemPress = (item: ShelfItemType) => {
-    switch (item.type) {
-      case 'bean':
-        navigation.navigate('CoffeeBeanDetail', { id: item.id });
-        break;
-      case 'equipment':
-        navigation.navigate('EquipmentDetail', { id: item.id });
-        break;
-      case 'recipe':
-        navigation.navigate('RecipeDetail', { id: item.id });
-        break;
-    }
+  const handleItemPress = (route: ShelfItemType['route']) => {
+    navigation.navigate(route);
   };
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header title="My Shelf" />
+      <Header title="Caffero" showBack={false} />
       <ScrollView 
         style={styles.content}
-        contentContainerStyle={{ padding: theme.spacing.md }}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { padding: spacing.md }
+        ]}
+        showsVerticalScrollIndicator={false}
       >
         {shelfItems.map((item) => (
-          <TouchableOpacity
+          <ShelfItem
             key={item.id}
-            style={[
-              styles.shelfItem,
-              {
-                backgroundColor: theme.colors.surface.primary,
-                borderRadius: theme.borderRadius.md,
-                ...theme.shadows.small,
-              }
-            ]}
-            onPress={() => handleItemPress(item)}
-          >
-            {/* ShelfItem component content */}
-          </TouchableOpacity>
+            title={item.title}
+            imageUrl={item.imageUrl}
+            onPress={() => handleItemPress(item.route)}
+          />
         ))}
       </ScrollView>
     </View>
@@ -71,8 +74,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
-  shelfItem: {
-    marginBottom: spacing.md,
-    padding: spacing.md,
+  scrollContent: {
+    paddingBottom: spacing.xl,
   },
 }); 

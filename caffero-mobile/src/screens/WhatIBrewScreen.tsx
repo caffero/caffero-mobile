@@ -29,16 +29,39 @@ const coffeeBeans: CoffeeBean[] = [
   {
     id: '1',
     name: 'Ethiopian Yirgacheffe',
-    imageUrl: 'https://example.com/coffee1.jpg',
+    imageUrl: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9',
     rating: 4.5,
   },
   {
     id: '2',
     name: 'Colombian Supremo',
-    imageUrl: 'https://example.com/coffee2.jpg',
+    imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd',
     rating: 4.0,
   },
-  // Add more items...
+  {
+    id: '3',
+    name: 'Kenya AA',
+    imageUrl: 'https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb',
+    rating: 4.8,
+  },
+  {
+    id: '4',
+    name: 'Guatemala Antigua',
+    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085',
+    rating: 4.3,
+  },
+  {
+    id: '5',
+    name: 'Costa Rica Tarrazu',
+    imageUrl: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf',
+    rating: 4.6,
+  },
+  {
+    id: '6',
+    name: 'Brazil Santos',
+    imageUrl: 'https://images.unsplash.com/photo-1442550528053-c431ecb55509',
+    rating: 4.2,
+  },
 ];
 
 export const WhatIBrewScreen = () => {
