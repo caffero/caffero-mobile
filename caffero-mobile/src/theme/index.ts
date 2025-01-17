@@ -1,3 +1,17 @@
+export const fonts = {
+  primary: {
+    thin: 'Raleway-Thin',
+    extraLight: 'Raleway-ExtraLight',
+    light: 'Raleway-Light',
+    regular: 'Raleway-Regular',
+    medium: 'Raleway-Medium',
+    semiBold: 'Raleway-SemiBold',
+    bold: 'Raleway-Bold',
+    extraBold: 'Raleway-ExtraBold',
+    black: 'Raleway-Black',
+  }
+};
+
 export const colors = {
   deepNavy: '#2E4057',
   mutedTeal: '#66A182',
@@ -19,51 +33,61 @@ export const typography = {
     fontSize: 28,
     fontWeight: '700',
     lineHeight: 34,
+    fontFamily: fonts.primary.bold,
   },
   title2: {
     fontSize: 22,
     fontWeight: '600',
     lineHeight: 28,
+    fontFamily: fonts.primary.semiBold,
   },
   title3: {
     fontSize: 20,
     fontWeight: '600',
     lineHeight: 24,
+    fontFamily: fonts.primary.semiBold,
   },
   headline: {
     fontSize: 17,
     fontWeight: '600',
     lineHeight: 22,
+    fontFamily: fonts.primary.semiBold,
   },
   body: {
     fontSize: 17,
     fontWeight: '400',
     lineHeight: 22,
+    fontFamily: fonts.primary.regular,
   },
   callout: {
     fontSize: 16,
     fontWeight: '400',
     lineHeight: 21,
+    fontFamily: fonts.primary.regular,
   },
   subhead: {
     fontSize: 15,
     fontWeight: '400',
     lineHeight: 20,
+    fontFamily: fonts.primary.regular,
   },
   footnote: {
     fontSize: 13,
     fontWeight: '400',
     lineHeight: 18,
+    fontFamily: fonts.primary.regular,
   },
   caption1: {
     fontSize: 12,
     fontWeight: '400',
     lineHeight: 16,
+    fontFamily: fonts.primary.regular,
   },
   caption2: {
     fontSize: 11,
     fontWeight: '400',
     lineHeight: 13,
+    fontFamily: fonts.primary.regular,
   },
 };
 
