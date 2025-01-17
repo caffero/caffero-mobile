@@ -1,9 +1,17 @@
 import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  StatusBar,
+  RefreshControl,
+  Platform,
+} from 'react-native';
 import { Header } from '../components/Header';
 import { Carousel } from '../components/Carousel';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigator } from '../navigation/types';
+import { colors, spacing, layout } from '../theme';
 
 // Dummy data (replace with API calls later)
 const trendingRecipes = [
@@ -62,6 +70,7 @@ const blogPosts = [
 
 export const HomeScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const handleTrendingPress = (id: string) => {
     navigation.navigate('RecipeDetail', { id });
@@ -77,25 +86,51 @@ export const HomeScreen = () => {
     console.log('Blog post pressed:', id);
   };
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    // TODO: Add refresh logic here
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  }, []);
+
   return (
     <View style={styles.container}>
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor={colors.background.primary}
+      />
       <Header title="Caffero" />
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        <Carousel
-          title="Trending"
-          items={trendingRecipes}
-          onItemPress={handleTrendingPress}
-        />
-        <Carousel
-          title="For Your Taste"
-          items={recommendedBeans}
-          onItemPress={handleBeanPress}
-        />
-        <Carousel
-          title="Discover Coffee"
-          items={blogPosts}
-          onItemPress={handleBlogPress}
-        />
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.deepNavy}
+            colors={[colors.deepNavy]}
+          />
+        }
+      >
+        <View style={styles.carouselContainer}>
+          <Carousel
+            title="Trending"
+            items={trendingRecipes}
+            onItemPress={handleTrendingPress}
+          />
+          <Carousel
+            title="For Your Taste"
+            items={recommendedBeans}
+            onItemPress={handleBeanPress}
+          />
+          <Carousel
+            title="Discover Coffee"
+            items={blogPosts}
+            onItemPress={handleBlogPress}
+          />
+        </View>
       </ScrollView>
     </View>
   );
@@ -104,9 +139,20 @@ export const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background.primary,
   },
   content: {
     flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: spacing.xxl,
+  },
+  carouselContainer: {
+    paddingTop: spacing.md,
+    // Add subtle gradient background
+    backgroundColor: Platform.select({
+      ios: colors.background.primary,
+      android: colors.background.secondary,
+    }),
   },
 }); 
