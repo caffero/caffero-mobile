@@ -38,11 +38,27 @@ export const ProfileScreen = () => {
   ];
 
   const handleTabPress = (tabId: string) => {
-    if (tabId === 'logout') {
-      logout();
-    } else {
-      // Handle other tab navigations
-      console.log(`Navigate to ${tabId}`);
+    switch (tabId) {
+      case 'edit-profile':
+        navigation.navigate('EditProfile');
+        break;
+      case 'app-settings':
+        navigation.navigate('AppSettings');
+        break;
+      case 'notifications':
+        navigation.navigate('NotificationSettings');
+        break;
+      case 'privacy':
+        navigation.navigate('Privacy');
+        break;
+      case 'contact':
+        navigation.navigate('ContactUs');
+        break;
+      case 'logout':
+        logout();
+        break;
+      default:
+        console.log(`Navigate to ${tabId}`);
     }
   };
 

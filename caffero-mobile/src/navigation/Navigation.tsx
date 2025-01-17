@@ -14,6 +14,11 @@ import { ShelfScreen } from '../screens/ShelfScreen';
 import { ScanScreen } from '../screens/ScanScreen';
 import { PremiumScreen } from '../screens/PremiumScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
+import { EditProfileScreen } from '../screens/EditProfileScreen';
+import { AppSettingsScreen } from '../screens/AppSettingsScreen';
+import { NotificationSettingsScreen } from '../screens/NotificationSettingsScreen';
+import { PrivacyScreen } from '../screens/PrivacyScreen';
+import { ContactUsScreen } from '../screens/ContactUsScreen';
 import { RecipeDetailScreen } from '../screens/RecipeDetailScreen';
 import { UpdateRecipeScreen } from '../screens/UpdateRecipeScreen';
 import { SuggestProductScreen } from '../screens/SuggestProductScreen';
@@ -120,6 +125,14 @@ export const Navigation = () => {
                 <Stack.Screen name="CreateRecipe" component={CreateRecipeScreen} />
                 <Stack.Screen name="UpdateRecipe" component={UpdateRecipeScreen} />
                 <Stack.Screen name="DeleteRecipe" component={DeleteRecipeScreen} />
+              </Stack.Group>
+
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+                <Stack.Screen name="AppSettings" component={AppSettingsScreen} />
+                <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} />
+                <Stack.Screen name="Privacy" component={PrivacyScreen} />
+                <Stack.Screen name="ContactUs" component={ContactUsScreen} />
               </Stack.Group>
             </>
           )}
