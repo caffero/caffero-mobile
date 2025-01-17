@@ -137,13 +137,13 @@ const styles = StyleSheet.create({
   } as ImageStyle,
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: colors.navyAlpha[60],
+    backgroundColor: colors.deepNavyAlpha[60],
     justifyContent: 'flex-end',
   } as ViewStyle,
   contentContainer: {
     padding: spacing.md,
     paddingBottom: spacing.lg,
-    backgroundColor: colors.navyAlpha[60],
+    backgroundColor: colors.deepNavyAlpha[60],
   } as ViewStyle,
   itemTitle: {
     ...typography.headline,
