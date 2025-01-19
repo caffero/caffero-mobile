@@ -97,7 +97,28 @@ export const mockLocalizations: LocalizationMap = {
         // Shelf Screen
         { id: 59, propertyName: 'whatIBrew', value: 'What I Brew', languageId: 'en' },
         { id: 60, propertyName: 'whatIBrewWith', value: 'What I Brew With', languageId: 'en' },
-        { id: 61, propertyName: 'howIBrew', value: 'How I Brew', languageId: 'en' }
+        { id: 61, propertyName: 'howIBrew', value: 'How I Brew', languageId: 'en' },
+
+        // Recipe Detail Screen
+        { id: 62, propertyName: 'waterVolume', value: 'Water Volume', languageId: 'en' },
+        { id: 63, propertyName: 'time', value: 'Time', languageId: 'en' },
+        { id: 64, propertyName: 'pouringSteps', value: 'Pouring Steps', languageId: 'en' },
+        { id: 65, propertyName: 'step', value: 'Step', languageId: 'en' },
+        { id: 66, propertyName: 'seconds', value: 's', languageId: 'en' },
+        { id: 67, propertyName: 'milliliters', value: 'ml', languageId: 'en' },
+        { id: 68, propertyName: 'celsius', value: '°C', languageId: 'en' },
+        { id: 69, propertyName: 'grams', value: 'g', languageId: 'en' },
+
+        // Delete Screens
+        { id: 70, propertyName: 'deleteError', value: 'Please select at least one item to delete', languageId: 'en' },
+        { id: 71, propertyName: 'confirmDelete', value: 'Confirm Delete', languageId: 'en' },
+        { id: 72, propertyName: 'confirmDeleteMessage', value: 'Are you sure you want to delete {count} item(s)?', languageId: 'en' },
+        { id: 73, propertyName: 'cancel', value: 'Cancel', languageId: 'en' },
+        { id: 74, propertyName: 'delete', value: 'Delete', languageId: 'en' },
+        { id: 75, propertyName: 'success', value: 'Success', languageId: 'en' },
+        { id: 76, propertyName: 'itemsDeleted', value: 'Selected items have been deleted', languageId: 'en' },
+        { id: 77, propertyName: 'ok', value: 'OK', languageId: 'en' },
+        { id: 78, propertyName: 'error', value: 'Error', languageId: 'en' }
     ],
     tr: [
         // App Settings Screen
@@ -179,6 +200,27 @@ export const mockLocalizations: LocalizationMap = {
         // Shelf Screen
         { id: 59, propertyName: 'whatIBrew', value: 'Ne Demliyorum', languageId: 'tr' },
         { id: 60, propertyName: 'whatIBrewWith', value: 'Ne ile Demliyorum', languageId: 'tr' },
-        { id: 61, propertyName: 'howIBrew', value: 'Nasıl Demliyorum', languageId: 'tr' }
+        { id: 61, propertyName: 'howIBrew', value: 'Nasıl Demliyorum', languageId: 'tr' },
+
+        // Recipe Detail Screen
+        { id: 62, propertyName: 'waterVolume', value: 'Su Miktarı', languageId: 'tr' },
+        { id: 63, propertyName: 'time', value: 'Süre', languageId: 'tr' },
+        { id: 64, propertyName: 'pouringSteps', value: 'Demleme Adımları', languageId: 'tr' },
+        { id: 65, propertyName: 'step', value: 'Adım', languageId: 'tr' },
+        { id: 66, propertyName: 'seconds', value: 'sn', languageId: 'tr' },
+        { id: 67, propertyName: 'milliliters', value: 'ml', languageId: 'tr' },
+        { id: 68, propertyName: 'celsius', value: '°C', languageId: 'tr' },
+        { id: 69, propertyName: 'grams', value: 'gr', languageId: 'tr' },
+
+        // Delete Screens
+        { id: 70, propertyName: 'deleteError', value: 'Lütfen silmek için en az bir öğe seçin', languageId: 'tr' },
+        { id: 71, propertyName: 'confirmDelete', value: 'Silmeyi Onayla', languageId: 'tr' },
+        { id: 72, propertyName: 'confirmDeleteMessage', value: '{count} öğeyi silmek istediğinizden emin misiniz?', languageId: 'tr' },
+        { id: 73, propertyName: 'cancel', value: 'İptal', languageId: 'tr' },
+        { id: 74, propertyName: 'delete', value: 'Sil', languageId: 'tr' },
+        { id: 75, propertyName: 'success', value: 'Başarılı', languageId: 'tr' },
+        { id: 76, propertyName: 'itemsDeleted', value: 'Seçili öğeler silindi', languageId: 'tr' },
+        { id: 77, propertyName: 'ok', value: 'Tamam', languageId: 'tr' },
+        { id: 78, propertyName: 'error', value: 'Hata', languageId: 'tr' }
     ]
 }; 
