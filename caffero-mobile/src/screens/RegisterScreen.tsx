@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { spacing, borderRadius } from '../theme';
+import { LanguageSelector } from '../components/LanguageSelector';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
     const { theme } = useTheme();
+    const { getText } = useLanguage();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
@@ -20,12 +23,13 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
         try {
             await register(email, password, username);
         } catch (err) {
-            setError('Registration failed. Please try again.');
+            setError(getText('registrationFailed'));
         }
     };
 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+            <LanguageSelector />
             <TextInput
                 style={[
                     styles.input,
@@ -35,7 +39,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                         color: theme.colors.text.primary,
                     }
                 ]}
-                placeholder="Email"
+                placeholder={getText('email')}
                 placeholderTextColor={theme.colors.text.tertiary}
                 value={email}
                 onChangeText={setEmail}
@@ -51,7 +55,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                         color: theme.colors.text.primary,
                     }
                 ]}
-                placeholder="Username"
+                placeholder={getText('username')}
                 placeholderTextColor={theme.colors.text.tertiary}
                 value={username}
                 onChangeText={setUsername}
@@ -65,7 +69,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                         color: theme.colors.text.primary,
                     }
                 ]}
-                placeholder="Password"
+                placeholder={getText('password')}
                 placeholderTextColor={theme.colors.text.tertiary}
                 value={password}
                 onChangeText={setPassword}
@@ -81,12 +85,12 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                 </Text>
             ) : null}
             <Button 
-                title="Register" 
+                title={getText('register')}
                 onPress={handleRegister}
                 color={theme.colors.primary.main}
             />
             <Button
-                title="Already have an account? Login"
+                title={getText('haveAccountLogin')}
                 onPress={() => navigation.navigate('Login')}
                 color={theme.colors.primary.light}
             />

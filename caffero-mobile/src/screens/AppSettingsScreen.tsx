@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Switch, ScrollView, Platform } from 'react-native';
 import { Header } from '../components/Header';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { spacing, typography, borderRadius, shadows } from '../theme';
+import { LanguageSelector } from '../components/LanguageSelector';
 
 export const AppSettingsScreen = () => {
   const { theme, isDark, toggleTheme } = useTheme();
+  const { getText } = useLanguage();
 
   const appInfo = {
     version: '1.0.0',
@@ -16,12 +19,12 @@ export const AppSettingsScreen = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header title="App Settings" showBack />
+      <Header title={getText('appSettings')} showBack />
       <ScrollView style={styles.content}>
         <View style={[styles.section, { backgroundColor: theme.colors.surface.secondary }]}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>Theme</Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>{getText('theme')}</Text>
           <View style={styles.row}>
-            <Text style={[styles.label, { color: theme.colors.text.primary }]}>Dark Mode</Text>
+            <Text style={[styles.label, { color: theme.colors.text.primary }]}>{getText('darkMode')}</Text>
             <Switch
               value={isDark}
               onValueChange={toggleTheme}
@@ -32,11 +35,16 @@ export const AppSettingsScreen = () => {
         </View>
 
         <View style={[styles.section, { backgroundColor: theme.colors.surface.secondary }]}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>App Information</Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>{getText('language')}</Text>
+          <LanguageSelector />
+        </View>
+
+        <View style={[styles.section, { backgroundColor: theme.colors.surface.secondary }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>{getText('appInformation')}</Text>
           {Object.entries(appInfo).map(([key, value]) => (
             <View key={key} style={[styles.infoRow, { borderBottomColor: theme.colors.border.primary }]}>
               <Text style={[styles.infoLabel, { color: theme.colors.text.primary }]}>
-                {key.charAt(0).toUpperCase() + key.slice(1)}
+                {getText(key.toLowerCase())}
               </Text>
               <Text style={[styles.infoValue, { color: theme.colors.text.secondary }]}>{value}</Text>
             </View>

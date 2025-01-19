@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { spacing, borderRadius } from '../theme';
+import { LanguageSelector } from '../components/LanguageSelector';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -14,17 +16,19 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
     const [error, setError] = useState('');
     const { login } = useAuth();
     const { theme } = useTheme();
+    const { getText } = useLanguage();
 
     const handleLogin = async () => {
         try {
             await login(email, password);
         } catch (err) {
-            setError('Login failed. Please try again.');
+            setError(getText('loginFailed'));
         }
     };
 
     return (
         <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+            <LanguageSelector />
             <TextInput
                 style={[
                     styles.input,
@@ -34,7 +38,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
                         color: theme.colors.text.primary,
                     }
                 ]}
-                placeholder="Email"
+                placeholder={getText('email')}
                 placeholderTextColor={theme.colors.text.tertiary}
                 value={email}
                 onChangeText={setEmail}
@@ -50,7 +54,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
                         color: theme.colors.text.primary,
                     }
                 ]}
-                placeholder="Password"
+                placeholder={getText('password')}
                 placeholderTextColor={theme.colors.text.tertiary}
                 value={password}
                 onChangeText={setPassword}
@@ -66,12 +70,12 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 </Text>
             ) : null}
             <Button 
-                title="Login" 
+                title={getText('login')}
                 onPress={handleLogin}
                 color={theme.colors.primary.main}
             />
             <Button
-                title="Don't have an account? Register"
+                title={getText('noAccountRegister')}
                 onPress={() => navigation.navigate('Register')}
                 color={theme.colors.primary.light}
             />
