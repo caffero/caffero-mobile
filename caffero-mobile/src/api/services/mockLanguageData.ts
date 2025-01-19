@@ -61,19 +61,43 @@ export const mockLocalizations: LocalizationMap = {
         { id: 32, propertyName: 'exclusiveCoupons', value: 'Exclusive Coupons', languageId: 'en' },
         { id: 33, propertyName: 'upcomingEvents', value: 'Upcoming Events', languageId: 'en' },
         { id: 34, propertyName: 'personalizedRecommendations', value: 'Personalized Recommendations', languageId: 'en' },
+        { id: 35, propertyName: 'premiumTitle', value: 'Upgrade to Premium', languageId: 'en' },
+        { id: 36, propertyName: 'premiumDescription', value: 'Get access to exclusive features and content', languageId: 'en' },
+        { id: 37, propertyName: 'upgradeToPremium', value: 'Upgrade Now', languageId: 'en' },
 
         // Contact Screen
-        { id: 35, propertyName: 'message', value: 'Message', languageId: 'en' },
-        { id: 36, propertyName: 'enterEmail', value: 'Enter your email', languageId: 'en' },
-        { id: 37, propertyName: 'typeMessage', value: 'Type your message here', languageId: 'en' },
+        { id: 38, propertyName: 'message', value: 'Message', languageId: 'en' },
+        { id: 39, propertyName: 'enterEmail', value: 'Enter your email', languageId: 'en' },
+        { id: 40, propertyName: 'typeMessage', value: 'Type your message here', languageId: 'en' },
 
         // Privacy Screen
-        { id: 38, propertyName: 'managePersonalInfo', value: 'Manage Personal Info Usage', languageId: 'en' },
-        { id: 39, propertyName: 'privacyPolicy', value: 'Privacy Policy', languageId: 'en' },
-        { id: 40, propertyName: 'informationCollection', value: 'Information Collection', languageId: 'en' },
-        { id: 41, propertyName: 'howWeUseInfo', value: 'How We Use Your Information', languageId: 'en' },
-        { id: 42, propertyName: 'dataProtection', value: 'Data Protection', languageId: 'en' },
-        { id: 43, propertyName: 'yourRights', value: 'Your Rights', languageId: 'en' }
+        { id: 41, propertyName: 'managePersonalInfo', value: 'Manage Personal Info Usage', languageId: 'en' },
+        { id: 42, propertyName: 'privacyPolicy', value: 'Privacy Policy', languageId: 'en' },
+        { id: 43, propertyName: 'privacyPolicyIntro', value: 'At Caffero, we take your privacy seriously. This notice explains how we collect, use, and protect your personal information.', languageId: 'en' },
+        { id: 44, propertyName: 'informationCollection', value: 'Information Collection', languageId: 'en' },
+        { id: 45, propertyName: 'informationCollectionText', value: 'We collect information that you provide directly to us, including your name, email address, and coffee preferences. We also collect data about your coffee brewing habits and equipment usage to enhance your experience.', languageId: 'en' },
+        { id: 46, propertyName: 'howWeUseInfo', value: 'How We Use Your Information', languageId: 'en' },
+        { id: 47, propertyName: 'howWeUseInfoText', value: 'Your information helps us personalize your coffee experience, provide brewing recommendations, and improve our services. We never sell your personal data to third parties.', languageId: 'en' },
+        { id: 48, propertyName: 'dataProtection', value: 'Data Protection', languageId: 'en' },
+        { id: 49, propertyName: 'dataProtectionText', value: 'We implement industry-standard security measures to protect your data. Your information is encrypted and stored securely on our servers.', languageId: 'en' },
+        { id: 50, propertyName: 'yourRights', value: 'Your Rights', languageId: 'en' },
+        { id: 51, propertyName: 'yourRightsText', value: 'You have the right to access, modify, or delete your personal information at any time. Contact our support team for assistance with managing your data.', languageId: 'en' },
+        { id: 52, propertyName: 'lastUpdated', value: 'Last updated: June 2023', languageId: 'en' },
+
+        // Scan Screen
+        { id: 53, propertyName: 'scan', value: 'Scan', languageId: 'en' },
+        { id: 54, propertyName: 'noCameraAccess', value: 'No access to camera', languageId: 'en' },
+
+        // Home Screen
+        { id: 55, propertyName: 'appName', value: 'Caffero', languageId: 'en' },
+        { id: 56, propertyName: 'trending', value: 'Trending', languageId: 'en' },
+        { id: 57, propertyName: 'forYourTaste', value: 'For Your Taste', languageId: 'en' },
+        { id: 58, propertyName: 'discoverCoffee', value: 'Discover Coffee', languageId: 'en' },
+
+        // Shelf Screen
+        { id: 59, propertyName: 'whatIBrew', value: 'What I Brew', languageId: 'en' },
+        { id: 60, propertyName: 'whatIBrewWith', value: 'What I Brew With', languageId: 'en' },
+        { id: 61, propertyName: 'howIBrew', value: 'How I Brew', languageId: 'en' }
     ],
     tr: [
         // App Settings Screen
@@ -119,18 +143,42 @@ export const mockLocalizations: LocalizationMap = {
         { id: 32, propertyName: 'exclusiveCoupons', value: 'Özel Kuponlar', languageId: 'tr' },
         { id: 33, propertyName: 'upcomingEvents', value: 'Yaklaşan Etkinlikler', languageId: 'tr' },
         { id: 34, propertyName: 'personalizedRecommendations', value: 'Kişiselleştirilmiş Öneriler', languageId: 'tr' },
+        { id: 35, propertyName: 'premiumTitle', value: 'Premium\'a Yükselt', languageId: 'tr' },
+        { id: 36, propertyName: 'premiumDescription', value: 'Özel özelliklere ve içeriğe erişim kazanın', languageId: 'tr' },
+        { id: 37, propertyName: 'upgradeToPremium', value: 'Şimdi Yükselt', languageId: 'tr' },
 
         // Contact Screen
-        { id: 35, propertyName: 'message', value: 'Mesaj', languageId: 'tr' },
-        { id: 36, propertyName: 'enterEmail', value: 'E-posta adresinizi girin', languageId: 'tr' },
-        { id: 37, propertyName: 'typeMessage', value: 'Mesajınızı buraya yazın', languageId: 'tr' },
+        { id: 38, propertyName: 'message', value: 'Mesaj', languageId: 'tr' },
+        { id: 39, propertyName: 'enterEmail', value: 'E-posta adresinizi girin', languageId: 'tr' },
+        { id: 40, propertyName: 'typeMessage', value: 'Mesajınızı buraya yazın', languageId: 'tr' },
 
         // Privacy Screen
-        { id: 38, propertyName: 'managePersonalInfo', value: 'Kişisel Bilgi Kullanımını Yönet', languageId: 'tr' },
-        { id: 39, propertyName: 'privacyPolicy', value: 'Gizlilik Politikası', languageId: 'tr' },
-        { id: 40, propertyName: 'informationCollection', value: 'Bilgi Toplama', languageId: 'tr' },
-        { id: 41, propertyName: 'howWeUseInfo', value: 'Bilgilerinizi Nasıl Kullanıyoruz', languageId: 'tr' },
-        { id: 42, propertyName: 'dataProtection', value: 'Veri Koruma', languageId: 'tr' },
-        { id: 43, propertyName: 'yourRights', value: 'Haklarınız', languageId: 'tr' }
+        { id: 41, propertyName: 'managePersonalInfo', value: 'Kişisel Bilgi Kullanımını Yönet', languageId: 'tr' },
+        { id: 42, propertyName: 'privacyPolicy', value: 'Gizlilik Politikası', languageId: 'tr' },
+        { id: 43, propertyName: 'privacyPolicyIntro', value: 'Caffero\'da gizliliğinizi ciddiye alıyoruz. Bu bildirim, kişisel bilgilerinizi nasıl topladığımızı, kullandığımızı ve koruduğumuzu açıklar.', languageId: 'tr' },
+        { id: 44, propertyName: 'informationCollection', value: 'Bilgi Toplama', languageId: 'tr' },
+        { id: 45, propertyName: 'informationCollectionText', value: 'Doğrudan bize sağladığınız ad, e-posta adresi ve kahve tercihleriniz gibi bilgileri topluyoruz. Ayrıca deneyiminizi geliştirmek için kahve demleme alışkanlıklarınız ve ekipman kullanımınız hakkında veri topluyoruz.', languageId: 'tr' },
+        { id: 46, propertyName: 'howWeUseInfo', value: 'Bilgilerinizi Nasıl Kullanıyoruz', languageId: 'tr' },
+        { id: 47, propertyName: 'howWeUseInfoText', value: 'Bilgileriniz kahve deneyiminizi kişiselleştirmemize, demleme önerileri sunmamıza ve hizmetlerimizi geliştirmemize yardımcı olur. Kişisel verilerinizi asla üçüncü taraflara satmayız.', languageId: 'tr' },
+        { id: 48, propertyName: 'dataProtection', value: 'Veri Koruma', languageId: 'tr' },
+        { id: 49, propertyName: 'dataProtectionText', value: 'Verilerinizi korumak için endüstri standardı güvenlik önlemleri uyguluyoruz. Bilgileriniz şifrelenir ve sunucularımızda güvenle saklanır.', languageId: 'tr' },
+        { id: 50, propertyName: 'yourRights', value: 'Haklarınız', languageId: 'tr' },
+        { id: 51, propertyName: 'yourRightsText', value: 'Kişisel bilgilerinize istediğiniz zaman erişme, değiştirme veya silme hakkına sahipsiniz. Verilerinizi yönetme konusunda yardım için destek ekibimizle iletişime geçin.', languageId: 'tr' },
+        { id: 52, propertyName: 'lastUpdated', value: 'Son güncelleme: Haziran 2023', languageId: 'tr' },
+
+        // Scan Screen
+        { id: 53, propertyName: 'scan', value: 'Tara', languageId: 'tr' },
+        { id: 54, propertyName: 'noCameraAccess', value: 'Kamera erişimi yok', languageId: 'tr' },
+
+        // Home Screen
+        { id: 55, propertyName: 'appName', value: 'Caffero', languageId: 'tr' },
+        { id: 56, propertyName: 'trending', value: 'Trend', languageId: 'tr' },
+        { id: 57, propertyName: 'forYourTaste', value: 'Damak Tadınıza Göre', languageId: 'tr' },
+        { id: 58, propertyName: 'discoverCoffee', value: 'Kahveyi Keşfet', languageId: 'tr' },
+
+        // Shelf Screen
+        { id: 59, propertyName: 'whatIBrew', value: 'Ne Demliyorum', languageId: 'tr' },
+        { id: 60, propertyName: 'whatIBrewWith', value: 'Ne ile Demliyorum', languageId: 'tr' },
+        { id: 61, propertyName: 'howIBrew', value: 'Nasıl Demliyorum', languageId: 'tr' }
     ]
 }; 

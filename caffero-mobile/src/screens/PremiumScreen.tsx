@@ -12,12 +12,14 @@ import { Header } from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigator } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { spacing } from '../theme';
 
 const { width } = Dimensions.get('window');
 
 const PremiumContent = () => {
   const { theme } = useTheme();
+  const { getText } = useLanguage();
   
   return (
     <ScrollView style={[styles.content, { backgroundColor: theme.colors.background.primary }]}>
@@ -28,7 +30,7 @@ const PremiumContent = () => {
           theme.typography.h2,
           { color: theme.colors.text.primary }
         ]}>
-          Exclusive Coupons
+          {getText('exclusiveCoupons')}
         </Text>
         <ScrollView 
           horizontal 
@@ -46,7 +48,7 @@ const PremiumContent = () => {
           theme.typography.h2,
           { color: theme.colors.text.primary }
         ]}>
-          Upcoming Events
+          {getText('upcomingEvents')}
         </Text>
         <ScrollView 
           horizontal 
@@ -64,7 +66,7 @@ const PremiumContent = () => {
           theme.typography.h2,
           { color: theme.colors.text.primary }
         ]}>
-          Personalized Recommendations
+          {getText('personalizedRecommendations')}
         </Text>
         <ScrollView 
           horizontal 
@@ -80,47 +82,44 @@ const PremiumContent = () => {
 
 const FreeUserContent = () => {
   const { theme } = useTheme();
-  
+  const { getText } = useLanguage();
+  const navigation = useNavigation<RootStackNavigator>();
+
   return (
     <View style={[styles.freeContent, { backgroundColor: theme.colors.background.primary }]}>
       <ImageBackground
-        source={{ uri: 'https://example.com/premium-ad.jpg' }}
+        source={{ uri: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31' }}
         style={styles.adBackground}
-        resizeMode="cover"
+        blurRadius={5}
       >
-        <View style={[
-          styles.adOverlay,
-          { backgroundColor: `${theme.colors.background.primary}CC` }
-        ]}>
+        <View style={[styles.adOverlay, { backgroundColor: 'rgba(0,0,0,0.6)' }]}>
           <Text style={[
             styles.adTitle,
             theme.typography.h1,
-            { color: theme.colors.text.primary }
+            { color: '#FFFFFF' }
           ]}>
-            Upgrade to Premium
+            {getText('premiumTitle')}
           </Text>
           <Text style={[
             styles.adDescription,
             theme.typography.body1,
-            { color: theme.colors.text.secondary }
+            { color: '#FFFFFF' }
           ]}>
-            Get access to exclusive coupons, events, and personalized taste matches!
+            {getText('premiumDescription')}
           </Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={[
               styles.upgradeButton,
-              {
-                backgroundColor: theme.colors.primary.main,
-                borderRadius: theme.borderRadius.md,
-              }
+              { backgroundColor: theme.colors.vibrantAqua }
             ]}
+            onPress={() => navigation.navigate('Subscription')}
           >
             <Text style={[
               styles.upgradeButtonText,
               theme.typography.button,
-              { color: theme.colors.primary.contrastText }
+              { color: '#FFFFFF' }
             ]}>
-              Upgrade Now
+              {getText('upgradeToPremium')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -131,11 +130,12 @@ const FreeUserContent = () => {
 
 export const PremiumScreen = () => {
   const { theme } = useTheme();
+  const { getText } = useLanguage();
   const isPremium = false;
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header title="Premium" />
+      <Header title={getText('premium')} />
       {isPremium ? <PremiumContent /> : <FreeUserContent />}
     </View>
   );

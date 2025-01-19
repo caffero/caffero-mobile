@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigator } from '../navigation/types';
 import { spacing, layout } from '../theme';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 // Dummy data (replace with API calls later)
 const trendingRecipes = [
@@ -54,18 +55,18 @@ const recommendedBeans = [
 const blogPosts = [
   { 
     id: '1', 
-    title: 'The Art of Coffee Cupping', 
-    imageUrl: 'https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=500&auto=format'
+    title: 'The Art of Coffee Roasting', 
+    imageUrl: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=500&auto=format'
   },
   { 
     id: '2', 
-    title: 'Understanding Coffee Roasts', 
-    imageUrl: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=500&auto=format'
+    title: 'Understanding Coffee Origins', 
+    imageUrl: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=500&auto=format'
   },
   { 
     id: '3', 
     title: 'Brewing the Perfect Cup', 
-    imageUrl: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=500&auto=format'
+    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&auto=format'
   },
 ];
 
@@ -73,6 +74,7 @@ export const HomeScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
   const [refreshing, setRefreshing] = React.useState(false);
   const { theme, isDark } = useTheme();
+  const { getText } = useLanguage();
 
   const handleTrendingPress = (id: string) => {
     navigation.navigate('RecipeDetail', { id });
@@ -102,7 +104,7 @@ export const HomeScreen = () => {
         barStyle={isDark ? "light-content" : "dark-content"}
         backgroundColor={theme.colors.background.primary}
       />
-      <Header title="Caffero" />
+      <Header title={getText('appName')} />
       <ScrollView
         style={styles.content}
         contentContainerStyle={styles.scrollContent}
@@ -123,17 +125,17 @@ export const HomeScreen = () => {
           })
         }]}>
           <Carousel
-            title="Trending"
+            title={getText('trending')}
             items={trendingRecipes}
             onItemPress={handleTrendingPress}
           />
           <Carousel
-            title="For Your Taste"
+            title={getText('forYourTaste')}
             items={recommendedBeans}
             onItemPress={handleBeanPress}
           />
           <Carousel
-            title="Discover Coffee"
+            title={getText('discoverCoffee')}
             items={blogPosts}
             onItemPress={handleBlogPress}
           />
@@ -151,9 +153,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: spacing.xxl,
+    flexGrow: 1,
   },
   carouselContainer: {
-    paddingTop: spacing.md,
+    flex: 1,
+    paddingVertical: spacing.md,
   },
 }); 

@@ -2,59 +2,54 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { Header } from '../components/Header';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const PrivacyScreen = () => {
   const { theme } = useTheme();
+  const { getText } = useLanguage();
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header title="Manage Personal Info Usage" showBack />
+      <Header title={getText('managePersonalInfo')} showBack />
       <ScrollView style={styles.content}>
         <View style={styles.section}>
           <Text style={[styles.title, { color: theme.colors.text.primary }]}>
-            Privacy Policy
+            {getText('privacyPolicy')}
           </Text>
           <Text style={[styles.paragraph, { color: theme.colors.text.secondary }]}>
-            At Caffero, we take your privacy seriously. This notice explains how we collect,
-            use, and protect your personal information.
+            {getText('privacyPolicyIntro')}
           </Text>
           
           <Text style={[styles.subtitle, { color: theme.colors.text.primary }]}>
-            Information Collection
+            {getText('informationCollection')}
           </Text>
           <Text style={[styles.paragraph, { color: theme.colors.text.secondary }]}>
-            We collect information that you provide directly to us, including your name,
-            email address, and coffee preferences. We also collect data about your coffee
-            brewing habits and equipment usage to enhance your experience.
+            {getText('informationCollectionText')}
           </Text>
 
           <Text style={[styles.subtitle, { color: theme.colors.text.primary }]}>
-            How We Use Your Information
+            {getText('howWeUseInfo')}
           </Text>
           <Text style={[styles.paragraph, { color: theme.colors.text.secondary }]}>
-            Your information helps us personalize your coffee experience, provide
-            brewing recommendations, and improve our services. We never sell your
-            personal data to third parties.
+            {getText('howWeUseInfoText')}
           </Text>
 
           <Text style={[styles.subtitle, { color: theme.colors.text.primary }]}>
-            Data Protection
+            {getText('dataProtection')}
           </Text>
           <Text style={[styles.paragraph, { color: theme.colors.text.secondary }]}>
-            We implement industry-standard security measures to protect your data.
-            Your information is encrypted and stored securely on our servers.
+            {getText('dataProtectionText')}
           </Text>
 
           <Text style={[styles.subtitle, { color: theme.colors.text.primary }]}>
-            Your Rights
+            {getText('yourRights')}
           </Text>
           <Text style={[styles.paragraph, { color: theme.colors.text.secondary }]}>
-            You have the right to access, modify, or delete your personal information
-            at any time. Contact our support team for assistance with managing your data.
+            {getText('yourRightsText')}
           </Text>
 
           <Text style={[styles.footer, { color: theme.colors.text.tertiary }]}>
-            Last updated: June 2023
+            {getText('lastUpdated')}
           </Text>
         </View>
       </ScrollView>
