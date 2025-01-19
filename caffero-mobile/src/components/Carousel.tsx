@@ -42,7 +42,7 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
   const handleScroll = Animated.event(
     [{ nativeEvent: { contentOffset: { x: scrollX } } }],
     { 
-      useNativeDriver: true,
+      useNativeDriver: false, // TODO: change to true in production
       listener: (event: NativeSyntheticEvent<NativeScrollEvent>) => {
         // You can add additional scroll handling here if needed
       }
