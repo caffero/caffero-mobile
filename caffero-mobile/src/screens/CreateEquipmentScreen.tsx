@@ -12,6 +12,7 @@ import { Header } from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -20,32 +21,33 @@ const equipmentTypes = ['Dripper', 'Immersion', 'Espresso', 'Grinder', 'Scale', 
 
 export const CreateEquipmentScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { getText } = useLanguage();
   const [title, setTitle] = useState('');
   const [selectedKind, setSelectedKind] = useState('');
   const [selectedType, setSelectedType] = useState('');
 
   const handleSave = () => {
     if (!title || !selectedKind || !selectedType) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert(getText('error'), getText('fillAllFields'));
       return;
     }
 
     // Save equipment logic here
     Alert.alert(
-      'Success',
-      'Equipment added successfully!',
-      [{ text: 'OK', onPress: () => navigation.goBack() }]
+      getText('success'),
+      getText('equipmentAddedSuccess'),
+      [{ text: getText('ok'), onPress: () => navigation.goBack() }]
     );
   };
 
   const handleBack = () => {
     if (title || selectedKind || selectedType) {
       Alert.alert(
-        'Discard Changes',
-        'Your changes will be lost. Are you sure?',
+        getText('discardChanges'),
+        getText('discardChangesMessage'),
         [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Discard', style: 'destructive', onPress: () => navigation.goBack() },
+          { text: getText('cancel'), style: 'cancel' },
+          { text: getText('discard'), style: 'destructive', onPress: () => navigation.goBack() },
         ]
       );
     } else {
@@ -56,23 +58,23 @@ export const CreateEquipmentScreen = () => {
   return (
     <View style={styles.container}>
       <Header
-        title="Create Equipment"
+        title={getText('createEquipment')}
         showBack
         onBack={handleBack}
       />
       <ScrollView style={styles.content}>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Title</Text>
+          <Text style={styles.label}>{getText('title')}</Text>
           <TextInput
             style={styles.input}
             value={title}
             onChangeText={setTitle}
-            placeholder="Enter equipment name"
+            placeholder={getText('enterEquipmentName')}
           />
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Equipment Kind</Text>
+          <Text style={styles.label}>{getText('equipmentKind')}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {equipmentKinds.map((kind) => (
               <TouchableOpacity
@@ -89,7 +91,7 @@ export const CreateEquipmentScreen = () => {
                     selectedKind === kind && styles.selectedOptionText,
                   ]}
                 >
-                  {kind}
+                  {getText(`equipmentKind.${kind}`)}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -97,7 +99,7 @@ export const CreateEquipmentScreen = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Equipment Type</Text>
+          <Text style={styles.label}>{getText('equipmentType')}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {equipmentTypes.map((type) => (
               <TouchableOpacity
@@ -114,7 +116,7 @@ export const CreateEquipmentScreen = () => {
                     selectedType === type && styles.selectedOptionText,
                   ]}
                 >
-                  {type}
+                  {getText(`equipmentType.${type}`)}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -122,7 +124,7 @@ export const CreateEquipmentScreen = () => {
         </View>
 
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>Save Equipment</Text>
+          <Text style={styles.saveButtonText}>{getText('saveEquipment')}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>

@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -46,6 +47,7 @@ const recipes: Recipe[] = [
 export const HowIBrewScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const { theme } = useTheme();
+  const { getText } = useLanguage();
 
   const renderRecipe = ({ item }: { item: Recipe }) => (
     <TouchableOpacity
@@ -79,7 +81,7 @@ export const HowIBrewScreen = () => {
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
-        title="How I Brew"
+        title={getText('howIBrew')}
         showBack
         onBack={() => navigation.goBack()}
         rightIcon="delete"
