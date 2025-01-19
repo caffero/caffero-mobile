@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -25,6 +26,7 @@ interface PouringStep {
 
 export const CreateRecipeScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { getText } = useLanguage();
   const [title, setTitle] = useState('');
   const [selectedEquipment, setSelectedEquipment] = useState('');
   const [selectedCoffee, setSelectedCoffee] = useState('');
@@ -259,20 +261,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  stepInputContainer: {
+  stepInput: {
     flex: 1,
     marginHorizontal: 4,
-  },
-  stepLabel: {
-    fontSize: 14,
-    marginBottom: 4,
-  },
-  stepInput: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    padding: 8,
-    fontSize: 14,
   },
   addStepButton: {
     flexDirection: 'row',
@@ -297,5 +288,8 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  section: {
+    marginBottom: 24,
   },
 }); 
