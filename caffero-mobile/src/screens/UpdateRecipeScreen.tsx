@@ -79,25 +79,25 @@ export const UpdateRecipeScreen = () => {
 
   const handleSave = () => {
     if (!title || !selectedEquipment || !selectedCoffee) {
-      Alert.alert('Error', 'Please fill in all required fields');
+      Alert.alert(getText('error'), getText('fillRequiredFields'));
       return;
     }
 
     // Update recipe logic here
     Alert.alert(
-      'Success',
-      'Recipe updated successfully!',
-      [{ text: 'OK', onPress: () => navigation.goBack() }]
+      getText('success'),
+      getText('recipeUpdateSuccess'),
+      [{ text: getText('ok'), onPress: () => navigation.goBack() }]
     );
   };
 
   const handleBack = () => {
     Alert.alert(
-      'Discard Changes',
-      'Your changes will be lost. Are you sure?',
+      getText('discardChanges'),
+      getText('discardChangesMessage'),
       [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Discard', style: 'destructive', onPress: () => navigation.goBack() },
+        { text: getText('cancel'), style: 'cancel' },
+        { text: getText('discard'), style: 'destructive', onPress: () => navigation.goBack() },
       ]
     );
   };
@@ -105,18 +105,18 @@ export const UpdateRecipeScreen = () => {
   return (
     <View style={styles.container}>
       <Header
-        title="Update Recipe"
+        title={getText('updateRecipe')}
         showBack
         onBack={handleBack}
       />
       <ScrollView style={styles.content}>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Recipe Title</Text>
+          <Text style={styles.label}>{getText('recipeTitle')}</Text>
           <TextInput
             style={styles.input}
             value={title}
             onChangeText={setTitle}
-            placeholder="Enter recipe name"
+            placeholder={getText('enterRecipeName')}
           />
         </View>
 
@@ -125,7 +125,7 @@ export const UpdateRecipeScreen = () => {
           onPress={() => {/* Navigate to equipment selection */}}
         >
           <Text style={styles.selectButtonText}>
-            {selectedEquipment || 'Select Equipment'}
+            {selectedEquipment || getText('selectEquipment')}
           </Text>
           <Icon name="chevron-right" size={24} color="#666" />
         </TouchableOpacity>
@@ -135,84 +135,89 @@ export const UpdateRecipeScreen = () => {
           onPress={() => {/* Navigate to coffee selection */}}
         >
           <Text style={styles.selectButtonText}>
-            {selectedCoffee || 'Select Coffee Bean'}
+            {selectedCoffee || getText('selectCoffeeBean')}
           </Text>
           <Icon name="chevron-right" size={24} color="#666" />
         </TouchableOpacity>
 
         <View style={styles.switchContainer}>
-          <Text style={styles.label}>Use Milk</Text>
+          <Text style={styles.label}>{getText('useMilk')}</Text>
           <Switch value={useMilk} onValueChange={setUseMilk} />
         </View>
 
         {useMilk && (
           <View style={styles.milkContainer}>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Milk Volume (ml)</Text>
+              <Text style={styles.label}>{getText('milkVolume')}</Text>
               <TextInput
                 style={styles.input}
                 value={milkVolume}
                 onChangeText={setMilkVolume}
                 keyboardType="numeric"
-                placeholder="Enter milk volume"
+                placeholder={getText('enterMilkVolume')}
               />
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Milk Temperature (°C)</Text>
+              <Text style={styles.label}>{getText('milkTemperature')}</Text>
               <TextInput
                 style={styles.input}
                 value={milkTemperature}
                 onChangeText={setMilkTemperature}
                 keyboardType="numeric"
-                placeholder="Enter milk temperature"
+                placeholder={getText('enterMilkTemperature')}
               />
             </View>
           </View>
         )}
 
-        <Text style={styles.sectionTitle}>Pouring Steps</Text>
-        {pouringSteps.map((step, index) => (
-          <View key={index} style={styles.stepContainer}>
-            <Text style={styles.stepNumber}>Step {index + 1}</Text>
-            <View style={styles.stepInputs}>
-              <View style={styles.stepInputContainer}>
-                <Text style={styles.stepLabel}>Volume (ml)</Text>
-                <TextInput
-                  style={styles.stepInput}
-                  value={step.volume}
-                  onChangeText={(value) => handleStepChange(index, 'volume', value)}
-                  keyboardType="numeric"
-                />
-              </View>
-              <View style={styles.stepInputContainer}>
-                <Text style={styles.stepLabel}>Time (s)</Text>
-                <TextInput
-                  style={styles.stepInput}
-                  value={step.time}
-                  onChangeText={(value) => handleStepChange(index, 'time', value)}
-                  keyboardType="numeric"
-                />
-              </View>
-              <View style={styles.stepInputContainer}>
-                <Text style={styles.stepLabel}>Temp (°C)</Text>
-                <TextInput
-                  style={styles.stepInput}
-                  value={step.temperature}
-                  onChangeText={(value) => handleStepChange(index, 'temperature', value)}
-                  keyboardType="numeric"
-                />
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>{getText('pouringSteps')}</Text>
+          {pouringSteps.map((step, index) => (
+            <View key={index} style={styles.stepContainer}>
+              <Text style={styles.stepNumber}>{getText('step')} {index + 1}</Text>
+              <View style={styles.stepInputs}>
+                <View style={styles.stepInput}>
+                  <Text style={styles.label}>{getText('volume')}</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={step.volume}
+                    onChangeText={(value) => handleStepChange(index, 'volume', value)}
+                    keyboardType="numeric"
+                    placeholder={getText('enterVolume')}
+                  />
+                </View>
+                <View style={styles.stepInput}>
+                  <Text style={styles.label}>{getText('time')}</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={step.time}
+                    onChangeText={(value) => handleStepChange(index, 'time', value)}
+                    keyboardType="numeric"
+                    placeholder={getText('enterTime')}
+                  />
+                </View>
+                <View style={styles.stepInput}>
+                  <Text style={styles.label}>{getText('temperature')}</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={step.temperature}
+                    onChangeText={(value) => handleStepChange(index, 'temperature', value)}
+                    keyboardType="numeric"
+                    placeholder={getText('enterTemperature')}
+                  />
+                </View>
               </View>
             </View>
-          </View>
-        ))}
+          ))}
+        </View>
 
         <TouchableOpacity style={styles.addStepButton} onPress={handleAddStep}>
           <Icon name="add" size={24} color="#007AFF" />
-          <Text style={styles.addStepText}>Add Step</Text>
+          <Text style={styles.addStepText}>{getText('addStep')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>Update Recipe</Text>
+          <Text style={styles.saveButtonText}>{getText('updateRecipe')}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -286,20 +291,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  stepInputContainer: {
+  stepInput: {
     flex: 1,
     marginHorizontal: 4,
-  },
-  stepLabel: {
-    fontSize: 14,
-    marginBottom: 4,
-  },
-  stepInput: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    padding: 8,
-    fontSize: 14,
   },
   addStepButton: {
     flexDirection: 'row',

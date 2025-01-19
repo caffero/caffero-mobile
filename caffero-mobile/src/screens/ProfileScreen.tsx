@@ -47,27 +47,27 @@ export const ProfileScreen = () => {
 
   const settingsTabs = [
     {
-      title: 'Edit Profile',
+      title: getText('editProfile'),
       onPress: () => navigation.navigate('EditProfile'),
     },
     {
-      title: 'App Settings',
+      title: getText('appSettings'),
       onPress: () => navigation.navigate('AppSettings'),
     },
     {
-      title: 'Notification Settings',
+      title: getText('notificationSettings'),
       onPress: () => navigation.navigate('NotificationSettings'),
     },
     {
-      title: 'Privacy',
+      title: getText('privacy'),
       onPress: () => navigation.navigate('Privacy'),
     },
     {
-      title: 'Contact Us',
+      title: getText('contactUs'),
       onPress: () => navigation.navigate('ContactUs'),
     },
     {
-      title: 'Logout',
+      title: getText('logout'),
       onPress: logout,
     },
   ];
