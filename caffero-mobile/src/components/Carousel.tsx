@@ -39,12 +39,10 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const { theme } = useTheme();
 
-  const handleScroll = React.useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    Animated.event(
-      [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-      { useNativeDriver: true }
-    )(event);
-  }, [scrollX]);
+  const handleScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+    { useNativeDriver: true }
+  );
 
   const renderItem = ({ item, index }: { item: CarouselItem; index: number }) => {
     const inputRange = [
