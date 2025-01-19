@@ -57,13 +57,13 @@ export const EquipmentDetailScreen = () => {
         <View style={styles.content}>
           <Text style={styles.title}>{equipment.title}</Text>
           <View style={styles.typeContainer}>
-            <Text style={styles.type}>{getText('equipmentType', { type: equipment.type })}</Text>
-            <Text style={styles.kind}>{getText('equipmentKind', { kind: equipment.kind })}</Text>
+            <Text style={styles.type}>{getText(`equipmentType.${equipment.type}`)}</Text>
+            <Text style={styles.kind}>{getText(`equipmentKind.${equipment.kind}`)}</Text>
           </View>
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{getText('description')}</Text>
-            <Text style={styles.description}>{getText('equipmentDescription', { description: equipment.description })}</Text>
+            <Text style={styles.description}>{getText(`equipmentDescription.${equipment.id}`)}</Text>
           </View>
 
           <View style={styles.section}>
