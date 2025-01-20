@@ -42,7 +42,7 @@ const recipes: Recipe[] = [
 
 export const DeleteRecipeScreen = () => {
   const navigation = useNavigation<NavigationProp>();
-  const { t } = useLanguage();
+  const { getText } = useLanguage();
   const [selectedRecipes, setSelectedRecipes] = useState<Set<string>>(new Set());
 
   const toggleRecipeSelection = (id: string) => {
@@ -57,24 +57,24 @@ export const DeleteRecipeScreen = () => {
 
   const handleDelete = () => {
     if (selectedRecipes.size === 0) {
-      Alert.alert(t('error'), t('deleteError'));
+      Alert.alert(getText('error'), getText('deleteError'));
       return;
     }
 
     Alert.alert(
-      t('confirmDelete'),
-      t('confirmDeleteMessage').replace('{count}', selectedRecipes.size.toString()),
+      getText('confirmDelete'),
+      getText('confirmDeleteMessage').replace('{count}', selectedRecipes.size.toString()),
       [
-        { text: t('cancel'), style: 'cancel' },
+        { text: getText('cancel'), style: 'cancel' },
         {
-          text: t('delete'),
+          text: getText('delete'),
           style: 'destructive',
           onPress: () => {
             // Delete logic here
             Alert.alert(
-              t('success'),
-              t('itemsDeleted'),
-              [{ text: t('ok'), onPress: () => navigation.goBack() }]
+              getText('success'),
+              getText('itemsDeleted'),
+              [{ text: getText('ok'), onPress: () => navigation.goBack() }]
             );
           },
         },
@@ -126,7 +126,7 @@ export const DeleteRecipeScreen = () => {
         onPress={handleDelete}
         disabled={selectedRecipes.size === 0}
       >
-        <Text style={styles.deleteButtonText}>{t('delete')}</Text>
+        <Text style={styles.deleteButtonText}>{getText('delete')}</Text>
       </TouchableOpacity>
     </View>
   );

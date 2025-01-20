@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'UpdateRecipe'>['route'];
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -45,6 +46,7 @@ export const UpdateRecipeScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProps>();
   const { id } = route.params;
+  const { getText } = useLanguage();
 
   const [title, setTitle] = useState('');
   const [selectedEquipment, setSelectedEquipment] = useState('');
@@ -271,6 +273,9 @@ const styles = StyleSheet.create({
   milkContainer: {
     marginBottom: 24,
   },
+  section: {
+    marginBottom: 24,
+  },
   sectionTitle: {
     fontSize: 20,
     fontWeight: '600',
@@ -299,13 +304,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 12,
     marginBottom: 24,
   },
   addStepText: {
+    marginLeft: 8,
     fontSize: 16,
     color: '#007AFF',
-    marginLeft: 8,
   },
   saveButton: {
     backgroundColor: '#007AFF',

@@ -158,6 +158,12 @@ export const mockLocalizations: LocalizationMap = {
         { id: 114, propertyName: 'coffeeName', value: 'Coffee Name', languageId: 'en' },
         { id: 115, propertyName: 'useMilk', value: 'Use Milk', languageId: 'en' },
 
+        // Common Actions
+        { id: 116, propertyName: 'logout', value: 'Logout', languageId: 'en' },
+
+        // What I Brew With Screen
+        { id: 117, propertyName: 'myEquipment', value: 'My Equipment', languageId: 'en' },
+
         // Delete Screens
         { id: 70, propertyName: 'deleteError', value: 'Please select at least one item to delete', languageId: 'en' },
         { id: 71, propertyName: 'confirmDelete', value: 'Confirm Delete', languageId: 'en' },
@@ -167,7 +173,46 @@ export const mockLocalizations: LocalizationMap = {
         { id: 75, propertyName: 'success', value: 'Success', languageId: 'en' },
         { id: 76, propertyName: 'itemsDeleted', value: 'Selected items have been deleted', languageId: 'en' },
         { id: 77, propertyName: 'ok', value: 'OK', languageId: 'en' },
-        { id: 78, propertyName: 'error', value: 'Error', languageId: 'en' }
+        { id: 78, propertyName: 'error', value: 'Error', languageId: 'en' },
+
+        // Equipment Management
+        { id: 116, propertyName: 'createEquipment', value: 'Create Equipment', languageId: 'en' },
+        { id: 117, propertyName: 'title', value: 'Title', languageId: 'en' },
+        { id: 118, propertyName: 'enterEquipmentName', value: 'Enter equipment name', languageId: 'en' },
+        { id: 119, propertyName: 'fillAllFields', value: 'Please fill all fields', languageId: 'en' },
+        { id: 120, propertyName: 'equipmentAddedSuccess', value: 'Equipment added successfully', languageId: 'en' },
+        { id: 121, propertyName: 'discardChanges', value: 'Discard Changes', languageId: 'en' },
+        { id: 122, propertyName: 'discardChangesMessage', value: 'Your changes will be lost. Are you sure?', languageId: 'en' },
+        { id: 123, propertyName: 'discard', value: 'Discard', languageId: 'en' },
+        { id: 124, propertyName: 'saveEquipment', value: 'Save Equipment', languageId: 'en' },
+
+        // Equipment Types
+        { id: 125, propertyName: 'equipmentKind.Chemex', value: 'Chemex', languageId: 'en' },
+        { id: 126, propertyName: 'equipmentKind.V60', value: 'V60', languageId: 'en' },
+        { id: 127, propertyName: 'equipmentKind.Aeropress', value: 'Aeropress', languageId: 'en' },
+        { id: 128, propertyName: 'equipmentKind.FrenchPress', value: 'French Press', languageId: 'en' },
+        { id: 129, propertyName: 'equipmentKind.MokaPot', value: 'Moka Pot', languageId: 'en' },
+        { id: 130, propertyName: 'equipmentType.Dripper', value: 'Dripper', languageId: 'en' },
+        { id: 131, propertyName: 'equipmentType.Immersion', value: 'Immersion', languageId: 'en' },
+        { id: 132, propertyName: 'equipmentType.Espresso', value: 'Espresso', languageId: 'en' },
+        { id: 133, propertyName: 'equipmentType.Grinder', value: 'Grinder', languageId: 'en' },
+        { id: 134, propertyName: 'equipmentType.Scale', value: 'Scale', languageId: 'en' },
+        { id: 135, propertyName: 'equipmentType.Kettle', value: 'Kettle', languageId: 'en' },
+
+        // Add Coffee Bean Screen
+        { id: 136, propertyName: 'addCoffeeBean', value: 'Add Coffee Bean', languageId: 'en' },
+        { id: 137, propertyName: 'searchCoffeeBeans', value: 'Search coffee beans', languageId: 'en' },
+        { id: 138, propertyName: 'filterCoffeeBeans', value: 'Filter Coffee Beans', languageId: 'en' },
+        { id: 139, propertyName: 'searchByName', value: 'Search by name', languageId: 'en' },
+        { id: 140, propertyName: 'roastery', value: 'Roastery', languageId: 'en' },
+        { id: 141, propertyName: 'country', value: 'Country', languageId: 'en' },
+        { id: 142, propertyName: 'acidity', value: 'Acidity', languageId: 'en' },
+        { id: 143, propertyName: 'body', value: 'Body', languageId: 'en' },
+        { id: 144, propertyName: 'clearFilters', value: 'Clear Filters', languageId: 'en' },
+        { id: 145, propertyName: 'applyFilters', value: 'Apply Filters', languageId: 'en' },
+        { id: 146, propertyName: 'cantFindCoffee', value: "Can't find your coffee?", languageId: 'en' },
+        { id: 147, propertyName: 'suggestProduct', value: 'Suggest Product', languageId: 'en' },
+        { id: 148, propertyName: 'coffeeAddedToShelf', value: 'Coffee bean added to your shelf', languageId: 'en' }
     ],
     tr: [
         // App Settings Screen
@@ -310,6 +355,12 @@ export const mockLocalizations: LocalizationMap = {
         { id: 114, propertyName: 'coffeeName', value: 'Kahve Adı', languageId: 'tr' },
         { id: 115, propertyName: 'useMilk', value: 'Süt Kullan', languageId: 'tr' },
 
+        // Common Actions
+        { id: 116, propertyName: 'logout', value: 'Çıkış Yap', languageId: 'tr' },
+
+        // What I Brew With Screen
+        { id: 117, propertyName: 'myEquipment', value: 'Ekipmanlarım', languageId: 'tr' },
+
         // Delete Screens
         { id: 70, propertyName: 'deleteError', value: 'Lütfen silmek için en az bir öğe seçin', languageId: 'tr' },
         { id: 71, propertyName: 'confirmDelete', value: 'Silmeyi Onayla', languageId: 'tr' },
@@ -319,6 +370,45 @@ export const mockLocalizations: LocalizationMap = {
         { id: 75, propertyName: 'success', value: 'Başarılı', languageId: 'tr' },
         { id: 76, propertyName: 'itemsDeleted', value: 'Seçili öğeler silindi', languageId: 'tr' },
         { id: 77, propertyName: 'ok', value: 'Tamam', languageId: 'tr' },
-        { id: 78, propertyName: 'error', value: 'Hata', languageId: 'tr' }
+        { id: 78, propertyName: 'error', value: 'Hata', languageId: 'tr' },
+
+        // Equipment Management
+        { id: 116, propertyName: 'createEquipment', value: 'Ekipman Oluştur', languageId: 'tr' },
+        { id: 117, propertyName: 'title', value: 'Başlık', languageId: 'tr' },
+        { id: 118, propertyName: 'enterEquipmentName', value: 'Ekipman adı girin', languageId: 'tr' },
+        { id: 119, propertyName: 'fillAllFields', value: 'Lütfen tüm alanları doldurun', languageId: 'tr' },
+        { id: 120, propertyName: 'equipmentAddedSuccess', value: 'Ekipman başarıyla eklendi', languageId: 'tr' },
+        { id: 121, propertyName: 'discardChanges', value: 'Değişiklikleri İptal Et', languageId: 'tr' },
+        { id: 122, propertyName: 'discardChangesMessage', value: 'Değişiklikleriniz kaybolacak. Emin misiniz?', languageId: 'tr' },
+        { id: 123, propertyName: 'discard', value: 'İptal Et', languageId: 'tr' },
+        { id: 124, propertyName: 'saveEquipment', value: 'Ekipmanı Kaydet', languageId: 'tr' },
+
+        // Equipment Types
+        { id: 125, propertyName: 'equipmentKind.Chemex', value: 'Chemex', languageId: 'tr' },
+        { id: 126, propertyName: 'equipmentKind.V60', value: 'V60', languageId: 'tr' },
+        { id: 127, propertyName: 'equipmentKind.Aeropress', value: 'Aeropress', languageId: 'tr' },
+        { id: 128, propertyName: 'equipmentKind.FrenchPress', value: 'French Press', languageId: 'tr' },
+        { id: 129, propertyName: 'equipmentKind.MokaPot', value: 'Moka Pot', languageId: 'tr' },
+        { id: 130, propertyName: 'equipmentType.Dripper', value: 'Dripper', languageId: 'tr' },
+        { id: 131, propertyName: 'equipmentType.Immersion', value: 'Demleme', languageId: 'tr' },
+        { id: 132, propertyName: 'equipmentType.Espresso', value: 'Espresso', languageId: 'tr' },
+        { id: 133, propertyName: 'equipmentType.Grinder', value: 'Öğütücü', languageId: 'tr' },
+        { id: 134, propertyName: 'equipmentType.Scale', value: 'Tartı', languageId: 'tr' },
+        { id: 135, propertyName: 'equipmentType.Kettle', value: 'Kettle', languageId: 'tr' },
+
+        // Add Coffee Bean Screen
+        { id: 136, propertyName: 'addCoffeeBean', value: 'Kahve Çekirdeği Ekle', languageId: 'tr' },
+        { id: 137, propertyName: 'searchCoffeeBeans', value: 'Kahve çekirdeklerini ara', languageId: 'tr' },
+        { id: 138, propertyName: 'filterCoffeeBeans', value: 'Kahve Çekirdeklerini Filtrele', languageId: 'tr' },
+        { id: 139, propertyName: 'searchByName', value: 'İsme göre ara', languageId: 'tr' },
+        { id: 140, propertyName: 'roastery', value: 'Kavurma', languageId: 'tr' },
+        { id: 141, propertyName: 'country', value: 'Ülke', languageId: 'tr' },
+        { id: 142, propertyName: 'acidity', value: 'Asitlik', languageId: 'tr' },
+        { id: 143, propertyName: 'body', value: 'Gövde', languageId: 'tr' },
+        { id: 144, propertyName: 'clearFilters', value: 'Filtreleri Temizle', languageId: 'tr' },
+        { id: 145, propertyName: 'applyFilters', value: 'Filtreleri Uygula', languageId: 'tr' },
+        { id: 146, propertyName: 'cantFindCoffee', value: 'Kahvenizi bulamıyor musunuz?', languageId: 'tr' },
+        { id: 147, propertyName: 'suggestProduct', value: 'Ürün Öner', languageId: 'tr' },
+        { id: 148, propertyName: 'coffeeAddedToShelf', value: 'Kahve çekirdeği rafınıza eklendi', languageId: 'tr' }
     ]
 }; 
