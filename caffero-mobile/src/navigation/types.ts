@@ -1,5 +1,6 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
+import { NavigationProp } from '@react-navigation/native';
 
 export type RootStackParamList = {
   // Auth screens
@@ -8,11 +9,20 @@ export type RootStackParamList = {
   
   // Main tabs
   MainTabs: undefined;
+  Scan: undefined;
+
+  // Profile screens
+  EditProfile: undefined;
+  AppSettings: undefined;
+  NotificationSettings: undefined;
+  Privacy: undefined;
+  ContactUs: undefined;
 
   // Main screens
   WhatIBrew: undefined;
   CoffeeBeanDetail: { id: string };
   AddCoffeeBean: undefined;
+  RemoveCoffeeBean: undefined;
   WhatIBrewWith: undefined;
   EquipmentDetail: { id: string };
   CreateEquipment: undefined;
@@ -24,6 +34,7 @@ export type RootStackParamList = {
   UpdateRecipe: { id: string };
   DeleteRecipe: undefined;
   SuggestProduct: undefined;
+  Subscription: undefined;
 }; 
 
 export type BottomTabParamList = {
@@ -34,5 +45,5 @@ export type BottomTabParamList = {
   Profile: undefined;
 }; 
 
-export type RootStackNavigator = NativeStackNavigationProp<RootStackParamList>; 
+export type RootStackNavigator = NavigationProp<RootStackParamList>; 
 export type BottomTabNavigator = BottomTabNavigationProp<BottomTabParamList>; 

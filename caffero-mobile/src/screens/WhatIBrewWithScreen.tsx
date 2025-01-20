@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -52,6 +53,7 @@ const equipmentList: Equipment[] = [
 
 export const WhatIBrewWithScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { getText } = useLanguage();
 
   const renderEquipment = ({ item }: { item: Equipment }) => (
     <TouchableOpacity
@@ -61,7 +63,7 @@ export const WhatIBrewWithScreen = () => {
       <Image source={{ uri: item.imageUrl }} style={styles.equipmentImage} />
       <View style={styles.equipmentInfo}>
         <Text style={styles.equipmentTitle}>{item.title}</Text>
-        <Text style={styles.equipmentType}>{item.type}</Text>
+        <Text style={styles.equipmentType}>{getText(`equipment.type.${item.type}`)}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -69,7 +71,7 @@ export const WhatIBrewWithScreen = () => {
   return (
     <View style={styles.container}>
       <Header
-        title="What I Brew With"
+        title={getText('myEquipment')}
         showBack
         onBack={() => navigation.goBack()}
         rightIcon="delete"

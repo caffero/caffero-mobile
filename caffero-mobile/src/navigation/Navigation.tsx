@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { RootStackParamList, BottomTabParamList } from './types';
 
 import { LoginScreen } from '../screens/LoginScreen';
@@ -14,6 +15,11 @@ import { ShelfScreen } from '../screens/ShelfScreen';
 import { ScanScreen } from '../screens/ScanScreen';
 import { PremiumScreen } from '../screens/PremiumScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
+import { EditProfileScreen } from '../screens/EditProfileScreen';
+import { AppSettingsScreen } from '../screens/AppSettingsScreen';
+import { NotificationSettingsScreen } from '../screens/NotificationSettingsScreen';
+import { PrivacyScreen } from '../screens/PrivacyScreen';
+import { ContactUsScreen } from '../screens/ContactUsScreen';
 import { RecipeDetailScreen } from '../screens/RecipeDetailScreen';
 import { UpdateRecipeScreen } from '../screens/UpdateRecipeScreen';
 import { SuggestProductScreen } from '../screens/SuggestProductScreen';
@@ -33,10 +39,18 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const MainTabs = () => {
+  const { theme } = useTheme();
+  
   return (
     <Tab.Navigator
       screenOptions={({ route }: { route: { name: string } }) => ({
         headerShown: false,
+        tabBarStyle: {
+          backgroundColor: theme.colors.background.primary,
+          borderTopColor: theme.colors.border.primary,
+        },
+        tabBarActiveTintColor: theme.colors.vibrantAqua,
+        tabBarInactiveTintColor: theme.colors.text.tertiary,
         tabBarIcon: ({ color, size }: { color: string; size: number }) => {
           let iconName: string;
           const routeName = route.name as keyof BottomTabParamList;
@@ -74,59 +88,83 @@ const MainTabs = () => {
 
 export const Navigation = () => {
   const { user, isLoading } = useAuth();
+  const { theme } = useTheme();
 
-  if (isLoading) {
-    return (
-      <NavigationContainer>
-        <View style={styles.container}>
-          <ActivityIndicator size="large" color="#8B4513" />
-        </View>
-      </NavigationContainer>
-    );
-  }
+  const navigationTheme = {
+    dark: false,
+    colors: {
+      primary: theme.colors.vibrantAqua,
+      background: theme.colors.background.primary,
+      card: theme.colors.surface.primary,
+      text: theme.colors.text.primary,
+      border: theme.colors.border.primary,
+      notification: theme.colors.status.error,
+    },
+  };
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {user ? (
-          <>
-            <Stack.Screen name="MainTabs" component={MainTabs} />
-            
-            <Stack.Group screenOptions={{ presentation: 'card' }}>
-              <Stack.Screen name="WhatIBrew" component={WhatIBrewScreen} />
-              <Stack.Screen name="CoffeeBeanDetail" component={CoffeeBeanDetailScreen} />
-              <Stack.Screen name="AddCoffeeBean" component={AddCoffeeBeanScreen} />
-            </Stack.Group>
+    <NavigationContainer theme={navigationTheme}>
+      {isLoading ? (
+        <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+          <ActivityIndicator size="large" color={theme.colors.vibrantAqua} />
+        </View>
+      ) : (
+        <Stack.Navigator 
+          screenOptions={{ 
+            headerShown: false,
+            contentStyle: { backgroundColor: theme.colors.background.primary },
+          }}
+        >
+          {!user ? (
+            // Auth Stack
+            <>
+              <Stack.Screen 
+                name="Login" 
+                component={LoginScreen}
+                options={{
+                  animationTypeForReplace: !user ? 'pop' : 'push',
+                }}
+              />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+            </>
+          ) : (
+            // Main App Stack
+            <>
+              <Stack.Screen name="MainTabs" component={MainTabs} />
 
-            <Stack.Group screenOptions={{ presentation: 'card' }}>
-              <Stack.Screen name="WhatIBrewWith" component={WhatIBrewWithScreen} />
-              <Stack.Screen name="EquipmentDetail" component={EquipmentDetailScreen} />
-              <Stack.Screen name="CreateEquipment" component={CreateEquipmentScreen} />
-              <Stack.Screen name="UpdateEquipment" component={UpdateEquipmentScreen} />
-              <Stack.Screen name="DeleteEquipment" component={DeleteEquipmentScreen} />
-            </Stack.Group>
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="WhatIBrew" component={WhatIBrewScreen} />
+                <Stack.Screen name="CoffeeBeanDetail" component={CoffeeBeanDetailScreen} />
+                <Stack.Screen name="AddCoffeeBean" component={AddCoffeeBeanScreen} />
+              </Stack.Group>
 
-            <Stack.Group screenOptions={{ presentation: 'card' }}>
-              <Stack.Screen name="HowIBrew" component={HowIBrewScreen} />
-              <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
-              <Stack.Screen name="CreateRecipe" component={CreateRecipeScreen} />
-              <Stack.Screen name="UpdateRecipe" component={UpdateRecipeScreen} />
-              <Stack.Screen name="DeleteRecipe" component={DeleteRecipeScreen} />
-            </Stack.Group>
-          </>
-        ) : (
-          <>
-            <Stack.Screen 
-              name="Login" 
-              component={LoginScreen}
-              options={{
-                animationTypeForReplace: !user ? 'pop' : 'push',
-              }}
-            />
-            <Stack.Screen name="Register" component={RegisterScreen} />
-          </>
-        )}
-      </Stack.Navigator>
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="WhatIBrewWith" component={WhatIBrewWithScreen} />
+                <Stack.Screen name="EquipmentDetail" component={EquipmentDetailScreen} />
+                <Stack.Screen name="CreateEquipment" component={CreateEquipmentScreen} />
+                <Stack.Screen name="UpdateEquipment" component={UpdateEquipmentScreen} />
+                <Stack.Screen name="DeleteEquipment" component={DeleteEquipmentScreen} />
+              </Stack.Group>
+
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="HowIBrew" component={HowIBrewScreen} />
+                <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
+                <Stack.Screen name="CreateRecipe" component={CreateRecipeScreen} />
+                <Stack.Screen name="UpdateRecipe" component={UpdateRecipeScreen} />
+                <Stack.Screen name="DeleteRecipe" component={DeleteRecipeScreen} />
+              </Stack.Group>
+
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+                <Stack.Screen name="AppSettings" component={AppSettingsScreen} />
+                <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} />
+                <Stack.Screen name="Privacy" component={PrivacyScreen} />
+                <Stack.Screen name="ContactUs" component={ContactUsScreen} />
+              </Stack.Group>
+            </>
+          )}
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 };
@@ -136,6 +174,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
   },
 }); 

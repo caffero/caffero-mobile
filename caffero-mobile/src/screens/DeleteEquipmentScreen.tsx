@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -45,6 +46,7 @@ const equipmentList: Equipment[] = [
 
 export const DeleteEquipmentScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { getText } = useLanguage();
   const [selectedEquipment, setSelectedEquipment] = useState<Set<string>>(new Set());
 
   const toggleEquipmentSelection = (id: string) => {
@@ -59,24 +61,24 @@ export const DeleteEquipmentScreen = () => {
 
   const handleDelete = () => {
     if (selectedEquipment.size === 0) {
-      Alert.alert('Error', 'Please select at least one item to delete');
+      Alert.alert(getText('error'), getText('deleteError'));
       return;
     }
 
     Alert.alert(
-      'Confirm Delete',
-      `Are you sure you want to delete ${selectedEquipment.size} item(s)?`,
+      getText('confirmDelete'),
+      getText('confirmDeleteMessage').replace('{count}', selectedEquipment.size.toString()),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: getText('cancel'), style: 'cancel' },
         {
-          text: 'Delete',
+          text: getText('delete'),
           style: 'destructive',
           onPress: () => {
             // Delete logic here
             Alert.alert(
-              'Success',
-              'Selected items have been deleted',
-              [{ text: 'OK', onPress: () => navigation.goBack() }]
+              getText('success'),
+              getText('itemsDeleted'),
+              [{ text: getText('ok'), onPress: () => navigation.goBack() }]
             );
           },
         },
@@ -92,7 +94,7 @@ export const DeleteEquipmentScreen = () => {
       <Image source={{ uri: item.imageUrl }} style={styles.equipmentImage} />
       <View style={styles.equipmentInfo}>
         <Text style={styles.equipmentTitle}>{item.title}</Text>
-        <Text style={styles.equipmentType}>{item.type}</Text>
+        <Text style={styles.equipmentType}>{getText(`equipmentType.${item.type}`)}</Text>
       </View>
       <View style={styles.checkboxContainer}>
         <Icon
@@ -118,14 +120,16 @@ export const DeleteEquipmentScreen = () => {
         numColumns={2}
         contentContainerStyle={styles.listContent}
       />
-      {selectedEquipment.size > 0 && (
-        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-          <Icon name="delete" size={24} color="#fff" />
-          <Text style={styles.deleteButtonText}>
-            Delete Selected ({selectedEquipment.size})
-          </Text>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        style={[
+          styles.deleteButton,
+          { opacity: selectedEquipment.size > 0 ? 1 : 0.5 }
+        ]}
+        onPress={handleDelete}
+        disabled={selectedEquipment.size === 0}
+      >
+        <Text style={styles.deleteButtonText}>{getText('delete')}</Text>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -10,6 +10,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
+import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'RecipeDetail'>['route'];
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -27,7 +29,7 @@ const getRecipe = (id: string) => ({
   equipment: 'Hario V60',
   coffee: {
     name: 'Ethiopian Yirgacheffe',
-    amount: '15g',
+    amount: '15',
   },
   useMilk: true,
   milk: {
@@ -42,6 +44,8 @@ const getRecipe = (id: string) => ({
 });
 
 export const RecipeDetailScreen = () => {
+  const { theme } = useTheme();
+  const { getText } = useLanguage();
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProps>();
   const { id } = route.params;
@@ -49,51 +53,87 @@ export const RecipeDetailScreen = () => {
   const recipe = getRecipe(id);
 
   const renderPouringStep = (step: PouringStep, index: number) => (
-    <View key={index} style={styles.stepContainer}>
-      <Text style={styles.stepNumber}>{index + 1}.</Text>
+    <View key={index} style={[styles.stepContainer, { borderBottomColor: theme.colors.border.primary }]}>
+      <Text style={[styles.stepNumber, { color: theme.colors.primary.main }]}>
+        {`${getText('step')} ${index + 1}`}
+      </Text>
       <View style={styles.stepDetails}>
         <View style={styles.stepRow}>
-          <Text style={styles.stepLabel}>Water Volume:</Text>
-          <Text style={styles.stepValue}>{step.volume}ml</Text>
+          <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
+            {getText('waterVolume')}:
+          </Text>
+          <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
+            {`${step.volume}${getText('milliliters')}`}
+          </Text>
         </View>
         <View style={styles.stepRow}>
-          <Text style={styles.stepLabel}>Time:</Text>
-          <Text style={styles.stepValue}>{step.time}s</Text>
+          <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
+            {getText('time')}:
+          </Text>
+          <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
+            {`${step.time}${getText('seconds')}`}
+          </Text>
         </View>
         <View style={styles.stepRow}>
-          <Text style={styles.stepLabel}>Temperature:</Text>
-          <Text style={styles.stepValue}>{step.temperature}°C</Text>
+          <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
+            {getText('temperature')}:
+          </Text>
+          <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
+            {`${step.temperature}${getText('celsius')}`}
+          </Text>
         </View>
       </View>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <ScrollView style={styles.content}>
-        <Text style={styles.title}>{recipe.title}</Text>
+        <Text style={[styles.title, { color: theme.colors.text.primary }]}>
+          {recipe.title}
+        </Text>
         
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Equipment</Text>
-          <Text style={styles.sectionText}>{recipe.equipment}</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+            {getText('equipment')}
+          </Text>
+          <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
+            {recipe.equipment}
+          </Text>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Coffee</Text>
-          <Text style={styles.sectionText}>{recipe.coffee.name}</Text>
-          <Text style={styles.sectionSubtext}>Amount: {recipe.coffee.amount}</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+            {getText('coffee')}
+          </Text>
+          <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
+            {recipe.coffee.name}
+          </Text>
+          <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
+            {`${getText('amount')}: ${recipe.coffee.amount}${getText('grams')}`}
+          </Text>
         </View>
 
         {recipe.useMilk && (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Milk</Text>
-            <Text style={styles.sectionText}>Volume: {recipe.milk.volume}ml</Text>
-            <Text style={styles.sectionText}>Temperature: {recipe.milk.temperature}°C</Text>
+          <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+              {getText('milk')}
+            </Text>
+            <View style={styles.milkDetails}>
+              <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
+                {`${getText('volume')}: ${recipe.milk.volume}${getText('milliliters')}`}
+              </Text>
+              <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
+                {`${getText('temperature')}: ${recipe.milk.temperature}${getText('celsius')}`}
+              </Text>
+            </View>
           </View>
         )}
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Pouring Steps</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+            {getText('pouringSteps')}
+          </Text>
           {recipe.pouringSteps.map((step, index) => renderPouringStep(step, index))}
         </View>
       </ScrollView>
@@ -111,7 +151,6 @@ export const RecipeDetailScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fffaf0', // Antique white for notepad effect
   },
   content: {
     flex: 1,
@@ -123,7 +162,6 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     textAlign: 'center',
     fontFamily: 'System', // Consider using a handwriting font
-    color: '#2c3e50',
   },
   section: {
     marginBottom: 24,
@@ -183,6 +221,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2c3e50',
     fontWeight: '500',
+  },
+  milkDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   fab: {
     position: 'absolute',

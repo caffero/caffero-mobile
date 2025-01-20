@@ -1,76 +1,51 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Header } from '../components/Header';
-import { BottomNavBar } from '../components/BottomNavBar';
-import { Camera, CameraType } from 'expo-camera';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList, BottomTabParamList, RootStackNavigator, BottomTabNavigator } from '../navigation/types';
+import { RootStackNavigator } from '../navigation/types';
+import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
+import { spacing } from '../theme';
 
 export const ScanScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
-  const bottomNavigator = useNavigation<BottomTabNavigator>();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const { theme } = useTheme();
+  const { getText } = useLanguage();
 
   React.useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
+    // TODO: Request camera permissions
+    setHasPermission(false);
   }, []);
 
-  const handleBarCodeScanned = ({ data }: { data: string }) => {
-    try {
-      const coffeeData = JSON.parse(data);
-      if (coffeeData.id) {
-        navigation.navigate('CoffeeBeanDetail', { id: coffeeData.id });
-      }
-    } catch (error) {
-      Alert.alert(
-        'Scan Failed',
-        'Are you filming John Cena, because I can\'t see anything. Let\'s try verbally.',
-        [
-          {
-            text: 'OK',
-            onPress: () => navigation.navigate('AddCoffeeBean'),
-          },
-        ]
-      );
-    }
-  };
-
   if (hasPermission === null) {
-    return <View style={styles.container} />;
+    return (
+      <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]} />
+    );
   }
 
   if (hasPermission === false) {
     return (
-      <View style={styles.container}>
-        <Header title="Scan" />
-        <View style={styles.content}>
-          <Text>No access to camera</Text>
+      <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+        <Header title={getText('scan')} />
+        <View style={[styles.content, { padding: theme.spacing.md }]}>
+          <Text style={[
+            theme.typography.body1,
+            { color: theme.colors.text.primary }
+          ]}>
+            {getText('noCameraAccess')}
+          </Text>
         </View>
-        <BottomNavBar
-          currentRoute="Scan"
-          onNavigate={(screen) => bottomNavigator.navigate(screen)}
-        />
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Header title="Scan" />
-      <View style={styles.content}>
-        <Camera
-          style={styles.camera}
-          type={CameraType.back}
-          onBarCodeScanned={handleBarCodeScanned}
-        />
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+      <Header title={getText('scan')} />
+      <View style={[styles.content, { padding: theme.spacing.md }]}>
+        {/* Camera view will go here */}
       </View>
-      <BottomNavBar
-        currentRoute="Scan"
-        onNavigate={(screen) => bottomNavigator.navigate(screen)}
-      />
     </View>
   );
 };
@@ -78,12 +53,10 @@ export const ScanScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
-  },
-  camera: {
-    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }); 

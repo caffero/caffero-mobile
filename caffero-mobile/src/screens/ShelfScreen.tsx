@@ -1,66 +1,74 @@
 import React from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Header } from '../components/Header';
-import { BottomNavBar } from '../components/BottomNavBar';
-import { ShelfItem } from '../components/ShelfItem';
 import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList, BottomTabParamList, RootStackNavigator, BottomTabNavigator } from '../navigation/types';
+import { RootStackNavigator } from '../navigation/types';
+import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
+import { spacing } from '../theme';
+import { ShelfItem } from '../components/ShelfItem';
 
 interface ShelfItemType {
   id: string;
   title: string;
-  image: string;
-  route: keyof RootStackParamList;
-  params?: any;
+  route: 'WhatIBrew' | 'WhatIBrewWith' | 'HowIBrew';
+  imageUrl: string;
 }
 
 const shelfItems: ShelfItemType[] = [
-  {
-    id: 'what-i-brew',
-    title: 'What I Brew',
-    image: 'https://example.com/coffee-beans.jpg',
+  { 
+    id: '1', 
+    title: 'whatIBrew', 
     route: 'WhatIBrew',
-    params: undefined,
+    imageUrl: 'https://images.unsplash.com/photo-1524350876685-274059332603', // Coffee beans spilled
   },
-  {
-    id: 'what-i-brew-with',
-    title: 'What I Brew With',
-    image: 'https://example.com/equipment.jpg',
+  { 
+    id: '2', 
+    title: 'whatIBrewWith', 
     route: 'WhatIBrewWith',
-    params: undefined,
+    imageUrl: 'https://images.unsplash.com/photo-1516315720917-231ef9acce48', // Coffee equipment
   },
-  {
-    id: 'how-i-brew',
-    title: 'How I Brew',
-    image: 'https://example.com/brewing.jpg',
+  { 
+    id: '3', 
+    title: 'howIBrew', 
     route: 'HowIBrew',
-    params: undefined,
+    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085', // Pour over brewing
   },
 ];
 
 export const ShelfScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
-  const bottomNavigator = useNavigation<BottomTabNavigator>();
+  const { theme } = useTheme();
+  const { getText } = useLanguage();
+
+  const handleItemPress = (route: ShelfItemType['route']) => {
+    navigation.navigate(route);
+  };
 
   return (
-    <View style={styles.container}>
-      <Header title="My Shelf" />
-      <ScrollView style={styles.content}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+      <Header title={getText('appName')} showBack={false} />
+      <ScrollView 
+        style={styles.content}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { 
+            paddingHorizontal: spacing.md,
+            paddingTop: spacing.md,
+            paddingBottom: spacing.xl + 56, // Add extra padding for bottom tab bar
+          }
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
         {shelfItems.map((item) => (
           <ShelfItem
             key={item.id}
-            title={item.title}
-            backgroundImage={item.image}
-            onPress={() => navigation.navigate(item.route, item.params)}
+            title={getText(item.title)}
+            imageUrl={item.imageUrl}
+            onPress={() => handleItemPress(item.route)}
           />
         ))}
       </ScrollView>
-      <BottomNavBar
-        currentRoute="Shelf"
-        onNavigate={(screen) => {bottomNavigator.navigate(screen);
-        }}
-      />
     </View>
   );
 };
@@ -68,10 +76,11 @@ export const ShelfScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
-    paddingVertical: 16,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
 }); 

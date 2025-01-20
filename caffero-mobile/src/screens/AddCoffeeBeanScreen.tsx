@@ -17,6 +17,8 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import Slider from '@react-native-community/slider';
+import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -51,6 +53,7 @@ const roasteries = ['Specialty Roasters', 'Coffee Lab', 'Artisan Coffee'];
 
 export const AddCoffeeBeanScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { getText } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
@@ -60,12 +63,13 @@ export const AddCoffeeBeanScreen = () => {
     body: 3,
     intensity: 3,
   });
+  const { theme } = useTheme();
 
   const handleAddBean = (beanId: string) => {
     Alert.alert(
-      'Success',
-      'Coffee bean added to your shelf!',
-      [{ text: 'OK', onPress: () => navigation.goBack() }]
+      getText('success'),
+      getText('coffeeAddedToShelf'),
+      [{ text: getText('ok'), onPress: () => navigation.goBack() }]
     );
   };
 
@@ -94,17 +98,17 @@ export const AddCoffeeBeanScreen = () => {
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Filter Coffee Beans</Text>
+          <Text style={styles.modalTitle}>{getText('filterCoffeeBeans')}</Text>
           
           <TextInput
             style={styles.searchInput}
-            placeholder="Search by name"
+            placeholder={getText('searchByName')}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
 
           <View style={styles.dropdown}>
-            <Text style={styles.dropdownLabel}>Roastery</Text>
+            <Text style={styles.dropdownLabel}>{getText('roastery')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {roasteries.map((roastery) => (
                 <TouchableOpacity
@@ -115,14 +119,16 @@ export const AddCoffeeBeanScreen = () => {
                   ]}
                   onPress={() => setFilters({ ...filters, roastery })}
                 >
-                  <Text style={styles.dropdownItemText}>{roastery}</Text>
+                  <Text style={[styles.dropdownItemText, { color: theme.colors.text.primary }]}>
+                    {roastery}
+                  </Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
           </View>
 
           <View style={styles.dropdown}>
-            <Text style={styles.dropdownLabel}>Country</Text>
+            <Text style={styles.dropdownLabel}>{getText('country')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               {countries.map((country) => (
                 <TouchableOpacity
@@ -133,14 +139,16 @@ export const AddCoffeeBeanScreen = () => {
                   ]}
                   onPress={() => setFilters({ ...filters, country })}
                 >
-                  <Text style={styles.dropdownItemText}>{country}</Text>
+                  <Text style={[styles.dropdownItemText, { color: theme.colors.text.primary }]}>
+                    {country}
+                  </Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
           </View>
 
           <View style={styles.sliderContainer}>
-            <Text style={styles.sliderLabel}>Acidity</Text>
+            <Text style={styles.sliderLabel}>{getText('acidity')}</Text>
             <Slider
               style={styles.slider}
               minimumValue={1}
@@ -149,11 +157,13 @@ export const AddCoffeeBeanScreen = () => {
               value={filters.acidity}
               onValueChange={(value) => setFilters({ ...filters, acidity: value })}
             />
-            <Text style={styles.sliderValue}>{filters.acidity}</Text>
+            <Text style={[styles.sliderValue, { color: theme.colors.text.secondary }]}>
+              {filters.acidity}
+            </Text>
           </View>
 
           <View style={styles.sliderContainer}>
-            <Text style={styles.sliderLabel}>Body</Text>
+            <Text style={styles.sliderLabel}>{getText('body')}</Text>
             <Slider
               style={styles.slider}
               minimumValue={1}
@@ -162,7 +172,9 @@ export const AddCoffeeBeanScreen = () => {
               value={filters.body}
               onValueChange={(value) => setFilters({ ...filters, body: value })}
             />
-            <Text style={styles.sliderValue}>{filters.body}</Text>
+            <Text style={[styles.sliderValue, { color: theme.colors.text.secondary }]}>
+              {filters.body}
+            </Text>
           </View>
 
           <View style={styles.modalButtons}>
@@ -178,13 +190,13 @@ export const AddCoffeeBeanScreen = () => {
                 });
               }}
             >
-              <Text style={styles.clearButtonText}>Clear Filters</Text>
+              <Text style={styles.clearButtonText}>{getText('clearFilters')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.applyButton}
               onPress={() => setShowFilters(false)}
             >
-              <Text style={styles.applyButtonText}>Apply Filters</Text>
+              <Text style={styles.applyButtonText}>{getText('applyFilters')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -193,9 +205,9 @@ export const AddCoffeeBeanScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
-        title="Add Coffee Beans"
+        title={getText('addCoffeeBean')}
         showBack
         onBack={() => navigation.goBack()}
       />
@@ -204,7 +216,7 @@ export const AddCoffeeBeanScreen = () => {
           <Icon name="search" size={24} color="#666" style={styles.searchIcon} />
           <TextInput
             style={styles.searchInput}
-            placeholder="Search coffee beans..."
+            placeholder={getText('searchCoffeeBeans')}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
@@ -225,14 +237,14 @@ export const AddCoffeeBeanScreen = () => {
         contentContainerStyle={styles.listContent}
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>
-              Can't find the coffee you want to add?
+            <Text style={[styles.emptyText, { color: theme.colors.text.secondary }]}>
+              {getText('cantFindCoffee')}
             </Text>
             <TouchableOpacity
               style={styles.suggestButton}
               onPress={() => navigation.navigate('SuggestProduct')}
             >
-              <Text style={styles.suggestButtonText}>Suggest Product</Text>
+              <Text style={styles.suggestButtonText}>{getText('suggestProduct')}</Text>
             </TouchableOpacity>
           </View>
         }
@@ -351,7 +363,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#007AFF',
   },
   dropdownItemText: {
-    color: '#333',
+    fontSize: 14,
   },
   sliderContainer: {
     marginBottom: 20,
@@ -366,7 +378,6 @@ const styles = StyleSheet.create({
   },
   sliderValue: {
     textAlign: 'right',
-    color: '#666',
   },
   modalButtons: {
     flexDirection: 'row',
@@ -404,7 +415,6 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: '#666',
     marginBottom: 12,
   },
   suggestButton: {
