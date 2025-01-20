@@ -71,7 +71,7 @@ export const WhatIBrewWithScreen = () => {
   return (
     <View style={styles.container}>
       <Header
-        title={getText('screens.whatIBrewWith.title')}
+        title={getText('myEquipment')}
         showBack
         onBack={() => navigation.goBack()}
         rightIcon="delete"

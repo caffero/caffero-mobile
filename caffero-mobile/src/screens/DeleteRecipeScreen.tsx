@@ -108,7 +108,7 @@ export const DeleteRecipeScreen = () => {
   return (
     <View style={styles.container}>
       <Header
-        title="Delete Recipes"
+        title={getText('deleteRecipes')}
         showBack
         onBack={() => navigation.goBack()}
       />
