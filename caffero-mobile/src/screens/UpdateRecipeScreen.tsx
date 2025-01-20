@@ -15,6 +15,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'UpdateRecipe'>['route'];
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -47,6 +48,7 @@ export const UpdateRecipeScreen = () => {
   const route = useRoute<RouteProps>();
   const { id } = route.params;
   const { getText } = useLanguage();
+  const { theme } = useTheme();
 
   const [title, setTitle] = useState('');
   const [selectedEquipment, setSelectedEquipment] = useState('');
@@ -105,107 +107,151 @@ export const UpdateRecipeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title={getText('updateRecipe')}
         showBack
         onBack={handleBack}
       />
       <ScrollView style={styles.content}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>{getText('recipeTitle')}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.surface.secondary }]}>
+          <Text style={[styles.label, { color: theme.colors.text.primary }]}>{getText('recipeTitle')}</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { 
+              color: theme.colors.text.primary,
+              backgroundColor: theme.colors.surface.primary,
+              borderColor: theme.colors.border.primary 
+            }]}
             value={title}
             onChangeText={setTitle}
             placeholder={getText('enterRecipeName')}
+            placeholderTextColor={theme.colors.text.tertiary}
           />
         </View>
 
         <TouchableOpacity
-          style={styles.selectButton}
+          style={[styles.selectButton, { 
+            backgroundColor: theme.colors.surface.secondary,
+            borderColor: theme.colors.border.primary 
+          }]}
           onPress={() => {/* Navigate to equipment selection */}}
         >
-          <Text style={styles.selectButtonText}>
+          <Text style={[styles.selectButtonText, { color: theme.colors.text.primary }]}>
             {selectedEquipment || getText('selectEquipment')}
           </Text>
-          <Icon name="chevron-right" size={24} color="#666" />
+          <Icon name="chevron-right" size={24} color={theme.colors.text.secondary} />
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.selectButton}
+          style={[styles.selectButton, { 
+            backgroundColor: theme.colors.surface.secondary,
+            borderColor: theme.colors.border.primary 
+          }]}
           onPress={() => {/* Navigate to coffee selection */}}
         >
-          <Text style={styles.selectButtonText}>
+          <Text style={[styles.selectButtonText, { color: theme.colors.text.primary }]}>
             {selectedCoffee || getText('selectCoffeeBean')}
           </Text>
-          <Icon name="chevron-right" size={24} color="#666" />
+          <Icon name="chevron-right" size={24} color={theme.colors.text.secondary} />
         </TouchableOpacity>
 
         <View style={styles.switchContainer}>
-          <Text style={styles.label}>{getText('useMilk')}</Text>
-          <Switch value={useMilk} onValueChange={setUseMilk} />
+          <Text style={[styles.label, { color: theme.colors.text.primary }]}>{getText('useMilk')}</Text>
+          <Switch 
+            value={useMilk} 
+            onValueChange={setUseMilk}
+            trackColor={{ 
+              false: theme.colors.border.primary, 
+              true: theme.colors.primary.main 
+            }}
+            thumbColor={theme.colors.background.primary}
+          />
         </View>
 
         {useMilk && (
-          <View style={styles.milkContainer}>
+          <View style={[styles.milkContainer, { backgroundColor: theme.colors.surface.secondary }]}>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>{getText('milkVolume')}</Text>
+              <Text style={[styles.label, { color: theme.colors.text.primary }]}>{getText('milkVolume')}</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { 
+                  color: theme.colors.text.primary,
+                  backgroundColor: theme.colors.surface.primary,
+                  borderColor: theme.colors.border.primary 
+                }]}
                 value={milkVolume}
                 onChangeText={setMilkVolume}
                 keyboardType="numeric"
                 placeholder={getText('enterMilkVolume')}
+                placeholderTextColor={theme.colors.text.tertiary}
               />
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>{getText('milkTemperature')}</Text>
+              <Text style={[styles.label, { color: theme.colors.text.primary }]}>{getText('milkTemperature')}</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { 
+                  color: theme.colors.text.primary,
+                  backgroundColor: theme.colors.surface.primary,
+                  borderColor: theme.colors.border.primary 
+                }]}
                 value={milkTemperature}
                 onChangeText={setMilkTemperature}
                 keyboardType="numeric"
                 placeholder={getText('enterMilkTemperature')}
+                placeholderTextColor={theme.colors.text.tertiary}
               />
             </View>
           </View>
         )}
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>{getText('pouringSteps')}</Text>
+        <View style={[styles.section, { backgroundColor: theme.colors.surface.secondary }]}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>{getText('pouringSteps')}</Text>
           {pouringSteps.map((step, index) => (
-            <View key={index} style={styles.stepContainer}>
-              <Text style={styles.stepNumber}>{getText('step')} {index + 1}</Text>
+            <View key={index} style={[styles.stepContainer, { backgroundColor: theme.colors.surface.primary }]}>
+              <Text style={[styles.stepNumber, { color: theme.colors.text.primary }]}>{getText('step')} {index + 1}</Text>
               <View style={styles.stepInputs}>
                 <View style={styles.stepInput}>
-                  <Text style={styles.label}>{getText('volume')}</Text>
+                  <Text style={[styles.label, { color: theme.colors.text.primary }]}>{getText('volume')}</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { 
+                      color: theme.colors.text.primary,
+                      backgroundColor: theme.colors.surface.primary,
+                      borderColor: theme.colors.border.primary 
+                    }]}
                     value={step.volume}
                     onChangeText={(value) => handleStepChange(index, 'volume', value)}
                     keyboardType="numeric"
                     placeholder={getText('enterVolume')}
+                    placeholderTextColor={theme.colors.text.tertiary}
                   />
                 </View>
                 <View style={styles.stepInput}>
-                  <Text style={styles.label}>{getText('time')}</Text>
+                  <Text style={[styles.label, { color: theme.colors.text.primary }]}>{getText('time')}</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { 
+                      color: theme.colors.text.primary,
+                      backgroundColor: theme.colors.surface.primary,
+                      borderColor: theme.colors.border.primary 
+                    }]}
                     value={step.time}
                     onChangeText={(value) => handleStepChange(index, 'time', value)}
                     keyboardType="numeric"
                     placeholder={getText('enterTime')}
+                    placeholderTextColor={theme.colors.text.tertiary}
                   />
                 </View>
                 <View style={styles.stepInput}>
-                  <Text style={styles.label}>{getText('temperature')}</Text>
+                  <Text style={[styles.label, { color: theme.colors.text.primary }]}>{getText('temperature')}</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { 
+                      color: theme.colors.text.primary,
+                      backgroundColor: theme.colors.surface.primary,
+                      borderColor: theme.colors.border.primary 
+                    }]}
                     value={step.temperature}
                     onChangeText={(value) => handleStepChange(index, 'temperature', value)}
                     keyboardType="numeric"
                     placeholder={getText('enterTemperature')}
+                    placeholderTextColor={theme.colors.text.tertiary}
                   />
                 </View>
               </View>
@@ -214,12 +260,17 @@ export const UpdateRecipeScreen = () => {
         </View>
 
         <TouchableOpacity style={styles.addStepButton} onPress={handleAddStep}>
-          <Icon name="add" size={24} color="#007AFF" />
-          <Text style={styles.addStepText}>{getText('addStep')}</Text>
+          <Icon name="add" size={24} color={theme.colors.primary.main} />
+          <Text style={[styles.addStepText, { color: theme.colors.primary.main }]}>{getText('addStep')}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>{getText('updateRecipe')}</Text>
+        <TouchableOpacity 
+          style={[styles.saveButton, { backgroundColor: theme.colors.primary.main }]} 
+          onPress={handleSave}
+        >
+          <Text style={[styles.saveButtonText, { color: theme.colors.primary.contrastText }]}>
+            {getText('updateRecipe')}
+          </Text>
         </TouchableOpacity>
       </ScrollView>
     </View>

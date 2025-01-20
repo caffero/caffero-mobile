@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -47,6 +48,7 @@ const equipmentList: Equipment[] = [
 export const DeleteEquipmentScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const { getText } = useLanguage();
+  const { theme } = useTheme();
   const [selectedEquipment, setSelectedEquipment] = useState<Set<string>>(new Set());
 
   const toggleEquipmentSelection = (id: string) => {
@@ -88,26 +90,33 @@ export const DeleteEquipmentScreen = () => {
 
   const renderEquipment = ({ item }: { item: Equipment }) => (
     <TouchableOpacity
-      style={styles.equipmentCard}
+      style={[styles.equipmentCard, { 
+        backgroundColor: theme.colors.surface.primary,
+        shadowColor: theme.colors.text.primary,
+      }]}
       onPress={() => toggleEquipmentSelection(item.id)}
     >
       <Image source={{ uri: item.imageUrl }} style={styles.equipmentImage} />
       <View style={styles.equipmentInfo}>
-        <Text style={styles.equipmentTitle}>{item.title}</Text>
-        <Text style={styles.equipmentType}>{getText(`equipmentType.${item.type}`)}</Text>
+        <Text style={[styles.equipmentTitle, { color: theme.colors.text.primary }]}>
+          {item.title}
+        </Text>
+        <Text style={[styles.equipmentType, { color: theme.colors.text.secondary }]}>
+          {getText(`equipmentType.${item.type}`)}
+        </Text>
       </View>
-      <View style={styles.checkboxContainer}>
+      <View style={[styles.checkboxContainer, { backgroundColor: theme.colors.surface.primary }]}>
         <Icon
           name={selectedEquipment.has(item.id) ? 'check-box' : 'check-box-outline-blank'}
           size={24}
-          color={selectedEquipment.has(item.id) ? '#007AFF' : '#666'}
+          color={selectedEquipment.has(item.id) ? theme.colors.primary.main : theme.colors.text.secondary}
         />
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title="Delete Equipment"
         showBack
@@ -123,12 +132,17 @@ export const DeleteEquipmentScreen = () => {
       <TouchableOpacity
         style={[
           styles.deleteButton,
-          { opacity: selectedEquipment.size > 0 ? 1 : 0.5 }
+          { 
+            backgroundColor: theme.colors.status.error,
+            opacity: selectedEquipment.size > 0 ? 1 : 0.5 
+          }
         ]}
         onPress={handleDelete}
         disabled={selectedEquipment.size === 0}
       >
-        <Text style={styles.deleteButtonText}>{getText('delete')}</Text>
+        <Text style={[styles.deleteButtonText, { color: theme.colors.text.inverse }]}>
+          {getText('delete')}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -137,7 +151,6 @@ export const DeleteEquipmentScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   listContent: {
     padding: 8,
@@ -146,9 +159,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 8,
     borderRadius: 8,
-    backgroundColor: '#fff',
     elevation: 2,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -169,26 +180,23 @@ const styles = StyleSheet.create({
   },
   equipmentType: {
     fontSize: 14,
-    color: '#666',
   },
   checkboxContainer: {
     position: 'absolute',
     top: 8,
     right: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
     borderRadius: 4,
+    padding: 4,
   },
   deleteButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FF3B30',
     padding: 16,
     margin: 16,
     borderRadius: 8,
   },
   deleteButtonText: {
-    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
     marginLeft: 8,
