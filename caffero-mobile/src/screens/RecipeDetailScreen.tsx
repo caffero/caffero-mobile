@@ -45,7 +45,7 @@ const getRecipe = (id: string) => ({
 
 export const RecipeDetailScreen = () => {
   const { theme } = useTheme();
-  const { t } = useLanguage();
+  const { getText } = useLanguage();
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProps>();
   const { id } = route.params;
@@ -55,31 +55,31 @@ export const RecipeDetailScreen = () => {
   const renderPouringStep = (step: PouringStep, index: number) => (
     <View key={index} style={[styles.stepContainer, { borderBottomColor: theme.colors.border.primary }]}>
       <Text style={[styles.stepNumber, { color: theme.colors.primary.main }]}>
-        {`${t('step')} ${index + 1}`}
+        {`${getText('step')} ${index + 1}`}
       </Text>
       <View style={styles.stepDetails}>
         <View style={styles.stepRow}>
           <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
-            {t('waterVolume')}:
+            {getText('waterVolume')}:
           </Text>
           <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
-            {`${step.volume}${t('milliliters')}`}
+            {`${step.volume}${getText('milliliters')}`}
           </Text>
         </View>
         <View style={styles.stepRow}>
           <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
-            {t('time')}:
+            {getText('time')}:
           </Text>
           <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
-            {`${step.time}${t('seconds')}`}
+            {`${step.time}${getText('seconds')}`}
           </Text>
         </View>
         <View style={styles.stepRow}>
           <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
-            {t('temperature')}:
+            {getText('temperature')}:
           </Text>
           <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
-            {`${step.temperature}${t('celsius')}`}
+            {`${step.temperature}${getText('celsius')}`}
           </Text>
         </View>
       </View>
@@ -95,7 +95,7 @@ export const RecipeDetailScreen = () => {
         
         <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-            {t('equipment')}
+            {getText('equipment')}
           </Text>
           <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
             {recipe.equipment}
@@ -104,27 +104,27 @@ export const RecipeDetailScreen = () => {
 
         <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-            {t('coffee')}
+            {getText('coffee')}
           </Text>
           <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
             {recipe.coffee.name}
           </Text>
           <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
-            {`${t('amount')}: ${recipe.coffee.amount}${t('grams')}`}
+            {`${getText('amount')}: ${recipe.coffee.amount}${getText('grams')}`}
           </Text>
         </View>
 
         {recipe.useMilk && (
           <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
             <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-              {t('milk')}
+              {getText('milk')}
             </Text>
             <View style={styles.milkDetails}>
               <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
-                {`${t('volume')}: ${recipe.milk.volume}${t('milliliters')}`}
+                {`${getText('volume')}: ${recipe.milk.volume}${getText('milliliters')}`}
               </Text>
               <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
-                {`${t('temperature')}: ${recipe.milk.temperature}${t('celsius')}`}
+                {`${getText('temperature')}: ${recipe.milk.temperature}${getText('celsius')}`}
               </Text>
             </View>
           </View>
@@ -132,7 +132,7 @@ export const RecipeDetailScreen = () => {
 
         <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-            {t('pouringSteps')}
+            {getText('pouringSteps')}
           </Text>
           {recipe.pouringSteps.map((step, index) => renderPouringStep(step, index))}
         </View>

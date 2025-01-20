@@ -109,6 +109,55 @@ export const mockLocalizations: LocalizationMap = {
         { id: 68, propertyName: 'celsius', value: '°C', languageId: 'en' },
         { id: 69, propertyName: 'grams', value: 'g', languageId: 'en' },
 
+        // Profile Screen
+        { id: 79, propertyName: 'profile', value: 'Profile', languageId: 'en' },
+        { id: 80, propertyName: 'editProfile', value: 'Edit Profile', languageId: 'en' },
+        { id: 81, propertyName: 'notificationSettings', value: 'Notification Settings', languageId: 'en' },
+        { id: 82, propertyName: 'privacy', value: 'Privacy', languageId: 'en' },
+        { id: 83, propertyName: 'contactUs', value: 'Contact Us', languageId: 'en' },
+        { id: 84, propertyName: 'defaultUsername', value: 'Guest User', languageId: 'en' },
+        { id: 85, propertyName: 'defaultEmail', value: 'guest@example.com', languageId: 'en' },
+        { id: 86, propertyName: 'premiumUser', value: 'Premium', languageId: 'en' },
+        { id: 87, propertyName: 'freeUser', value: 'Free', languageId: 'en' },
+
+        // Equipment Detail Screen
+        { id: 88, propertyName: 'equipmentDetails', value: 'Equipment Details', languageId: 'en' },
+        { id: 89, propertyName: 'description', value: 'Description', languageId: 'en' },
+        { id: 90, propertyName: 'specifications', value: 'Specifications', languageId: 'en' },
+        { id: 91, propertyName: 'specCapacity', value: 'Capacity', languageId: 'en' },
+        { id: 92, propertyName: 'specMaterial', value: 'Material', languageId: 'en' },
+        { id: 93, propertyName: 'specFilter', value: 'Filter', languageId: 'en' },
+        { id: 94, propertyName: 'equipmentType', value: 'Type', languageId: 'en' },
+        { id: 95, propertyName: 'equipmentKind', value: 'Kind', languageId: 'en' },
+
+        // Edit Profile Screen
+        { id: 96, propertyName: 'enterUsername', value: 'Enter username', languageId: 'en' },
+        { id: 97, propertyName: 'enterEmail', value: 'Enter email', languageId: 'en' },
+        { id: 98, propertyName: 'saveChanges', value: 'Save Changes', languageId: 'en' },
+        { id: 99, propertyName: 'usernameEmailRequired', value: 'Username and email are required', languageId: 'en' },
+        { id: 100, propertyName: 'invalidEmail', value: 'Please enter a valid email address', languageId: 'en' },
+        { id: 101, propertyName: 'profileUpdateSuccess', value: 'Profile updated successfully', languageId: 'en' },
+
+        // Contact Us Screen
+        { id: 102, propertyName: 'name', value: 'Name', languageId: 'en' },
+        { id: 103, propertyName: 'enterName', value: 'Enter your name', languageId: 'en' },
+        { id: 104, propertyName: 'message', value: 'Message', languageId: 'en' },
+        { id: 105, propertyName: 'typeMessage', value: 'Type your message here', languageId: 'en' },
+        { id: 106, propertyName: 'sendMessage', value: 'Send Message', languageId: 'en' },
+
+        // Notification Settings Screen
+        { id: 107, propertyName: 'manageNotifications', value: 'Manage Notifications', languageId: 'en' },
+        { id: 108, propertyName: 'pushNotifications', value: 'Push Notifications', languageId: 'en' },
+        { id: 109, propertyName: 'emailNotifications', value: 'Email Notifications', languageId: 'en' },
+        { id: 110, propertyName: 'smsNotifications', value: 'SMS Notifications', languageId: 'en' },
+
+        // Recipe Detail Screen
+        { id: 111, propertyName: 'defaultUsername', value: 'Guest User', languageId: 'en' },
+        { id: 112, propertyName: 'updateRecipe', value: 'Update Recipe', languageId: 'en' },
+        { id: 113, propertyName: 'recipeTitle', value: 'Recipe Title', languageId: 'en' },
+        { id: 114, propertyName: 'coffeeName', value: 'Coffee Name', languageId: 'en' },
+        { id: 115, propertyName: 'useMilk', value: 'Use Milk', languageId: 'en' },
+
         // Delete Screens
         { id: 70, propertyName: 'deleteError', value: 'Please select at least one item to delete', languageId: 'en' },
         { id: 71, propertyName: 'confirmDelete', value: 'Confirm Delete', languageId: 'en' },
@@ -211,6 +260,55 @@ export const mockLocalizations: LocalizationMap = {
         { id: 67, propertyName: 'milliliters', value: 'ml', languageId: 'tr' },
         { id: 68, propertyName: 'celsius', value: '°C', languageId: 'tr' },
         { id: 69, propertyName: 'grams', value: 'gr', languageId: 'tr' },
+
+        // Profile Screen
+        { id: 79, propertyName: 'profile', value: 'Profil', languageId: 'tr' },
+        { id: 80, propertyName: 'editProfile', value: 'Profili Düzenle', languageId: 'tr' },
+        { id: 81, propertyName: 'notificationSettings', value: 'Bildirim Ayarları', languageId: 'tr' },
+        { id: 82, propertyName: 'privacy', value: 'Gizlilik', languageId: 'tr' },
+        { id: 83, propertyName: 'contactUs', value: 'Bize Ulaşın', languageId: 'tr' },
+        { id: 84, propertyName: 'defaultUsername', value: 'Misafir Kullanıcı', languageId: 'tr' },
+        { id: 85, propertyName: 'defaultEmail', value: 'misafir@example.com', languageId: 'tr' },
+        { id: 86, propertyName: 'premiumUser', value: 'Premium', languageId: 'tr' },
+        { id: 87, propertyName: 'freeUser', value: 'Ücretsiz', languageId: 'tr' },
+
+        // Equipment Detail Screen
+        { id: 88, propertyName: 'equipmentDetails', value: 'Ekipman Detayları', languageId: 'tr' },
+        { id: 89, propertyName: 'description', value: 'Açıklama', languageId: 'tr' },
+        { id: 90, propertyName: 'specifications', value: 'Özellikler', languageId: 'tr' },
+        { id: 91, propertyName: 'specCapacity', value: 'Kapasite', languageId: 'tr' },
+        { id: 92, propertyName: 'specMaterial', value: 'Malzeme', languageId: 'tr' },
+        { id: 93, propertyName: 'specFilter', value: 'Filtre', languageId: 'tr' },
+        { id: 94, propertyName: 'equipmentType', value: 'Tip', languageId: 'tr' },
+        { id: 95, propertyName: 'equipmentKind', value: 'Tür', languageId: 'tr' },
+
+        // Edit Profile Screen
+        { id: 96, propertyName: 'enterUsername', value: 'Kullanıcı adı girin', languageId: 'tr' },
+        { id: 97, propertyName: 'enterEmail', value: 'E-posta girin', languageId: 'tr' },
+        { id: 98, propertyName: 'saveChanges', value: 'Değişiklikleri Kaydet', languageId: 'tr' },
+        { id: 99, propertyName: 'usernameEmailRequired', value: 'Kullanıcı adı ve e-posta gereklidir', languageId: 'tr' },
+        { id: 100, propertyName: 'invalidEmail', value: 'Lütfen geçerli bir e-posta adresi girin', languageId: 'tr' },
+        { id: 101, propertyName: 'profileUpdateSuccess', value: 'Profil başarıyla güncellendi', languageId: 'tr' },
+
+        // Contact Us Screen
+        { id: 102, propertyName: 'name', value: 'İsim', languageId: 'tr' },
+        { id: 103, propertyName: 'enterName', value: 'İsminizi girin', languageId: 'tr' },
+        { id: 104, propertyName: 'message', value: 'Mesaj', languageId: 'tr' },
+        { id: 105, propertyName: 'typeMessage', value: 'Mesajınızı buraya yazın', languageId: 'tr' },
+        { id: 106, propertyName: 'sendMessage', value: 'Mesaj Gönder', languageId: 'tr' },
+
+        // Notification Settings Screen
+        { id: 107, propertyName: 'manageNotifications', value: 'Bildirimleri Yönet', languageId: 'tr' },
+        { id: 108, propertyName: 'pushNotifications', value: 'Anlık Bildirimler', languageId: 'tr' },
+        { id: 109, propertyName: 'emailNotifications', value: 'E-posta Bildirimleri', languageId: 'tr' },
+        { id: 110, propertyName: 'smsNotifications', value: 'SMS Bildirimleri', languageId: 'tr' },
+
+        // Recipe Detail Screen
+        { id: 111, propertyName: 'defaultUsername', value: 'Misafir Kullanıcı', languageId: 'tr' },
+        { id: 112, propertyName: 'updateRecipe', value: 'Tarifi Güncelle', languageId: 'tr' },
+        { id: 113, propertyName: 'recipeTitle', value: 'Tarif Başlığı', languageId: 'tr' },
+        { id: 114, propertyName: 'coffeeName', value: 'Kahve Adı', languageId: 'tr' },
+        { id: 115, propertyName: 'useMilk', value: 'Süt Kullan', languageId: 'tr' },
 
         // Delete Screens
         { id: 70, propertyName: 'deleteError', value: 'Lütfen silmek için en az bir öğe seçin', languageId: 'tr' },

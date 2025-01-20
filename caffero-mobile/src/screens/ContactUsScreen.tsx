@@ -11,12 +11,14 @@ import {
 } from 'react-native';
 import { Header } from '../components/Header';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const ContactUsScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const { theme } = useTheme();
+  const { getText } = useLanguage();
 
   const isFormValid = name.trim() && email.trim() && message.trim();
 
@@ -27,7 +29,7 @@ export const ContactUsScreen = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header title="Contact Us" showBack />
+      <Header title={getText('contactUs')} showBack />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoid}
@@ -35,7 +37,7 @@ export const ContactUsScreen = () => {
         <ScrollView style={styles.content}>
           <View style={styles.form}>
             <Text style={[styles.label, { color: theme.colors.text.primary }]}>
-              Name
+              {getText('name')}
             </Text>
             <TextInput
               style={[
@@ -48,12 +50,12 @@ export const ContactUsScreen = () => {
               ]}
               value={name}
               onChangeText={setName}
-              placeholder="Enter your name"
+              placeholder={getText('enterName')}
               placeholderTextColor={theme.colors.text.tertiary}
             />
 
             <Text style={[styles.label, { color: theme.colors.text.primary }]}>
-              Email
+              {getText('email')}
             </Text>
             <TextInput
               style={[
@@ -66,14 +68,14 @@ export const ContactUsScreen = () => {
               ]}
               value={email}
               onChangeText={setEmail}
-              placeholder="Enter your email"
+              placeholder={getText('enterEmail')}
               placeholderTextColor={theme.colors.text.tertiary}
               keyboardType="email-address"
               autoCapitalize="none"
             />
 
             <Text style={[styles.label, { color: theme.colors.text.primary }]}>
-              Message
+              {getText('message')}
             </Text>
             <TextInput
               style={[
@@ -87,7 +89,7 @@ export const ContactUsScreen = () => {
               ]}
               value={message}
               onChangeText={setMessage}
-              placeholder="Type your message here"
+              placeholder={getText('typeMessage')}
               placeholderTextColor={theme.colors.text.tertiary}
               multiline
             />
@@ -105,7 +107,7 @@ export const ContactUsScreen = () => {
                 styles.submitButtonText,
                 { color: isFormValid ? theme.colors.text.inverse : theme.colors.disabled.contrastText }
               ]}>
-                Send Message
+                {getText('sendMessage')}
               </Text>
             </TouchableOpacity>
           </View>
