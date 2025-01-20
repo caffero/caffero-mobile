@@ -4,6 +4,7 @@ import { Header } from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigator } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { spacing } from '../theme';
 import { ShelfItem } from '../components/ShelfItem';
 
@@ -17,19 +18,19 @@ interface ShelfItemType {
 const shelfItems: ShelfItemType[] = [
   { 
     id: '1', 
-    title: 'What I Brew', 
+    title: 'whatIBrew', 
     route: 'WhatIBrew',
     imageUrl: 'https://images.unsplash.com/photo-1524350876685-274059332603', // Coffee beans spilled
   },
   { 
     id: '2', 
-    title: 'What I Brew With', 
+    title: 'whatIBrewWith', 
     route: 'WhatIBrewWith',
     imageUrl: 'https://images.unsplash.com/photo-1516315720917-231ef9acce48', // Coffee equipment
   },
   { 
     id: '3', 
-    title: 'How I Brew', 
+    title: 'howIBrew', 
     route: 'HowIBrew',
     imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085', // Pour over brewing
   },
@@ -38,6 +39,7 @@ const shelfItems: ShelfItemType[] = [
 export const ShelfScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
   const { theme } = useTheme();
+  const { getText } = useLanguage();
 
   const handleItemPress = (route: ShelfItemType['route']) => {
     navigation.navigate(route);
@@ -45,7 +47,7 @@ export const ShelfScreen = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header title="Caffero" showBack={false} />
+      <Header title={getText('appName')} showBack={false} />
       <ScrollView 
         style={styles.content}
         contentContainerStyle={[
@@ -61,7 +63,7 @@ export const ShelfScreen = () => {
         {shelfItems.map((item) => (
           <ShelfItem
             key={item.id}
-            title={item.title}
+            title={getText(item.title)}
             imageUrl={item.imageUrl}
             onPress={() => handleItemPress(item.route)}
           />

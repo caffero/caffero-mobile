@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import { RootStackNavigator } from '../navigation/types';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { spacing } from '../theme';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface SettingsTabProps {
   title: string;
@@ -38,41 +39,42 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ title, onPress }) => {
 };
 
 export const ProfileScreen = () => {
-  const { theme } = useTheme();
   const navigation = useNavigation<RootStackNavigator>();
+  const { theme } = useTheme();
+  const { getText } = useLanguage();
   const { user, logout } = useAuth();
   const isPremium = false;
 
   const settingsTabs = [
     {
-      title: 'Edit Profile',
+      title: getText('editProfile'),
       onPress: () => navigation.navigate('EditProfile'),
     },
     {
-      title: 'App Settings',
+      title: getText('appSettings'),
       onPress: () => navigation.navigate('AppSettings'),
     },
     {
-      title: 'Notification Settings',
+      title: getText('notificationSettings'),
       onPress: () => navigation.navigate('NotificationSettings'),
     },
     {
-      title: 'Privacy',
+      title: getText('privacy'),
       onPress: () => navigation.navigate('Privacy'),
     },
     {
-      title: 'Contact Us',
+      title: getText('contactUs'),
       onPress: () => navigation.navigate('ContactUs'),
     },
     {
-      title: 'Logout',
+      title: getText('logout'),
       onPress: logout,
     },
   ];
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header title="Profile" />
+      <Header title={getText('profile')} />
       <ScrollView style={styles.content}>
         <View style={[styles.profileHeader, { borderBottomColor: theme.colors.border.primary }]}>
           <Image
@@ -84,14 +86,14 @@ export const ProfileScreen = () => {
             theme.typography.h1,
             { color: theme.colors.text.primary }
           ]}>
-            {user?.username || 'User'}
+            {user?.username || getText('defaultUsername')}
           </Text>
           <Text style={[
             styles.email,
             theme.typography.body1,
             { color: theme.colors.text.secondary }
           ]}>
-            {user?.email || 'email@example.com'}
+            {user?.email || getText('defaultEmail')}
           </Text>
           <View style={[
             styles.premiumBadge,
@@ -105,7 +107,7 @@ export const ProfileScreen = () => {
               theme.typography.button,
               { color: theme.colors.primary.contrastText }
             ]}>
-              {isPremium ? 'Premium User' : 'Free User'}
+              {isPremium ? getText('premiumUser') : getText('freeUser')}
             </Text>
           </View>
         </View>

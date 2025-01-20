@@ -11,6 +11,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { Header } from '../components/Header';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'EquipmentDetail'>['route'];
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -36,13 +37,14 @@ export const EquipmentDetailScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProps>();
   const { id } = route.params;
+  const { getText } = useLanguage();
   
   const equipment = getEquipment(id);
 
   return (
     <View style={styles.container}>
       <Header 
-        title="Equipment Details" 
+        title={getText('equipmentDetails')} 
         showBack 
         onBack={() => navigation.goBack()} 
       />
@@ -55,20 +57,20 @@ export const EquipmentDetailScreen = () => {
         <View style={styles.content}>
           <Text style={styles.title}>{equipment.title}</Text>
           <View style={styles.typeContainer}>
-            <Text style={styles.type}>{equipment.type}</Text>
-            <Text style={styles.kind}>{equipment.kind}</Text>
+            <Text style={styles.type}>{getText(`equipmentType.${equipment.type}`)}</Text>
+            <Text style={styles.kind}>{getText(`equipmentKind.${equipment.kind}`)}</Text>
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Description</Text>
-            <Text style={styles.description}>{equipment.description}</Text>
+            <Text style={styles.sectionTitle}>{getText('description')}</Text>
+            <Text style={styles.description}>{getText(`equipmentDescription.${equipment.id}`)}</Text>
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Specifications</Text>
+            <Text style={styles.sectionTitle}>{getText('specifications')}</Text>
             {Object.entries(equipment.specifications).map(([key, value]) => (
               <View key={key} style={styles.specRow}>
-                <Text style={styles.specLabel}>{key}</Text>
+                <Text style={styles.specLabel}>{getText(`spec${key}`)}</Text>
                 <Text style={styles.specValue}>{value}</Text>
               </View>
             ))}

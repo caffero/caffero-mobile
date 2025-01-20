@@ -15,11 +15,13 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import * as ImagePicker from 'expo-image-picker';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const SuggestProductScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { getText } = useLanguage();
   const [productName, setProductName] = useState('');
   const [roastery, setRoastery] = useState('');
   const [description, setDescription] = useState('');
@@ -29,7 +31,7 @@ export const SuggestProductScreen = () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     
     if (permissionResult.granted === false) {
-      Alert.alert('Permission Required', 'Please allow access to your photo library');
+      Alert.alert(getText('permissionRequired'), getText('photoLibraryPermission'));
       return;
     }
 
@@ -47,22 +49,21 @@ export const SuggestProductScreen = () => {
 
   const handleSubmit = () => {
     if (!productName || !roastery || !description || !image) {
-      Alert.alert('Error', 'Please fill in all fields and add an image');
+      Alert.alert(getText('error'), getText('fillAllFields'));
       return;
     }
 
-    // Submit suggestion logic here
     Alert.alert(
-      'Success',
-      'Thank you for your suggestion! We will review it shortly.',
-      [{ text: 'OK', onPress: () => navigation.goBack() }]
+      getText('success'),
+      getText('suggestionThankYou'),
+      [{ text: getText('ok'), onPress: () => navigation.goBack() }]
     );
   };
 
   return (
     <View style={styles.container}>
       <Header
-        title="Suggest Product"
+        title={getText('suggestProduct')}
         showBack
         onBack={() => navigation.goBack()}
       />
@@ -76,38 +77,38 @@ export const SuggestProductScreen = () => {
           ) : (
             <View style={styles.imagePlaceholder}>
               <Icon name="add-a-photo" size={40} color="#666" />
-              <Text style={styles.imagePlaceholderText}>Add Product Image</Text>
+              <Text style={styles.imagePlaceholderText}>{getText('addProductImage')}</Text>
             </View>
           )}
         </TouchableOpacity>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Product Name</Text>
+          <Text style={styles.label}>{getText('productName')}</Text>
           <TextInput
             style={styles.input}
             value={productName}
             onChangeText={setProductName}
-            placeholder="Enter coffee name"
+            placeholder={getText('enterCoffeeName')}
           />
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Roastery</Text>
+          <Text style={styles.label}>{getText('roastery')}</Text>
           <TextInput
             style={styles.input}
             value={roastery}
             onChangeText={setRoastery}
-            placeholder="Enter roastery name"
+            placeholder={getText('enterRoasteryName')}
           />
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Description</Text>
+          <Text style={styles.label}>{getText('description')}</Text>
           <TextInput
             style={[styles.input, styles.textArea]}
             value={description}
             onChangeText={setDescription}
-            placeholder="Tell us about this coffee"
+            placeholder={getText('tellUsAboutCoffee')}
             multiline
             numberOfLines={4}
             textAlignVertical="top"
@@ -115,7 +116,7 @@ export const SuggestProductScreen = () => {
         </View>
 
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Submit Suggestion</Text>
+          <Text style={styles.submitButtonText}>{getText('submitSuggestion')}</Text>
         </TouchableOpacity>
       </ScrollView>
     </View>

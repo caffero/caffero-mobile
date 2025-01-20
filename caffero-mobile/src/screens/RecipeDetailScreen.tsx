@@ -11,6 +11,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'RecipeDetail'>['route'];
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -28,7 +29,7 @@ const getRecipe = (id: string) => ({
   equipment: 'Hario V60',
   coffee: {
     name: 'Ethiopian Yirgacheffe',
-    amount: '15g',
+    amount: '15',
   },
   useMilk: true,
   milk: {
@@ -44,6 +45,7 @@ const getRecipe = (id: string) => ({
 
 export const RecipeDetailScreen = () => {
   const { theme } = useTheme();
+  const { getText } = useLanguage();
   const navigation = useNavigation<NavigationProp>();
   const route = useRoute<RouteProps>();
   const { id } = route.params;
@@ -53,31 +55,31 @@ export const RecipeDetailScreen = () => {
   const renderPouringStep = (step: PouringStep, index: number) => (
     <View key={index} style={[styles.stepContainer, { borderBottomColor: theme.colors.border.primary }]}>
       <Text style={[styles.stepNumber, { color: theme.colors.primary.main }]}>
-        {index + 1}
+        {`${getText('step')} ${index + 1}`}
       </Text>
       <View style={styles.stepDetails}>
         <View style={styles.stepRow}>
           <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
-            Water Volume:
+            {getText('waterVolume')}:
           </Text>
           <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
-            {step.volume}ml
+            {`${step.volume}${getText('milliliters')}`}
           </Text>
         </View>
         <View style={styles.stepRow}>
           <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
-            Time:
+            {getText('time')}:
           </Text>
           <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
-            {step.time}s
+            {`${step.time}${getText('seconds')}`}
           </Text>
         </View>
         <View style={styles.stepRow}>
           <Text style={[styles.stepLabel, { color: theme.colors.text.secondary }]}>
-            Temperature:
+            {getText('temperature')}:
           </Text>
           <Text style={[styles.stepValue, { color: theme.colors.text.primary }]}>
-            {step.temperature}°C
+            {`${step.temperature}${getText('celsius')}`}
           </Text>
         </View>
       </View>
@@ -93,7 +95,7 @@ export const RecipeDetailScreen = () => {
         
         <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-            Equipment
+            {getText('equipment')}
           </Text>
           <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
             {recipe.equipment}
@@ -102,33 +104,35 @@ export const RecipeDetailScreen = () => {
 
         <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-            Coffee
+            {getText('coffee')}
           </Text>
           <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
             {recipe.coffee.name}
           </Text>
           <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
-            Amount: {recipe.coffee.amount}
+            {`${getText('amount')}: ${recipe.coffee.amount}${getText('grams')}`}
           </Text>
         </View>
 
         {recipe.useMilk && (
           <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
             <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-              Milk
+              {getText('milk')}
             </Text>
-            <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
-              Volume: {recipe.milk.volume}ml
-            </Text>
-            <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
-              Temperature: {recipe.milk.temperature}°C
-            </Text>
+            <View style={styles.milkDetails}>
+              <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
+                {`${getText('volume')}: ${recipe.milk.volume}${getText('milliliters')}`}
+              </Text>
+              <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
+                {`${getText('temperature')}: ${recipe.milk.temperature}${getText('celsius')}`}
+              </Text>
+            </View>
           </View>
         )}
 
         <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-            Pouring Steps
+            {getText('pouringSteps')}
           </Text>
           {recipe.pouringSteps.map((step, index) => renderPouringStep(step, index))}
         </View>
@@ -217,6 +221,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#2c3e50',
     fontWeight: '500',
+  },
+  milkDetails: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   fab: {
     position: 'absolute',

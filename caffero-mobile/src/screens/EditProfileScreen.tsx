@@ -13,10 +13,12 @@ import {
 import { Header } from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 export const EditProfileScreen = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
+  const { getText } = useLanguage();
 
   const [formData, setFormData] = useState({
     username: user?.username || '',
@@ -30,49 +32,49 @@ export const EditProfileScreen = () => {
   const handleSubmit = () => {
     // Basic validation
     if (!formData.username.trim() || !formData.email.trim()) {
-      Alert.alert('Error', 'Username and email are required');
+      Alert.alert(getText('error'), getText('usernameEmailRequired'));
       return;
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      Alert.alert('Error', 'Please enter a valid email address');
+      Alert.alert(getText('error'), getText('invalidEmail'));
       return;
     }
 
     // TODO: Implement profile update logic
     Alert.alert(
-      'Success',
-      'Profile updated successfully',
-      [{ text: 'OK', onPress: () => navigation.goBack() }]
+      getText('success'),
+      getText('profileUpdateSuccess'),
+      [{ text: getText('ok'), onPress: () => navigation.goBack() }]
     );
   };
 
   return (
     <View style={styles.container}>
-      <Header title="Edit Profile" showBack />
+      <Header title={getText('editProfile')} showBack />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoid}
       >
         <ScrollView style={styles.content}>
           <View style={styles.form}>
-            <Text style={styles.label}>Username</Text>
+            <Text style={styles.label}>{getText('username')}</Text>
             <TextInput
               style={styles.input}
               value={formData.username}
               onChangeText={(value) => handleChange('username', value)}
-              placeholder="Enter your username"
+              placeholder={getText('enterUsername')}
               placeholderTextColor="#999"
             />
 
-            <Text style={styles.label}>Email</Text>
+            <Text style={styles.label}>{getText('email')}</Text>
             <TextInput
               style={styles.input}
               value={formData.email}
               onChangeText={(value) => handleChange('email', value)}
-              placeholder="Enter your email"
+              placeholder={getText('enterEmail')}
               placeholderTextColor="#999"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -82,7 +84,7 @@ export const EditProfileScreen = () => {
               style={styles.submitButton}
               onPress={handleSubmit}
             >
-              <Text style={styles.submitButtonText}>Save Changes</Text>
+              <Text style={styles.submitButtonText}>{getText('saveChanges')}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

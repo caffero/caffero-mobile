@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -41,6 +42,7 @@ const recipes: Recipe[] = [
 
 export const DeleteRecipeScreen = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { getText } = useLanguage();
   const [selectedRecipes, setSelectedRecipes] = useState<Set<string>>(new Set());
 
   const toggleRecipeSelection = (id: string) => {
@@ -55,24 +57,24 @@ export const DeleteRecipeScreen = () => {
 
   const handleDelete = () => {
     if (selectedRecipes.size === 0) {
-      Alert.alert('Error', 'Please select at least one recipe to delete');
+      Alert.alert(getText('error'), getText('deleteError'));
       return;
     }
 
     Alert.alert(
-      'Confirm Delete',
-      `Are you sure you want to delete ${selectedRecipes.size} recipe(s)?`,
+      getText('confirmDelete'),
+      getText('confirmDeleteMessage').replace('{count}', selectedRecipes.size.toString()),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: getText('cancel'), style: 'cancel' },
         {
-          text: 'Delete',
+          text: getText('delete'),
           style: 'destructive',
           onPress: () => {
             // Delete logic here
             Alert.alert(
-              'Success',
-              'Selected recipes have been deleted',
-              [{ text: 'OK', onPress: () => navigation.goBack() }]
+              getText('success'),
+              getText('itemsDeleted'),
+              [{ text: getText('ok'), onPress: () => navigation.goBack() }]
             );
           },
         },
@@ -106,7 +108,7 @@ export const DeleteRecipeScreen = () => {
   return (
     <View style={styles.container}>
       <Header
-        title="Delete Recipes"
+        title={getText('deleteRecipes')}
         showBack
         onBack={() => navigation.goBack()}
       />
@@ -116,14 +118,16 @@ export const DeleteRecipeScreen = () => {
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
       />
-      {selectedRecipes.size > 0 && (
-        <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-          <Icon name="delete" size={24} color="#fff" />
-          <Text style={styles.deleteButtonText}>
-            Delete Selected ({selectedRecipes.size})
-          </Text>
-        </TouchableOpacity>
-      )}
+      <TouchableOpacity
+        style={[
+          styles.deleteButton,
+          { opacity: selectedRecipes.size > 0 ? 1 : 0.5 }
+        ]}
+        onPress={handleDelete}
+        disabled={selectedRecipes.size === 0}
+      >
+        <Text style={styles.deleteButtonText}>{getText('delete')}</Text>
+      </TouchableOpacity>
     </View>
   );
 };

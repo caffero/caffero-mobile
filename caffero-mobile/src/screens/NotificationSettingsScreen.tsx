@@ -3,11 +3,13 @@ import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
 import { Header } from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 import { spacing } from '../theme';
 
 export const NotificationSettingsScreen = () => {
   const navigation = useNavigation();
   const { theme } = useTheme();
+  const { getText } = useLanguage();
   const [pushEnabled, setPushEnabled] = useState(true);
   const [emailEnabled, setEmailEnabled] = useState(true);
   const [smsEnabled, setSmsEnabled] = useState(false);
@@ -35,7 +37,7 @@ export const NotificationSettingsScreen = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header title="Manage Notifications" showBack />
+      <Header title={getText('manageNotifications')} showBack />
       <View style={[styles.content, { padding: theme.spacing.md }]}>
         <View style={[
           styles.section,
@@ -51,7 +53,7 @@ export const NotificationSettingsScreen = () => {
               theme.typography.body1,
               { color: theme.colors.text.primary }
             ]}>
-              Push Notifications
+              {getText('pushNotifications')}
             </Text>
             <Switch
               value={pushEnabled}
@@ -69,7 +71,7 @@ export const NotificationSettingsScreen = () => {
               theme.typography.body1,
               { color: theme.colors.text.primary }
             ]}>
-              Email Notifications
+              {getText('emailNotifications')}
             </Text>
             <Switch
               value={emailEnabled}
@@ -87,7 +89,7 @@ export const NotificationSettingsScreen = () => {
               theme.typography.body1,
               { color: theme.colors.text.primary }
             ]}>
-              SMS Notifications
+              {getText('smsNotifications')}
             </Text>
             <Switch
               value={smsEnabled}
@@ -117,7 +119,7 @@ export const NotificationSettingsScreen = () => {
             theme.typography.button,
             { color: hasChanges ? theme.colors.primary.contrastText : theme.colors.disabled.contrastText }
           ]}>
-            Save Changes
+            {getText('saveChanges')}
           </Text>
         </TouchableOpacity>
       </View>

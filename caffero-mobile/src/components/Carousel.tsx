@@ -11,6 +11,8 @@ import {
   TextStyle,
   ViewStyle,
   Animated,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
 } from 'react-native';
 import { spacing, borderRadius, layout } from '../theme';
 import { useTheme } from '../contexts/ThemeContext';
@@ -36,6 +38,16 @@ const SPACING = spacing.md;
 export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress }) => {
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const { theme } = useTheme();
+
+  const handleScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+    { 
+      useNativeDriver: false, // TODO: change to true in production
+      listener: (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+        // You can add additional scroll handling here if needed
+      }
+    }
+  );
 
   const renderItem = ({ item, index }: { item: CarouselItem; index: number }) => {
     const inputRange = [
@@ -130,10 +142,7 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
         contentContainerStyle={styles.scrollContent}
         decelerationRate="fast"
         snapToInterval={ITEM_WIDTH + SPACING}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-          { useNativeDriver: true }
-        )}
+        onScroll={handleScroll}
         scrollEventThrottle={16}
       >
         {items.map((item, index) => renderItem({ item, index }))}
