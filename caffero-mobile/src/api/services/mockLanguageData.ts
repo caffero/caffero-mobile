@@ -174,6 +174,7 @@ export const mockLocalizations: LocalizationMap = {
         { id: 76, propertyName: 'itemsDeleted', value: 'Selected items have been deleted', languageId: 'en' },
         { id: 77, propertyName: 'ok', value: 'OK', languageId: 'en' },
         { id: 78, propertyName: 'error', value: 'Error', languageId: 'en' },
+        { id: 162, propertyName: 'deleteRecipes', value: 'Delete Recipes', languageId: 'en' },
 
         // Equipment Management
         { id: 116, propertyName: 'createEquipment', value: 'Create Equipment', languageId: 'en' },
@@ -212,7 +213,22 @@ export const mockLocalizations: LocalizationMap = {
         { id: 145, propertyName: 'applyFilters', value: 'Apply Filters', languageId: 'en' },
         { id: 146, propertyName: 'cantFindCoffee', value: "Can't find your coffee?", languageId: 'en' },
         { id: 147, propertyName: 'suggestProduct', value: 'Suggest Product', languageId: 'en' },
-        { id: 148, propertyName: 'coffeeAddedToShelf', value: 'Coffee bean added to your shelf', languageId: 'en' }
+        { id: 148, propertyName: 'coffeeAddedToShelf', value: 'Coffee bean added to your shelf', languageId: 'en' },
+
+        // Update Recipe Screen
+        { id: 149, propertyName: 'enterRecipeName', value: 'Enter recipe name', languageId: 'en' },
+        { id: 150, propertyName: 'selectEquipment', value: 'Select Equipment', languageId: 'en' },
+        { id: 151, propertyName: 'selectCoffeeBean', value: 'Select Coffee Bean', languageId: 'en' },
+        { id: 152, propertyName: 'milkVolume', value: 'Milk Volume', languageId: 'en' },
+        { id: 153, propertyName: 'milkTemperature', value: 'Milk Temperature', languageId: 'en' },
+        { id: 154, propertyName: 'enterMilkVolume', value: 'Enter milk volume', languageId: 'en' },
+        { id: 155, propertyName: 'enterMilkTemperature', value: 'Enter milk temperature', languageId: 'en' },
+        { id: 156, propertyName: 'enterVolume', value: 'Enter volume', languageId: 'en' },
+        { id: 157, propertyName: 'enterTime', value: 'Enter time', languageId: 'en' },
+        { id: 158, propertyName: 'enterTemperature', value: 'Enter temperature', languageId: 'en' },
+        { id: 159, propertyName: 'addStep', value: 'Add Step', languageId: 'en' },
+        { id: 160, propertyName: 'fillRequiredFields', value: 'Please fill all required fields', languageId: 'en' },
+        { id: 161, propertyName: 'recipeUpdateSuccess', value: 'Recipe updated successfully', languageId: 'en' }
     ],
     tr: [
         // App Settings Screen
@@ -371,6 +387,7 @@ export const mockLocalizations: LocalizationMap = {
         { id: 76, propertyName: 'itemsDeleted', value: 'Seçili öğeler silindi', languageId: 'tr' },
         { id: 77, propertyName: 'ok', value: 'Tamam', languageId: 'tr' },
         { id: 78, propertyName: 'error', value: 'Hata', languageId: 'tr' },
+        { id: 162, propertyName: 'deleteRecipes', value: 'Tarifleri Sil', languageId: 'tr' },
 
         // Equipment Management
         { id: 116, propertyName: 'createEquipment', value: 'Ekipman Oluştur', languageId: 'tr' },
@@ -409,6 +426,21 @@ export const mockLocalizations: LocalizationMap = {
         { id: 145, propertyName: 'applyFilters', value: 'Filtreleri Uygula', languageId: 'tr' },
         { id: 146, propertyName: 'cantFindCoffee', value: 'Kahvenizi bulamıyor musunuz?', languageId: 'tr' },
         { id: 147, propertyName: 'suggestProduct', value: 'Ürün Öner', languageId: 'tr' },
-        { id: 148, propertyName: 'coffeeAddedToShelf', value: 'Kahve çekirdeği rafınıza eklendi', languageId: 'tr' }
+        { id: 148, propertyName: 'coffeeAddedToShelf', value: 'Kahve çekirdeği rafınıza eklendi', languageId: 'tr' },
+
+        // Update Recipe Screen
+        { id: 149, propertyName: 'enterRecipeName', value: 'Tarif adı girin', languageId: 'tr' },
+        { id: 150, propertyName: 'selectEquipment', value: 'Ekipman Seçin', languageId: 'tr' },
+        { id: 151, propertyName: 'selectCoffeeBean', value: 'Kahve Çekirdeği Seçin', languageId: 'tr' },
+        { id: 152, propertyName: 'milkVolume', value: 'Süt Miktarı', languageId: 'tr' },
+        { id: 153, propertyName: 'milkTemperature', value: 'Süt Sıcaklığı', languageId: 'tr' },
+        { id: 154, propertyName: 'enterMilkVolume', value: 'Süt miktarını girin', languageId: 'tr' },
+        { id: 155, propertyName: 'enterMilkTemperature', value: 'Süt sıcaklığını girin', languageId: 'tr' },
+        { id: 156, propertyName: 'enterVolume', value: 'Miktar girin', languageId: 'tr' },
+        { id: 157, propertyName: 'enterTime', value: 'Süre girin', languageId: 'tr' },
+        { id: 158, propertyName: 'enterTemperature', value: 'Sıcaklık girin', languageId: 'tr' },
+        { id: 159, propertyName: 'addStep', value: 'Adım Ekle', languageId: 'tr' },
+        { id: 160, propertyName: 'fillRequiredFields', value: 'Lütfen gerekli alanları doldurun', languageId: 'tr' },
+        { id: 161, propertyName: 'recipeUpdateSuccess', value: 'Tarif başarıyla güncellendi', languageId: 'tr' }
     ]
 }; 
