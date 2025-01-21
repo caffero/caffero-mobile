@@ -8,12 +8,14 @@ import {
   Text,
   Alert 
 } from 'react-native';
+import Screen from '../components/Screen';
 import { Header } from '../components/Header';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -67,6 +69,7 @@ const coffeeBeans: CoffeeBean[] = [
 export const WhatIBrewScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const { theme } = useTheme();
+  const { getText } = useLanguage();
 
   const renderCoffeeBean = ({ item }: { item: CoffeeBean }) => (
     <TouchableOpacity 
@@ -103,34 +106,32 @@ export const WhatIBrewScreen = () => {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header 
-        title="What I Brew" 
-        showBack 
-        onBack={() => navigation.goBack()}
+        title={getText('whatIBrew')} 
         rightIcon="delete"
         onRightPress={() => navigation.navigate('RemoveCoffeeBean')}
       />
       <FlatList
         data={coffeeBeans}
         renderItem={renderCoffeeBean}
+        keyExtractor={(item) => item.id}
         numColumns={2}
         contentContainerStyle={styles.listContent}
-        keyExtractor={(item) => item.id}
       />
-      <TouchableOpacity 
+      <TouchableOpacity
         style={[styles.fab, { backgroundColor: theme.colors.primary.main }]}
         onPress={() => {
           Alert.alert(
-            'Add Coffee Bean',
-            'Choose how to add a coffee bean',
+            getText('addCoffeeBean'),
+            getText('chooseCoffeeBeanAddMethod'),
             [
               {
-                text: 'Scan QR',
+                text: getText('scanQR'),
                 onPress: () => navigation.navigate('Scan'),
               },
               {
-                text: 'Search by Name',
+                text: getText('searchByName'),
                 onPress: () => navigation.navigate('AddCoffeeBean'),
               },
             ],
@@ -139,7 +140,7 @@ export const WhatIBrewScreen = () => {
       >
         <Icon name="add" size={24} color={theme.colors.text.inverse} />
       </TouchableOpacity>
-    </View>
+    </Screen>
   );
 };
 

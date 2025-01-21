@@ -1,25 +1,24 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import { Header } from '../components/Header';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import Screen from '../components/Screen';
+// Add import if not present:
+// import { Screen } from '@components/Screen';
 
 export const PrivacyScreen = () => {
   const { theme } = useTheme();
   const { getText } = useLanguage();
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title={getText('managePersonalInfo')} showBack />
       <ScrollView style={styles.content}>
         <View style={styles.section}>
           <Text style={[styles.title, { color: theme.colors.text.primary }]}>
             {getText('privacyPolicy')}
           </Text>
-          <Text style={[styles.paragraph, { color: theme.colors.text.secondary }]}>
-            {getText('privacyPolicyIntro')}
-          </Text>
-          
           <Text style={[styles.subtitle, { color: theme.colors.text.primary }]}>
             {getText('informationCollection')}
           </Text>
@@ -53,7 +52,7 @@ export const PrivacyScreen = () => {
           </Text>
         </View>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

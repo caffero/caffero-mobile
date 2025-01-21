@@ -14,6 +14,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { spacing } from '../theme';
 import { useLanguage } from '../contexts/LanguageContext';
+import Screen from '../components/Screen';
 
 interface SettingsTabProps {
   title: string;
@@ -73,7 +74,7 @@ export const ProfileScreen = () => {
   ];
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title={getText('profile')} />
       <ScrollView style={styles.content}>
         <View style={[styles.profileHeader, { borderBottomColor: theme.colors.border.primary }]}>
@@ -122,7 +123,7 @@ export const ProfileScreen = () => {
           ))}
         </View>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

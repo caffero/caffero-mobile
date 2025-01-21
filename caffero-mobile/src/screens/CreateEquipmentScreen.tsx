@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useLanguage } from '../contexts/LanguageContext';
+import Screen from '../components/Screen';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -56,7 +57,7 @@ export const CreateEquipmentScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <Header
         title={getText('createEquipment')}
         showBack
@@ -127,7 +128,7 @@ export const CreateEquipmentScreen = () => {
           <Text style={styles.saveButtonText}>{getText('saveEquipment')}</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import ErrorBoundary from './ErrorBoundary';
 import { Text } from 'react-native';
 
 type ScreenProps = {
   children: ReactNode;
+  style?: StyleProp<ViewStyle>;
 };
 
 const ErrorFallback = () => (
@@ -14,10 +15,10 @@ const ErrorFallback = () => (
   </View>
 );
 
-const Screen: React.FC<ScreenProps> = ({ children }) => {
+const Screen: React.FC<ScreenProps> = ({ children, style }) => {
   return (
     <ErrorBoundary fallback={<ErrorFallback />}>
-      <View style={styles.container}>
+      <View style={[styles.container, style]}>
         {children}
       </View>
     </ErrorBoundary>

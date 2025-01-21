@@ -14,6 +14,7 @@ import { RootStackNavigator } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { spacing } from '../theme';
+import Screen from '../components/Screen';
 
 const { width } = Dimensions.get('window');
 
@@ -134,10 +135,10 @@ export const PremiumScreen = () => {
   const isPremium = false;
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title={getText('premium')} />
       {isPremium ? <PremiumContent /> : <FreeUserContent />}
-    </View>
+    </Screen>
   );
 };
 

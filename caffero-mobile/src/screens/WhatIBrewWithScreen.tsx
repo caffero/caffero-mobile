@@ -15,6 +15,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
+import Screen from '../components/Screen';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -78,7 +79,7 @@ export const WhatIBrewWithScreen = () => {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title={getText('myEquipment')}
         showBack
@@ -99,7 +100,7 @@ export const WhatIBrewWithScreen = () => {
       >
         <Icon name="add" size={24} color={theme.colors.primary.contrastText} />
       </TouchableOpacity>
-    </View>
+    </Screen>
   );
 };
 

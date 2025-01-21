@@ -15,6 +15,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
+import Screen from '../components/Screen';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -116,7 +117,7 @@ export const DeleteEquipmentScreen = () => {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title="Delete Equipment"
         showBack
@@ -144,7 +145,7 @@ export const DeleteEquipmentScreen = () => {
           {getText('delete')}
         </Text>
       </TouchableOpacity>
-    </View>
+    </Screen>
   );
 };
 

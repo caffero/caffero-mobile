@@ -7,6 +7,7 @@ import {
   RefreshControl,
   Platform,
 } from 'react-native';
+import Screen from '../components/Screen';
 import { Header } from '../components/Header';
 import { Carousel } from '../components/Carousel';
 import { useNavigation } from '@react-navigation/native';
@@ -99,7 +100,7 @@ export const HomeScreen = () => {
   }, []);
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <StatusBar
         barStyle={isDark ? "light-content" : "dark-content"}
         backgroundColor={theme.colors.background.primary}
@@ -141,7 +142,7 @@ export const HomeScreen = () => {
           />
         </View>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

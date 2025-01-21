@@ -7,6 +7,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { spacing, borderRadius } from '../theme';
 import { LanguageSelector } from '../components/LanguageSelector';
+import Screen from '../components/Screen';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
@@ -28,7 +29,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
     };
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+        <Screen style={styles.content}>
             <LanguageSelector />
             <TextInput
                 style={[
@@ -94,12 +95,12 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                 onPress={() => navigation.navigate('Login')}
                 color={theme.colors.primary.light}
             />
-        </View>
+        </Screen>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    content: {
         flex: 1,
         justifyContent: 'center',
         padding: spacing.lg,

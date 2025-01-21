@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import Screen from '../components/Screen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -87,7 +88,7 @@ export const RecipeDetailScreen = () => {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <ScrollView style={styles.content}>
         <Text style={[styles.title, { color: theme.colors.text.primary }]}>
           {recipe.title}
@@ -144,7 +145,7 @@ export const RecipeDetailScreen = () => {
       >
         <Icon name="edit" size={24} color="#fff" />
       </TouchableOpacity>
-    </View>
+    </Screen>
   );
 };
 
