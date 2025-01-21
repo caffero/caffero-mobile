@@ -33,7 +33,7 @@ type ExceptionContextType = {
   throwException: (error: CafferoException) => never;
 };
 
-const ExceptionContext = createContext<ExceptionContextType | undefined>(undefined);
+export const ExceptionContext = createContext<ExceptionContextType | undefined>(undefined);
 
 export const ExceptionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [exception, setException] = useState<CafferoException | null>(null);

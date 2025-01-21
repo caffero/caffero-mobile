@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useTheme } from '../contexts/ThemeContext';
 import { spacing } from '../theme';
+import ErrorBoundary from './ErrorBoundary';
 
 interface ShelfItemProps {
   title: string;
@@ -18,7 +19,7 @@ interface ShelfItemProps {
 
 const { width } = Dimensions.get('window');
 
-export const ShelfItem: React.FC<ShelfItemProps> = ({
+const ShelfItemContent: React.FC<ShelfItemProps> = ({
   title,
   imageUrl,
   onPress,
@@ -66,6 +67,18 @@ export const ShelfItem: React.FC<ShelfItemProps> = ({
   );
 };
 
+export const ShelfItem: React.FC<ShelfItemProps> = (props) => {
+  return (
+    <ErrorBoundary fallback={
+      <View style={[styles.container, styles.errorContainer]}>
+        <Text style={styles.errorText}>Failed to load item.</Text>
+      </View>
+    }>
+      <ShelfItemContent {...props} />
+    </ErrorBoundary>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     width: width - 32,
@@ -90,5 +103,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '600',
+  },
+  errorContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f8f8f8',
+  },
+  errorText: {
+    fontSize: 16,
+    color: '#666',
   },
 }); 
