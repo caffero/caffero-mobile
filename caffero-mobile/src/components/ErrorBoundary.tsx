@@ -13,9 +13,6 @@ type ErrorBoundaryState = {
 };
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  static contextType = ExceptionContext;
-  declare context: React.ContextType<typeof ExceptionContext>;
-
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
@@ -27,14 +24,20 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error("ErrorBoundary caught an error", error, errorInfo);
-    if (this.context) {
-      this.context.setException(new UIException(error.message));
-    }
   }
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback;
+      return (
+        <ExceptionContext.Consumer>
+          {(context) => {
+            if (context) {
+              context.setException(new UIException("An error occurred"));
+            }
+            return this.props.fallback;
+          }}
+        </ExceptionContext.Consumer>
+      );
     }
 
     return this.props.children;
