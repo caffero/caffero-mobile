@@ -12,6 +12,7 @@ import {
 import { Header } from '../components/Header';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import Screen from '../components/Screen';
 
 export const ContactUsScreen = () => {
   const [name, setName] = useState('');
@@ -28,7 +29,7 @@ export const ContactUsScreen = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title={getText('contactUs')} showBack />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -113,7 +114,7 @@ export const ContactUsScreen = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </View>
+    </Screen>
   );
 };
 

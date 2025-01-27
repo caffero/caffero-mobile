@@ -12,6 +12,7 @@ import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-n
 import { RootStackParamList } from '../navigation/types';
 import { Header } from '../components/Header';
 import { useLanguage } from '../contexts/LanguageContext';
+import Screen from '../components/Screen';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'EquipmentDetail'>['route'];
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -42,7 +43,7 @@ export const EquipmentDetailScreen = () => {
   const equipment = getEquipment(id);
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <Header 
         title={getText('equipmentDetails')} 
         showBack 
@@ -77,7 +78,7 @@ export const EquipmentDetailScreen = () => {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

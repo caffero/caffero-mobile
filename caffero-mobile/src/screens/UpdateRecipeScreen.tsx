@@ -16,6 +16,7 @@ import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-n
 import { RootStackParamList } from '../navigation/types';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
+import Screen from '../components/Screen';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'UpdateRecipe'>['route'];
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -107,7 +108,7 @@ export const UpdateRecipeScreen = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title={getText('updateRecipe')}
         showBack
@@ -273,7 +274,7 @@ export const UpdateRecipeScreen = () => {
           </Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

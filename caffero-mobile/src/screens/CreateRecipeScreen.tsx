@@ -9,12 +9,14 @@ import {
   Switch,
   Alert,
 } from 'react-native';
+import Screen from '../components/Screen';
 import { Header } from '../components/Header';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -27,6 +29,7 @@ interface PouringStep {
 export const CreateRecipeScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const { getText } = useLanguage();
+  const { theme } = useTheme();
   const [title, setTitle] = useState('');
   const [selectedEquipment, setSelectedEquipment] = useState('');
   const [selectedCoffee, setSelectedCoffee] = useState('');
@@ -73,7 +76,7 @@ export const CreateRecipeScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title={getText('createRecipe')}
         showBack
@@ -190,7 +193,7 @@ export const CreateRecipeScreen = () => {
           <Text style={styles.saveButtonText}>{getText('saveRecipe')}</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

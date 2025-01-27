@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import { spacing, borderRadius, layout } from '../theme';
 import { useTheme } from '../contexts/ThemeContext';
+import ErrorBoundary from './ErrorBoundary';
 
 interface CarouselItem {
   id: string;
@@ -35,7 +36,7 @@ const ITEM_WIDTH = Math.min(WINDOW_WIDTH * 0.8, layout.contentMaxWidth);
 const ITEM_HEIGHT = ITEM_WIDTH * 0.6;
 const SPACING = spacing.md;
 
-export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress }) => {
+const CarouselContent: React.FC<CarouselProps> = ({ title, items, onItemPress }) => {
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const { theme } = useTheme();
 
@@ -151,6 +152,18 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
   );
 };
 
+export const Carousel: React.FC<CarouselProps> = (props) => {
+  return (
+    <ErrorBoundary fallback={
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Failed to load carousel.</Text>
+      </View>
+    }>
+      <CarouselContent {...props} />
+    </ErrorBoundary>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     marginVertical: spacing.lg,
@@ -197,5 +210,17 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: '400',
     marginTop: spacing.xs,
+  } as TextStyle,
+  errorContainer: {
+    height: ITEM_HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f8f8f8',
+    borderRadius: borderRadius.lg,
+    marginHorizontal: spacing.gutter,
+  } as ViewStyle,
+  errorText: {
+    fontSize: 16,
+    color: '#666',
   } as TextStyle,
 }); 

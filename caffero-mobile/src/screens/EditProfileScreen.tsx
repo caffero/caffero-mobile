@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
+import Screen from '../components/Screen';
 
 export const EditProfileScreen = () => {
   const navigation = useNavigation();
@@ -54,7 +55,7 @@ export const EditProfileScreen = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title={getText('editProfile')} showBack />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -105,7 +106,7 @@ export const EditProfileScreen = () => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </View>
+    </Screen>
   );
 };
 

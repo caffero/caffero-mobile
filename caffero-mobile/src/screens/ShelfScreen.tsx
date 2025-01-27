@@ -7,6 +7,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { spacing } from '../theme';
 import { ShelfItem } from '../components/ShelfItem';
+import Screen from '../components/Screen';
 
 interface ShelfItemType {
   id: string;
@@ -46,7 +47,7 @@ export const ShelfScreen = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title={getText('appName')} showBack={false} />
       <ScrollView 
         style={styles.content}
@@ -69,7 +70,7 @@ export const ShelfScreen = () => {
           />
         ))}
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

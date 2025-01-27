@@ -1,34 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Header } from '../components/Header';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/types';
+import { Header } from '../components/Header';
+import Screen from '../components/Screen';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { RootStackParamList } from '../navigation/types';
 
-type RouteProps = NativeStackScreenProps<RootStackParamList, 'CoffeeBeanDetail'>['route'];
+type Props = NativeStackScreenProps<RootStackParamList, 'CoffeeBeanDetail'>;
 
-export const CoffeeBeanDetailScreen = () => {
-  const navigation = useNavigation();
-  const route = useRoute<RouteProps>();
-  const { id } = route.params;
+export const CoffeeBeanDetailScreen = ({ route }: Props) => {
   const { theme } = useTheme();
   const { getText } = useLanguage();
+  const { id } = route.params;
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header 
-        title={getText('coffeeBeanDetails')} 
-        showBack 
-        onBack={() => navigation.goBack()} 
-      />
-      <View style={[styles.content, { backgroundColor: theme.colors.surface.secondary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+      <Header title={getText('coffeeBeanDetail')} showBack />
+      <View style={[styles.content, { backgroundColor: theme.colors.surface.primary }]}>
         <Text style={[styles.text, { color: theme.colors.text.primary }]}>
-          Coffee Bean Detail Screen - ID: {id}
+          {`Coffee Bean ID: ${id}`}
         </Text>
       </View>
-    </View>
+    </Screen>
   );
 };
 

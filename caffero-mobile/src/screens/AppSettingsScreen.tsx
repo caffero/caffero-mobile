@@ -5,6 +5,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { spacing, typography, borderRadius, shadows } from '../theme';
 import { LanguageSelector } from '../components/LanguageSelector';
+import Screen from '../components/Screen';
 
 export const AppSettingsScreen = () => {
   const { theme, isDark, toggleTheme } = useTheme();
@@ -18,7 +19,7 @@ export const AppSettingsScreen = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title={getText('appSettings')} showBack />
       <ScrollView style={styles.content}>
         <View style={[styles.section, { backgroundColor: theme.colors.surface.secondary }]}>
@@ -51,7 +52,7 @@ export const AppSettingsScreen = () => {
           ))}
         </View>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

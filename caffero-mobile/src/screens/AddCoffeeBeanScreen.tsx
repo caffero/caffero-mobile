@@ -19,6 +19,7 @@ import { RootStackParamList } from '../navigation/types';
 import Slider from '@react-native-community/slider';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import Screen from '../components/Screen';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -205,7 +206,7 @@ export const AddCoffeeBeanScreen = () => {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title={getText('addCoffeeBean')}
         showBack
@@ -251,7 +252,7 @@ export const AddCoffeeBeanScreen = () => {
       />
 
       <FilterModal />
-    </View>
+    </Screen>
   );
 };
 
