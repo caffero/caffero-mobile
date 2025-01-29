@@ -1,0 +1,296 @@
+# Caffero Mobile API Documentation
+This document contains all the required endpoints for the Caffero mobile application.
+
+## Coffee Bean Endpoints
+
+GET /coffee-bean
+Response Model:
+{
+    id: string;
+    name: string;
+    roastery: string;
+    country: string;
+    imageUrl: string;
+    acidity: number;
+    body: number;
+    intensity: number;
+}[]
+
+GET /coffee-bean/:id
+Response Model:
+{
+    id: string;
+    name: string;
+    roastery: string;
+    country: string;
+    imageUrl: string;
+    acidity: number;
+    body: number;
+    intensity: number;
+}
+
+POST /coffee-bean
+Request Model:
+{
+    id: string;
+}
+Response Model: Same as GET /coffee-bean/:id
+
+PUT /coffee-bean/:id
+Request Model:
+{
+    id: string;
+    name?: string;
+    roastery?: string;
+    country?: string;
+    imageUrl?: string;
+    acidity?: number;
+    body?: number;
+    intensity?: number;
+}
+Response Model: Same as GET /coffee-bean/:id
+
+DELETE /coffee-bean/:id
+Request Model:
+{
+    id: string;
+}
+
+## Recipe Endpoints
+
+GET /recipe
+Response Model:
+{
+    id: string;
+    title: string;
+    coffeeBean: string;
+    equipment: string;
+    grindSize: string;
+    waterTemperature: number;
+    brewTime: number;
+    coffeeAmount: number;
+    waterAmount: number;
+    imageUrl?: string;
+}[]
+
+GET /recipe/:id
+Response Model:
+{
+    id: string;
+    title: string;
+    coffeeBean: string;
+    equipment: string;
+    grindSize: string;
+    waterTemperature: number;
+    brewTime: number;
+    coffeeAmount: number;
+    waterAmount: number;
+    imageUrl?: string;
+    description?: string;
+    steps: string[];
+    notes?: string;
+}
+
+POST /recipe
+Request Model:
+{
+    title: string;
+    coffeeBeanId: string;
+    equipmentId: string;
+    grindSize: string;
+    waterTemperature: number;
+    brewTime: number;
+    coffeeAmount: number;
+    waterAmount: number;
+    imageUrl?: string;
+    description?: string;
+    steps: string[];
+    notes?: string;
+}
+Response Model: Same as GET /recipe/:id
+
+PUT /recipe/:id
+Request Model:
+{
+    id: string;
+    title?: string;
+    coffeeBeanId?: string;
+    equipmentId?: string;
+    grindSize?: string;
+    waterTemperature?: number;
+    brewTime?: number;
+    coffeeAmount?: number;
+    waterAmount?: number;
+    imageUrl?: string;
+    description?: string;
+    steps?: string[];
+    notes?: string;
+}
+Response Model: Same as GET /recipe/:id
+
+DELETE /recipe/:id
+Request Model:
+{
+    id: string;
+}
+
+## Equipment Endpoints
+
+GET /equipment
+Response Model:
+{
+    id: string;
+    title: string;
+    type: string;
+    kind: string;
+    imageUrl: string;
+}[]
+
+GET /equipment/:id
+Response Model:
+{
+    id: string;
+    title: string;
+    type: string;
+    kind: string;
+    imageUrl: string;
+    description?: string;
+    specifications?: Record<string, string>;
+}
+
+POST /equipment
+Request Model:
+{
+    title: string;
+    typeId: string;
+    kindId: string;
+    imageUrl: string;
+    description?: string;
+    specifications?: Record<string, string>;
+}
+Response Model: Same as GET /equipment/:id
+
+PUT /equipment/:id
+Request Model:
+{
+    id: string;
+    title?: string;
+    typeId?: string;
+    kindId?: string;
+    imageUrl?: string;
+    description?: string;
+    specifications?: Record<string, string>;
+}
+Response Model: Same as GET /equipment/:id
+
+DELETE /equipment/:id
+Request Model:
+{
+    id: string;
+}
+
+## User Endpoints
+
+GET /user/:id
+Response Model:
+{
+    id: string;
+    username: string;
+    email: string;
+    isPremium: boolean;
+    imageUrl?: string;
+}
+
+PUT /user/:id
+Request Model:
+{
+    id: string;
+    username?: string;
+    email?: string;
+    imageUrl?: string;
+}
+Response Model: Same as GET /user/:id
+
+DELETE /user/:id
+Request Model:
+{
+    id: string;
+}
+
+## Authentication Endpoints
+
+POST /auth/login
+Request Model:
+{
+    email: string;
+    password: string;
+}
+Response Model:
+{
+    user: {
+        id: string;
+        email: string;
+        username: string;
+    };
+    token: string;
+}
+
+POST /auth/register
+Request Model:
+{
+    email: string;
+    password: string;
+    username: string;
+}
+Response Model: Same as POST /auth/login
+
+GET /auth/profile
+Headers Required:
+- Authorization: Bearer {token}
+Response Model:
+{
+    id: string;
+    email: string;
+    username: string;
+}
+
+## Contact Endpoints
+
+POST /contact
+Request Model:
+{
+    name: string;
+    email: string;
+    message: string;
+}
+Response: void
+
+## Product Suggestion Endpoints
+
+POST /product
+Request Model:
+{
+    productName: string;
+    roastery: string;
+    imageUrl: string;
+    description?: string;
+}
+Response: void
+
+## Language Endpoints
+
+GET /language
+Response Model:
+{
+    id: string;
+    name: string;
+}[]
+
+GET /language/:id/localizations
+Response Model:
+{
+    id: number;
+    propertyName: string;
+    value: string;
+    languageId: string;
+}[] 

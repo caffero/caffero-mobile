@@ -13,14 +13,9 @@ export interface GetCoffeeBean extends GetCoffeeBeanList {
     // Additional fields for detail view if needed
 }
 
+// Add coffee bean to user's shelf
 export interface CreateCoffeeBean {
-    name: string;
-    roastery: string;
-    country: string;
-    imageUrl: string;
-    acidity: number;
-    body: number;
-    intensity: number;
+    id: string;
 }
 
 export interface UpdateCoffeeBean {

@@ -13,8 +13,8 @@ export interface GetEquipment extends GetEquipmentList {
 
 export interface CreateEquipment {
     title: string;
-    type: string;
-    kind: string;
+    typeId: string;
+    kindId: string;
     imageUrl: string;
     description?: string;
     specifications?: Record<string, string>;
@@ -23,8 +23,8 @@ export interface CreateEquipment {
 export interface UpdateEquipment {
     id: string;
     title?: string;
-    type?: string;
-    kind?: string;
+    typeId?: string;
+    kindId?: string;
     imageUrl?: string;
     description?: string;
     specifications?: Record<string, string>;

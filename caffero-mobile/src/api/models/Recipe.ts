@@ -1,8 +1,8 @@
 export interface GetRecipeList {
     id: string;
     title: string;
-    coffeeBeanId: string;
-    equipmentId: string;
+    coffeeBean: string;
+    equipment: string;
     grindSize: string;
     waterTemperature: number;
     brewTime: number;
