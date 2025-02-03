@@ -1,6 +1,12 @@
 export const API_BASE_URL = 'https://your-api-url.com';
 
 export const API_ENDPOINTS = {
+    ACCOUNT: {
+        LOGIN: '/account/login',
+        REGISTER: '/account/register-user',
+        LOGOUT: '/account/logout',
+        REFRESH_TOKEN: '/account/refresh-token',
+    },
     COFFEE_BEAN: {
         BASE: '/coffee-bean',
         GET_ALL: '/coffee-bean',

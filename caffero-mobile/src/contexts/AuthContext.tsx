@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { User } from '../types/auth';
-import { authApi } from '../api/auth';
+import { UserTokenView } from '../api/models/Account';
+import { useAuthService } from '../api/services/authService';
 
 interface AuthContextType {
-    user: User | null;
+    user: UserTokenView | null;
     token: string | null;
     login: (email: string, password: string) => Promise<void>;
-    register: (email: string, password: string, username: string) => Promise<void>;
+    register: (email: string, password: string, fullName: string, phoneNumber: string, genderId: number) => Promise<void>;
     logout: () => Promise<void>;
     isLoading: boolean;
     error: string | null;
@@ -16,10 +16,11 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserTokenView | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const authService = useAuthService();
 
     useEffect(() => {
         loadStoredAuth();
@@ -31,9 +32,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setError(null);
             const storedToken = await AsyncStorage.getItem('token');
             if (storedToken) {
-                const userData = await authApi.getProfile(storedToken);
-                setUser(userData);
-                setToken(storedToken);
+                // Refresh token to validate it and get fresh user data
+                const refreshedData = await authService.refreshToken();
+                setToken(refreshedData.token);
+                // After refreshing token, we need to fetch user data
+                // This would typically be handled by your user service
+                // For now, we'll keep the token but clear user until we implement user fetch
+                setUser(null);
             }
         } catch (error) {
             console.error('Failed to load stored auth:', error);
@@ -51,10 +56,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             setIsLoading(true);
             setError(null);
-            const response = await authApi.login({ email, password });
-            setUser(response.user);
-            setToken(response.token);
-            await AsyncStorage.setItem('token', response.token);
+            const response = await authService.login({ email, password });
+            setUser(response);
+            setToken(response.authProperties.token);
+            await AsyncStorage.setItem('token', response.authProperties.token);
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Login failed';
             setError(message);
@@ -64,14 +69,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
-    const register = async (email: string, password: string, username: string) => {
+    const register = async (email: string, password: string, fullName: string, phoneNumber: string, genderId: number) => {
         try {
             setIsLoading(true);
             setError(null);
-            const response = await authApi.register({ email, password, username });
-            setUser(response.user);
-            setToken(response.token);
-            await AsyncStorage.setItem('token', response.token);
+            const response = await authService.register({ email, password, fullName, phoneNumber, genderId });
+            setUser(response);
+            setToken(response.authProperties.token);
+            await AsyncStorage.setItem('token', response.authProperties.token);
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Registration failed';
             setError(message);
@@ -85,12 +90,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             setIsLoading(true);
             setError(null);
+            await authService.logout();
             setUser(null);
             setToken(null);
             await AsyncStorage.removeItem('token');
         } catch (error) {
             console.error('Logout failed:', error);
             setError('Logout failed');
+            throw error;
         } finally {
             setIsLoading(false);
         }
