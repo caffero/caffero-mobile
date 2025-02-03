@@ -28,24 +28,48 @@ export const colors = {
   accent: '#A3633B', // Coffee Rust (for accents)
   highlights: '#F5E4DA', // Muted Peach (for highlights)
   
-  // UI colors
-  background: {
-    primary: '#FAF7F2', // Linen White
-    secondary: '#F5E4DA', // Muted Peach
-    tertiary: '#FAF7F2', // Linen White
-    accent: 'rgba(163, 99, 59, 0.08)', // Coffee Rust with opacity
+  // Light mode colors
+  light: {
+    background: {
+      primary: '#FAF7F2', // Linen White
+      secondary: '#F5E4DA', // Muted Peach
+      tertiary: '#FAF7F2', // Linen White
+      accent: 'rgba(163, 99, 59, 0.08)', // Coffee Rust with opacity
+    },
+    surface: {
+      primary: '#FAF7F2', // Linen White
+      secondary: '#F5E4DA', // Muted Peach
+      elevated: '#FFFFFF',
+    },
+    text: {
+      primary: '#2C1810', // Dark Coffee
+      secondary: '#5C4030', // Medium Coffee
+      tertiary: '#8B6B5A', // Light Coffee
+      inverse: '#FAF7F2', // Linen White
+    },
   },
-  surface: {
-    primary: '#FAF7F2', // Linen White
-    secondary: '#F5E4DA', // Muted Peach
-    elevated: '#FFFFFF',
+
+  // Dark mode colors
+  dark: {
+    background: {
+      primary: '#181512', // Deep Espresso
+      secondary: '#241E1B', // Dark Cocoa
+      tertiary: '#181512', // Deep Espresso
+      accent: 'rgba(163, 99, 59, 0.15)', // Coffee Rust with opacity
+    },
+    surface: {
+      primary: '#241E1B', // Dark Cocoa
+      secondary: '#2F2925', // Slightly lighter cocoa
+      elevated: '#3A332E', // Even lighter for elevation
+    },
+    text: {
+      primary: '#EAE0D5', // Latte Cream
+      secondary: '#BFAF9C', // Mocha Beige
+      tertiary: '#A3978A', // Lighter Mocha
+      inverse: '#241E1B', // Dark Cocoa
+    },
   },
-  text: {
-    primary: '#2C1810', // Dark Coffee (for primary text)
-    secondary: '#5C4030', // Medium Coffee (for secondary text)
-    tertiary: '#8B6B5A', // Light Coffee (for tertiary text)
-    inverse: '#FAF7F2', // Linen White
-  },
+
   border: {
     light: '#F5E4DA', // Muted Peach
     medium: '#E5D4CA', // Darker Muted Peach
