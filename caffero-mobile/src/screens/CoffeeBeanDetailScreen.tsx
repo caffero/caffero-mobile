@@ -9,9 +9,11 @@ import {
   Dimensions,
   Modal,
   Animated,
+  StatusBar,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Screen from '../components/Screen';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -49,6 +51,8 @@ const DUMMY_COFFEE_BEAN = {
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const IMAGE_HEIGHT = SCREEN_HEIGHT * 0.6;
+
+const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
 
 export const CoffeeBeanDetailScreen = ({ route, navigation }: Props) => {
   const { theme } = useTheme();
@@ -95,15 +99,26 @@ export const CoffeeBeanDetailScreen = ({ route, navigation }: Props) => {
             style={styles.image}
             resizeMode="cover"
           />
-          <TouchableOpacity
-            style={[
-              styles.backButton,
-              { backgroundColor: theme.colors.background.primary }
-            ]}
-            onPress={() => navigation.goBack()}
-          >
-            <Icon name="arrow-back" size={24} color={theme.colors.text.primary} />
-          </TouchableOpacity>
+          <LinearGradient
+            colors={['rgba(0,0,0,0.6)', 'transparent']}
+            style={styles.headerGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+          />
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={[
+                styles.backButton,
+                { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
+              ]}
+              onPress={() => navigation.goBack()}
+            >
+              <Icon name="arrow-back" size={24} color="#FFFFFF" />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle} numberOfLines={1}>
+              {DUMMY_COFFEE_BEAN.title}
+            </Text>
+          </View>
         </View>
 
         <View style={[styles.content, { backgroundColor: theme.colors.surface.primary }]}>
@@ -221,15 +236,42 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  backButton: {
+  headerGradient: {
     position: 'absolute',
-    top: spacing.lg,
-    left: spacing.md,
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 140,
+  },
+  header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 60 + STATUSBAR_HEIGHT,
+    paddingTop: STATUSBAR_HEIGHT,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: spacing.md,
+  },
+  headerTitle: {
+    ...typography.headline,
+    color: '#FFFFFF',
+    flex: 1,
+    marginLeft: spacing.md,
+    marginRight: spacing.xl,
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
+  },
+  backButton: {
     width: 40,
     height: 40,
     borderRadius: borderRadius.round,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   content: {
     flex: 1,
