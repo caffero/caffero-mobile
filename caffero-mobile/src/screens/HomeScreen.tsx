@@ -114,8 +114,8 @@ export const HomeScreen = () => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            tintColor={theme.colors.vibrantAqua}
-            colors={[theme.colors.vibrantAqua]}
+            tintColor={theme.colors.accent}
+            colors={[theme.colors.accent]}
           />
         }
       >

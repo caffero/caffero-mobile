@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from '../contexts/ThemeContext';
 import { BottomTabParamList } from '../navigation/types';
-import { spacing } from '../theme';
+import { spacing, borderRadius } from '../theme';
 
 interface BottomNavBarProps {
   currentRoute: keyof BottomTabParamList;
@@ -56,6 +56,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 56,
     borderTopWidth: 1,
+    borderTopLeftRadius: borderRadius.lg,
+    borderTopRightRadius: borderRadius.lg,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 8,
+      },
+    }),
+    marginTop: -borderRadius.lg,
+    paddingTop: borderRadius.lg,
   },
   navItem: {
     flex: 1,

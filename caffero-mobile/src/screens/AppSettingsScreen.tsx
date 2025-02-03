@@ -29,7 +29,7 @@ export const AppSettingsScreen = () => {
             <Switch
               value={isDark}
               onValueChange={toggleTheme}
-              trackColor={{ false: theme.colors.border.primary, true: theme.colors.vibrantAqua }}
+              trackColor={{ false: theme.colors.border.primary, true: theme.colors.accent }}
               thumbColor={isDark ? theme.colors.background.primary : theme.colors.background.primary}
             />
           </View>

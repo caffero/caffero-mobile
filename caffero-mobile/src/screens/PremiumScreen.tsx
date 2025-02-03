@@ -111,7 +111,7 @@ const FreeUserContent = () => {
           <TouchableOpacity
             style={[
               styles.upgradeButton,
-              { backgroundColor: theme.colors.vibrantAqua }
+              { backgroundColor: theme.colors.accent }
             ]}
             onPress={() => navigation.navigate('Subscription')}
           >
