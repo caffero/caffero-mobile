@@ -79,7 +79,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
             {error ? (
                 <Text style={[
                     styles.error,
-                    theme.typography.body1,
+                    theme.typography.body.medium,
                     { color: theme.colors.status.error }
                 ]}>
                     {error}

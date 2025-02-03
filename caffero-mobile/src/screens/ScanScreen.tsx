@@ -33,7 +33,7 @@ export const ScanScreen = () => {
         <Header title={getText('scan')} />
         <View style={[styles.content, { padding: theme.spacing.md }]}>
           <Text style={[
-            theme.typography.body1,
+            theme.typography.body.medium,
             { color: theme.colors.text.primary }
           ]}>
             {getText('noCameraAccess')}

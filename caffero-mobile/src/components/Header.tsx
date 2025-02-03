@@ -39,7 +39,7 @@ export const Header: React.FC<HeaderProps> = ({
         )}
         <Text style={[
           styles.title,
-          theme.typography.h2,
+          theme.typography.title2,
           { color: theme.colors.text.primary }
         ]}>
           {title}

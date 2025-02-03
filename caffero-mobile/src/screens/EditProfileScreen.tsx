@@ -54,20 +54,44 @@ export const EditProfileScreen = () => {
     );
   };
 
+  const handleBack = () => {
+    const hasChanges = 
+      formData.username !== (user?.username || '') || 
+      formData.email !== (user?.email || '');
+
+    if (hasChanges) {
+      Alert.alert(
+        getText('discardChanges'),
+        getText('discardChangesMessage'),
+        [
+          { text: getText('cancel'), style: 'cancel' },
+          { text: getText('discard'), style: 'destructive', onPress: () => navigation.goBack() },
+        ]
+      );
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header title={getText('editProfile')} showBack />
+      <Header title={getText('editProfile')} showBack onBack={handleBack} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoid}
       >
         <ScrollView style={styles.content}>
           <View style={styles.form}>
-            <Text style={[styles.label, { color: theme.colors.text.primary }]}>
+            <Text style={[
+              styles.label,
+              theme.typography.body.large,
+              { color: theme.colors.text.primary }
+            ]}>
               {getText('username')}
             </Text>
             <TextInput
               style={[styles.input, { 
+                ...theme.typography.body.medium,
                 color: theme.colors.text.primary,
                 backgroundColor: theme.colors.surface.secondary,
                 borderColor: theme.colors.border.primary 
@@ -78,11 +102,16 @@ export const EditProfileScreen = () => {
               placeholderTextColor={theme.colors.text.tertiary}
             />
 
-            <Text style={[styles.label, { color: theme.colors.text.primary }]}>
+            <Text style={[
+              styles.label,
+              theme.typography.body.large,
+              { color: theme.colors.text.primary }
+            ]}>
               {getText('email')}
             </Text>
             <TextInput
               style={[styles.input, { 
+                ...theme.typography.body.medium,
                 color: theme.colors.text.primary,
                 backgroundColor: theme.colors.surface.secondary,
                 borderColor: theme.colors.border.primary 
@@ -99,7 +128,11 @@ export const EditProfileScreen = () => {
               style={[styles.submitButton, { backgroundColor: theme.colors.primary.main }]}
               onPress={handleSubmit}
             >
-              <Text style={[styles.submitButtonText, { color: theme.colors.primary.contrastText }]}>
+              <Text style={[
+                styles.submitButtonText,
+                theme.typography.body.large,
+                { color: theme.colors.primary.contrastText }
+              ]}>
                 {getText('saveChanges')}
               </Text>
             </TouchableOpacity>

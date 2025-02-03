@@ -30,7 +30,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ title, onPress }) => {
     >
       <Text style={[
         styles.settingsTabText,
-        theme.typography.body1,
+        theme.typography.body.medium,
         { color: theme.colors.text.primary }
       ]}>
         {title}
@@ -84,14 +84,14 @@ export const ProfileScreen = () => {
           />
           <Text style={[
             styles.username,
-            theme.typography.h1,
+            theme.typography.title1,
             { color: theme.colors.text.primary }
           ]}>
             {user?.username || getText('defaultUsername')}
           </Text>
           <Text style={[
             styles.email,
-            theme.typography.body1,
+            theme.typography.body.medium,
             { color: theme.colors.text.secondary }
           ]}>
             {user?.email || getText('defaultEmail')}
@@ -105,7 +105,7 @@ export const ProfileScreen = () => {
           ]}>
             <Text style={[
               styles.premiumText,
-              theme.typography.button,
+              theme.typography.body.large,
               { color: theme.colors.primary.contrastText }
             ]}>
               {isPremium ? getText('premiumUser') : getText('freeUser')}

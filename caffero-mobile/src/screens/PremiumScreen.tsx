@@ -28,7 +28,7 @@ const PremiumContent = () => {
       <View style={[styles.section, { padding: theme.spacing.md }]}>
         <Text style={[
           styles.sectionTitle,
-          theme.typography.h2,
+          theme.typography.title2,
           { color: theme.colors.text.primary }
         ]}>
           {getText('exclusiveCoupons')}
@@ -46,7 +46,7 @@ const PremiumContent = () => {
       <View style={[styles.section, { padding: theme.spacing.md }]}>
         <Text style={[
           styles.sectionTitle,
-          theme.typography.h2,
+          theme.typography.title2,
           { color: theme.colors.text.primary }
         ]}>
           {getText('upcomingEvents')}
@@ -64,7 +64,7 @@ const PremiumContent = () => {
       <View style={[styles.section, { padding: theme.spacing.md }]}>
         <Text style={[
           styles.sectionTitle,
-          theme.typography.h2,
+          theme.typography.title2,
           { color: theme.colors.text.primary }
         ]}>
           {getText('personalizedRecommendations')}
@@ -96,14 +96,14 @@ const FreeUserContent = () => {
         <View style={[styles.adOverlay, { backgroundColor: 'rgba(0,0,0,0.6)' }]}>
           <Text style={[
             styles.adTitle,
-            theme.typography.h1,
+            theme.typography.title1,
             { color: '#FFFFFF' }
           ]}>
             {getText('premiumTitle')}
           </Text>
           <Text style={[
             styles.adDescription,
-            theme.typography.body1,
+            theme.typography.body.medium,
             { color: '#FFFFFF' }
           ]}>
             {getText('premiumDescription')}
@@ -111,13 +111,13 @@ const FreeUserContent = () => {
           <TouchableOpacity
             style={[
               styles.upgradeButton,
-              { backgroundColor: theme.colors.accent }
+              { backgroundColor: theme.colors.background.accent }
             ]}
             onPress={() => navigation.navigate('Subscription')}
           >
             <Text style={[
               styles.upgradeButtonText,
-              theme.typography.button,
+              theme.typography.body.large,
               { color: '#FFFFFF' }
             ]}>
               {getText('upgradeToPremium')}
