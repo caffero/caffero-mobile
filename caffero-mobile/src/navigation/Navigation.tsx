@@ -49,7 +49,7 @@ const MainTabs = () => {
           backgroundColor: theme.colors.background.primary,
           borderTopColor: theme.colors.border.primary,
         },
-        tabBarActiveTintColor: theme.colors.vibrantAqua,
+        tabBarActiveTintColor: theme.colors.accent,
         tabBarInactiveTintColor: theme.colors.text.tertiary,
         tabBarIcon: ({ color, size }: { color: string; size: number }) => {
           let iconName: string;
@@ -93,7 +93,7 @@ export const Navigation = () => {
   const navigationTheme = {
     dark: false,
     colors: {
-      primary: theme.colors.vibrantAqua,
+      primary: theme.colors.accent,
       background: theme.colors.background.primary,
       card: theme.colors.surface.primary,
       text: theme.colors.text.primary,
@@ -106,7 +106,7 @@ export const Navigation = () => {
     <NavigationContainer theme={navigationTheme}>
       {isLoading ? (
         <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-          <ActivityIndicator size="large" color={theme.colors.vibrantAqua} />
+          <ActivityIndicator size="large" color={theme.colors.accent} />
         </View>
       ) : (
         <Stack.Navigator 

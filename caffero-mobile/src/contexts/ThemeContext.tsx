@@ -7,9 +7,9 @@ export const lightTheme = {
   colors: {
     ...colors,
     primary: {
-      main: colors.vibrantAqua,
-      light: colors.vibrantAqua + '80',
-      dark: colors.deepNavy,
+      main: colors.accent,
+      light: colors.accent + '80',
+      dark: colors.coffeeRust,
       contrastText: '#FFFFFF',
     },
     background: colors.background,
@@ -42,15 +42,15 @@ export const lightTheme = {
     ...shadows,
     small: {
       ...shadows.small,
-      shadowColor: colors.deepNavy,
+      shadowColor: colors.coffeeRust,
     },
     medium: {
       ...shadows.medium,
-      shadowColor: colors.deepNavy,
+      shadowColor: colors.coffeeRust,
     },
     large: {
       ...shadows.large,
-      shadowColor: colors.deepNavy,
+      shadowColor: colors.coffeeRust,
     },
     glass: {
       ...shadows.glass,
@@ -65,19 +65,19 @@ export const darkTheme = {
   colors: {
     ...colors,
     primary: {
-      main: colors.vibrantAqua,
-      light: colors.vibrantAqua + '80',
-      dark: colors.deepNavy,
+      main: colors.accent,
+      light: colors.accent + '80',
+      dark: colors.coffeeRust,
       contrastText: '#FFFFFF',
     },
     background: {
-      primary: colors.deepNavy,
+      primary: colors.coffeeRust,
       secondary: '#1F2937',
       tertiary: '#111827',
-      accent: `${colors.vibrantAqua}14`,
+      accent: `${colors.accent}14`,
     },
     surface: {
-      primary: colors.deepNavy,
+      primary: colors.coffeeRust,
       secondary: '#1F2937',
       elevated: '#374151',
     },
@@ -85,7 +85,7 @@ export const darkTheme = {
       primary: '#FFFFFF',
       secondary: '#D1D5DB',
       tertiary: '#9CA3AF',
-      inverse: colors.deepNavy,
+      inverse: colors.coffeeRust,
     },
     border: {
       primary: '#374151',
