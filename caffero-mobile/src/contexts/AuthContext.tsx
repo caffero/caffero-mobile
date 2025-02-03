@@ -6,6 +6,7 @@ import { authApi } from '../api/auth';
 interface AuthContextType {
     user: User | null;
     token: string | null;
+    isPremium: boolean;
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string, username: string) => Promise<void>;
     logout: () => Promise<void>;
@@ -18,6 +19,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [isPremium, setIsPremium] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -97,7 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, login, register, logout, isLoading, error }}>
+        <AuthContext.Provider value={{ user, token, isPremium, login, register, logout, isLoading, error }}>
             {children}
         </AuthContext.Provider>
     );

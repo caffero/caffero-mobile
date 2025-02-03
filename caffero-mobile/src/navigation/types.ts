@@ -35,6 +35,13 @@ export type RootStackParamList = {
   DeleteRecipe: undefined;
   SuggestProduct: undefined;
   Subscription: undefined;
+
+  // Premium features
+  Coupons: undefined;
+  Events: undefined;
+  EventDetail: { event: { title: string; imageUrl: string } };
+  TasteMatches: undefined;
+  TasteMatchDetail: { match: { title: string; imageUrl: string } };
 }; 
 
 export type BottomTabParamList = {
