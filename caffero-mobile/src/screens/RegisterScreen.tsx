@@ -8,6 +8,8 @@ import { RootStackParamList } from '../navigation/types';
 import { spacing, borderRadius } from '../theme';
 import { LanguageSelector } from '../components/LanguageSelector';
 import Screen from '../components/Screen';
+import { AgreementBottomSheet } from '../components/AgreementBottomSheet';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
@@ -20,7 +22,18 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
     const [error, setError] = useState('');
     const { register } = useAuth();
 
+    // Agreement states
+    const [personalDataAccepted, setPersonalDataAccepted] = useState(false);
+    const [commercialAccepted, setCommercialAccepted] = useState(false);
+    const [showPersonalDataAgreement, setShowPersonalDataAgreement] = useState(false);
+    const [showCommercialAgreement, setShowCommercialAgreement] = useState(false);
+
     const handleRegister = async () => {
+        if (!personalDataAccepted) {
+            setError(getText('personalDataAgreementRequired'));
+            return;
+        }
+
         try {
             await register(email, password, username);
             navigation.navigate('Otp');
@@ -28,6 +41,21 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
             setError(getText('registrationFailed'));
         }
     };
+
+    const renderCheckbox = (checked: boolean, onPress: () => void) => (
+        <TouchableOpacity
+            onPress={onPress}
+            style={[
+                styles.checkbox,
+                {
+                    backgroundColor: checked ? theme.colors.primary.main : theme.colors.surface.primary,
+                    borderColor: checked ? theme.colors.primary.main : theme.colors.border.primary,
+                }
+            ]}
+        >
+            {checked && <Icon name="check" size={16} color={theme.colors.primary.contrastText} />}
+        </TouchableOpacity>
+    );
 
     return (
         <Screen>
@@ -86,6 +114,46 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                     onChangeText={setPassword}
                     secureTextEntry
                 />
+
+                {/* Agreement Checkboxes */}
+                <View style={styles.agreementContainer}>
+                    <View style={styles.checkboxRow}>
+                        {renderCheckbox(personalDataAccepted, () => setPersonalDataAccepted(!personalDataAccepted))}
+                        <View style={styles.agreementTextContainer}>
+                            <Text style={[
+                                styles.agreementText,
+                                { color: theme.colors.text.primary }
+                            ]}>
+                                <Text>KVKK Metni'ni </Text>
+                                <Text
+                                    style={[styles.agreementLink, { color: theme.colors.primary.main }]}
+                                    onPress={() => setShowPersonalDataAgreement(true)}
+                                >
+                                    okudum ve kabul ediyorum
+                                </Text>
+                            </Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.checkboxRow}>
+                        {renderCheckbox(commercialAccepted, () => setCommercialAccepted(!commercialAccepted))}
+                        <View style={styles.agreementTextContainer}>
+                            <Text style={[
+                                styles.agreementText,
+                                { color: theme.colors.text.primary }
+                            ]}>
+                                <Text>Ticari İleti Metni'ni </Text>
+                                <Text
+                                    style={[styles.agreementLink, { color: theme.colors.primary.main }]}
+                                    onPress={() => setShowCommercialAgreement(true)}
+                                >
+                                    okudum ve kabul ediyorum
+                                </Text>
+                            </Text>
+                        </View>
+                    </View>
+                </View>
+
                 {error ? (
                     <Text style={[
                         styles.error,
@@ -124,6 +192,20 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                     </Text>
                 </TouchableOpacity>
             </View>
+
+            <AgreementBottomSheet
+                isVisible={showPersonalDataAgreement}
+                onClose={() => setShowPersonalDataAgreement(false)}
+                title="KVKK Metni"
+                content="[KVKK Agreement content will be placed here]"
+            />
+
+            <AgreementBottomSheet
+                isVisible={showCommercialAgreement}
+                onClose={() => setShowCommercialAgreement(false)}
+                title="Ticari İleti Metni"
+                content="[Commercial Agreement content will be placed here]"
+            />
         </Screen>
     );
 };
@@ -174,5 +256,32 @@ const styles = StyleSheet.create({
     },
     loginButton: {
         marginTop: spacing.md,
+    },
+    agreementContainer: {
+        marginBottom: spacing.lg,
+    },
+    checkboxRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: spacing.sm,
+    },
+    checkbox: {
+        width: 20,
+        height: 20,
+        borderWidth: 2,
+        borderRadius: 4,
+        marginRight: spacing.sm,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    agreementTextContainer: {
+        flex: 1,
+    },
+    agreementText: {
+        fontSize: 14,
+        lineHeight: 20,
+    },
+    agreementLink: {
+        textDecorationLine: 'underline',
     },
 }); 
