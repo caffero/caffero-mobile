@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -25,6 +25,13 @@ export const ResetPasswordScreen: React.FC<Props> = ({ navigation }) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [shouldNavigate, setShouldNavigate] = useState(false);
+
+  useEffect(() => {
+    if (shouldNavigate) {
+      navigation.navigate('EditProfile');
+    }
+  }, [shouldNavigate, navigation]);
 
   const handleSubmit = async () => {
     if (!currentPassword.trim() || !newPassword.trim() || !confirmPassword.trim()) {
@@ -45,7 +52,7 @@ export const ResetPasswordScreen: React.FC<Props> = ({ navigation }) => {
         [
           {
             text: getText('ok'),
-            onPress: () => navigation.navigate('EditProfile')
+            onPress: () => setShouldNavigate(true)
           }
         ]
       );
