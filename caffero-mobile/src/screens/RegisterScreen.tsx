@@ -23,7 +23,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
     const handleRegister = async () => {
         try {
             await register(email, password, username);
-            navigation.replace('Otp');
+            navigation.navigate('Otp');
         } catch (err) {
             setError(getText('registrationFailed'));
         }

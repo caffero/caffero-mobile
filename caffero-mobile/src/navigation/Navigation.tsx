@@ -10,6 +10,7 @@ import { RootStackParamList, BottomTabParamList } from './types';
 
 import { LoginScreen } from '../screens/LoginScreen';
 import { RegisterScreen } from '../screens/RegisterScreen';
+import { OtpScreen } from '../screens/OtpScreen';
 import { HomeScreen } from '../screens/HomeScreen';
 import { ShelfScreen } from '../screens/ShelfScreen';
 import { ScanScreen } from '../screens/ScanScreen';
@@ -126,6 +127,7 @@ export const Navigation = () => {
                 }}
               />
               <Stack.Screen name="Register" component={RegisterScreen} />
+              <Stack.Screen name="Otp" component={OtpScreen} />
             </>
           ) : (
             // Main App Stack
