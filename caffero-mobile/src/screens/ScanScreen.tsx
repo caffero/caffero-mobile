@@ -6,16 +6,16 @@ import { RootStackNavigator } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import Screen from '../components/Screen';
-import { RNCamera } from 'react-native-camera';
-import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
+// import { RNCamera } from 'react-native-camera';
+// import { check, PERMISSIONS, request, RESULTS } from 'react-native-permissions';
 
 export const ScanScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  // const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const { theme } = useTheme();
   const { getText } = useLanguage();
 
-  const requestCameraPermission = async () => {
+  /* const requestCameraPermission = async () => {
     try {
       const result = await check(PERMISSIONS.IOS.CAMERA);
       
@@ -49,14 +49,14 @@ export const ScanScreen = () => {
 
   React.useEffect(() => {
     requestCameraPermission();
-  }, []);
+  }, []); */
 
-  const handleBarCodeRead = (event: { data: string }) => {
+  /* const handleBarCodeRead = (event: { data: string }) => {
     // Handle the scanned QR code data here
     Alert.alert('Scanned Code', event.data);
-  };
+  }; */
 
-  if (hasPermission === null) {
+  /* if (hasPermission === null) {
     return (
       <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
         <View style={styles.content} />
@@ -78,25 +78,31 @@ export const ScanScreen = () => {
         </View>
       </Screen>
     );
-  }
+  } */
 
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title={getText('scan')} />
-      <View style={styles.content}>
-        <RNCamera
-          style={styles.camera}
-          type={RNCamera.Constants.Type.back}
-          onBarCodeRead={handleBarCodeRead}
-          captureAudio={false}
-          androidCameraPermissionOptions={{
-            title: getText('cameraPermission'),
-            message: getText('cameraPermissionRequired'),
-            buttonPositive: getText('ok'),
-            buttonNegative: getText('cancel'),
-          }}
-        />
+      <View style={[styles.content, { padding: theme.spacing.md }]}>
+        <Text style={[
+          theme.typography.body.medium,
+          { color: theme.colors.text.primary }
+        ]}>
+          {getText('scanFeatureComingSoon')}
+        </Text>
       </View>
+      {/* <RNCamera
+        style={styles.camera}
+        type={RNCamera.Constants.Type.back}
+        onBarCodeRead={handleBarCodeRead}
+        captureAudio={false}
+        androidCameraPermissionOptions={{
+          title: getText('cameraPermission'),
+          message: getText('cameraPermissionRequired'),
+          buttonPositive: getText('ok'),
+          buttonNegative: getText('cancel'),
+        }}
+      /> */}
     </Screen>
   );
 };
