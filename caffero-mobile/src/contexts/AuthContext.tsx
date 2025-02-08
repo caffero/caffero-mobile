@@ -8,10 +8,14 @@ interface AuthContextType {
     token: string | null;
     isPremium: boolean;
     isRegistered: boolean;
+    passwordForgotten: boolean;
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string, username: string) => Promise<void>;
     verifyOtp: (otp: string) => Promise<void>;
     logout: () => Promise<void>;
+    forgotPassword: (email: string) => Promise<void>;
+    resetForgottenPassword: (newPassword: string) => Promise<void>;
+    resetPassword: (currentPassword: string, newPassword: string) => Promise<void>;
     isLoading: boolean;
     error: string | null;
 }
@@ -23,6 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [token, setToken] = useState<string | null>(null);
     const [isPremium, setIsPremium] = useState(false);
     const [isRegistered, setIsRegistered] = useState(false);
+    const [passwordForgotten, setPasswordForgotten] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -118,16 +123,65 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    const forgotPassword = async (email: string) => {
+        try {
+            setIsLoading(true);
+            setError(null);
+            await authApi.forgotPassword(email);
+            setPasswordForgotten(true);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to process forgot password request';
+            setError(message);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const resetForgottenPassword = async (newPassword: string) => {
+        try {
+            setIsLoading(true);
+            setError(null);
+            await authApi.resetForgottenPassword(newPassword);
+            setPasswordForgotten(false);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to reset password';
+            setError(message);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const resetPassword = async (currentPassword: string, newPassword: string) => {
+        try {
+            setIsLoading(true);
+            setError(null);
+            if (!token) throw new Error('No authentication token found');
+            await authApi.resetPassword(currentPassword, newPassword, token);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Failed to change password';
+            setError(message);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     return (
         <AuthContext.Provider value={{ 
             user, 
             token, 
             isPremium, 
             isRegistered,
+            passwordForgotten,
             login, 
             register, 
             verifyOtp,
-            logout, 
+            logout,
+            forgotPassword,
+            resetForgottenPassword,
+            resetPassword,
             isLoading, 
             error 
         }}>

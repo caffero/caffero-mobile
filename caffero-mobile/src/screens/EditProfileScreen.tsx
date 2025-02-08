@@ -16,9 +16,12 @@ import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useTheme } from '../contexts/ThemeContext';
 import Screen from '../components/Screen';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/types';
 
-export const EditProfileScreen = () => {
-  const navigation = useNavigation();
+type Props = NativeStackScreenProps<RootStackParamList, 'EditProfile'>;
+
+export const EditProfileScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = useAuth();
   const { getText } = useLanguage();
   const { theme } = useTheme();
@@ -136,6 +139,19 @@ export const EditProfileScreen = () => {
                 {getText('saveChanges')}
               </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.resetPasswordButton, { backgroundColor: theme.colors.surface.primary }]}
+              onPress={() => navigation.navigate('ResetPassword')}
+            >
+              <Text style={[
+                styles.resetPasswordButtonText,
+                theme.typography.button.large,
+                { color: theme.colors.primary.main }
+              ]}>
+                {getText('resetPassword')}
+              </Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -177,5 +193,17 @@ const styles = StyleSheet.create({
   submitButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  resetPasswordButton: {
+    height: 48,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  resetPasswordButtonText: {
+    textAlign: 'center',
   },
 }); 

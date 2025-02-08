@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Platform } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Platform, TouchableOpacity } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -28,40 +28,40 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
     };
 
     return (
-        <Screen>
-            <View style={[
-                styles.languageSelectorContainer,
-                Platform.select({
-                    ios: { top: 60 }, // Adjusted for iOS status bar + some padding
-                    android: { top: 60 }, // Adjusted for Android
-                })
-            ]}>
-                <LanguageSelector />
-            </View>
+        <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
             <View style={styles.content}>
+                <Text style={[
+                    styles.title,
+                    theme.typography.title1,
+                    { color: theme.colors.text.primary }
+                ]}>
+                    {getText('login')}
+                </Text>
+
                 <TextInput
                     style={[
                         styles.input,
                         {
-                            borderColor: theme.colors.border.primary,
                             backgroundColor: theme.colors.surface.primary,
-                            color: theme.colors.text.primary,
+                            borderColor: theme.colors.border.primary,
+                            color: theme.colors.text.primary
                         }
                     ]}
                     placeholder={getText('email')}
                     placeholderTextColor={theme.colors.text.tertiary}
                     value={email}
                     onChangeText={setEmail}
-                    autoCapitalize="none"
                     keyboardType="email-address"
+                    autoCapitalize="none"
                 />
+
                 <TextInput
                     style={[
                         styles.input,
                         {
-                            borderColor: theme.colors.border.primary,
                             backgroundColor: theme.colors.surface.primary,
-                            color: theme.colors.text.primary,
+                            borderColor: theme.colors.border.primary,
+                            color: theme.colors.text.primary
                         }
                     ]}
                     placeholder={getText('password')}
@@ -70,6 +70,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
                     onChangeText={setPassword}
                     secureTextEntry
                 />
+
                 {error ? (
                     <Text style={[
                         styles.error,
@@ -79,31 +80,62 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
                         {error}
                     </Text>
                 ) : null}
-                <Button 
-                    title={getText('login')}
+
+                <TouchableOpacity
+                    style={[styles.loginButton, { backgroundColor: theme.colors.primary.main }]}
                     onPress={handleLogin}
-                    color={theme.colors.primary.main}
-                />
-                <Button
-                    title={getText('noAccountRegister')}
+                >
+                    <Text style={[
+                        styles.loginButtonText,
+                        theme.typography.button.large,
+                        { color: theme.colors.primary.contrastText }
+                    ]}>
+                        {getText('login')}
+                    </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.forgotPasswordButton}
+                    onPress={() => navigation.navigate('ForgotPassword')}
+                >
+                    <Text style={[
+                        styles.forgotPasswordText,
+                        theme.typography.body.medium,
+                        { color: theme.colors.primary.main }
+                    ]}>
+                        {getText('forgotPassword')}
+                    </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={styles.registerButton}
                     onPress={() => navigation.navigate('Register')}
-                    color={theme.colors.primary.light}
-                />
+                >
+                    <Text style={[
+                        styles.registerButtonText,
+                        theme.typography.body.medium,
+                        { color: theme.colors.text.secondary }
+                    ]}>
+                        {getText('noAccountRegister')}
+                    </Text>
+                </TouchableOpacity>
             </View>
         </Screen>
     );
 };
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
     content: {
         flex: 1,
         justifyContent: 'center',
         padding: spacing.lg,
     },
-    languageSelectorContainer: {
-        position: 'absolute',
-        right: spacing.lg,
-        zIndex: 1,
+    title: {
+        marginBottom: spacing.md,
+        textAlign: 'center',
     },
     input: {
         height: 40,
@@ -114,6 +146,27 @@ const styles = StyleSheet.create({
     },
     error: {
         marginBottom: spacing.sm,
+        textAlign: 'center',
+    },
+    loginButton: {
+        marginTop: spacing.md,
+        alignItems: 'center',
+    },
+    loginButtonText: {
+        textAlign: 'center',
+    },
+    forgotPasswordButton: {
+        marginTop: spacing.md,
+        alignItems: 'center',
+    },
+    forgotPasswordText: {
+        textAlign: 'center',
+    },
+    registerButton: {
+        marginTop: spacing.lg,
+        alignItems: 'center',
+    },
+    registerButtonText: {
         textAlign: 'center',
     },
 }); 

@@ -112,4 +112,69 @@ export const authApi = {
             token: 'dummy-token-12345',
         };
     },
+
+    forgotPassword: async (email: string): Promise<void> => {
+        // Actual API call (commented out for now)
+        /*
+        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.FORGOT_PASSWORD}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email }),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to process forgot password request');
+        }
+        */
+
+        // Mock implementation - just return success
+        return Promise.resolve();
+    },
+
+    resetForgottenPassword: async (newPassword: string): Promise<void> => {
+        // Actual API call (commented out for now)
+        /*
+        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.RESET_FORGOTTEN_PASSWORD}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ newPassword }),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to reset password');
+        }
+        */
+
+        // Mock implementation - just return success
+        return Promise.resolve();
+    },
+
+    resetPassword: async (currentPassword: string, newPassword: string, token: string): Promise<void> => {
+        // Actual API call (commented out for now)
+        /*
+        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.RESET_PASSWORD}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ currentPassword, newPassword }),
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to change password');
+        }
+        */
+
+        // Mock implementation - just return success
+        // In real implementation, verify current password before allowing change
+        if (currentPassword === 'wrong-password') {
+            throw new Error('Current password is incorrect');
+        }
+        return Promise.resolve();
+    },
 }; 

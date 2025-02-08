@@ -37,6 +37,9 @@ import { CreateRecipeScreen } from '../screens/CreateRecipeScreen';
 import { DeleteRecipeScreen } from '../screens/DeleteRecipeScreen';
 import { RoasteryDetailScreen } from '../screens/RoasteryDetailScreen';
 import { PostDetailScreen } from '../screens/PostDetailScreen';
+import { ForgotPasswordScreen } from '../screens/ForgotPasswordScreen';
+import { ResetForgottenPasswordScreen } from '../screens/ResetForgottenPasswordScreen';
+import { ResetPasswordScreen } from '../screens/ResetPasswordScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();
@@ -130,6 +133,8 @@ export const Navigation = () => {
               />
               <Stack.Screen name="Register" component={RegisterScreen} />
               <Stack.Screen name="Otp" component={OtpScreen} />
+              <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+              <Stack.Screen name="ResetForgottenPassword" component={ResetForgottenPasswordScreen} />
             </>
           ) : (
             // Main App Stack
@@ -160,6 +165,7 @@ export const Navigation = () => {
 
               <Stack.Group screenOptions={{ presentation: 'card' }}>
                 <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+                <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
                 <Stack.Screen name="AppSettings" component={AppSettingsScreen} />
                 <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} />
                 <Stack.Screen name="Privacy" component={PrivacyScreen} />

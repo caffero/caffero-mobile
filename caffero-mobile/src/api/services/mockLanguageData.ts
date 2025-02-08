@@ -239,7 +239,23 @@ export const mockLocalizations: LocalizationMap = {
         // Search Related
         { id: 167, propertyName: 'search', value: 'Search', languageId: 'en' },
         { id: 168, propertyName: 'searchResults', value: 'results found', languageId: 'en' },
-        { id: 169, propertyName: 'noSearchResults', value: 'No results found', languageId: 'en' }
+        { id: 169, propertyName: 'noSearchResults', value: 'No results found', languageId: 'en' },
+
+        // Password Flow Screens
+        { id: 170, propertyName: 'forgotPassword', value: 'Forgot Password', languageId: 'en' },
+        { id: 171, propertyName: 'resetPassword', value: 'Reset Password', languageId: 'en' },
+        { id: 172, propertyName: 'currentPassword', value: 'Current Password', languageId: 'en' },
+        { id: 173, propertyName: 'newPassword', value: 'New Password', languageId: 'en' },
+        { id: 174, propertyName: 'confirmPassword', value: 'Confirm Password', languageId: 'en' },
+        { id: 175, propertyName: 'forgotPasswordDescription', value: 'Enter your email address and we will send you a verification code to reset your password.', languageId: 'en' },
+        { id: 176, propertyName: 'resetPasswordDescription', value: 'Please enter and confirm your new password.', languageId: 'en' },
+        { id: 177, propertyName: 'passwordResetSuccess', value: 'Your password has been reset successfully. Please login with your new password.', languageId: 'en' },
+        { id: 178, propertyName: 'passwordChangeSuccess', value: 'Your password has been changed successfully.', languageId: 'en' },
+        { id: 179, propertyName: 'enterCurrentPassword', value: 'Enter your current password', languageId: 'en' },
+        { id: 180, propertyName: 'enterNewPassword', value: 'Enter your new password', languageId: 'en' },
+        { id: 181, propertyName: 'confirmNewPassword', value: 'Confirm your new password', languageId: 'en' },
+        { id: 182, propertyName: 'passwordsDontMatch', value: 'Passwords do not match', languageId: 'en' },
+        { id: 183, propertyName: 'incorrectCurrentPassword', value: 'Current password is incorrect', languageId: 'en' }
     ],
     tr: [
         // App Settings Screen
@@ -463,6 +479,22 @@ export const mockLocalizations: LocalizationMap = {
         // Search Related
         { id: 167, propertyName: 'search', value: 'Arama Yapın', languageId: 'tr' },
         { id: 168, propertyName: 'searchResults', value: 'Sonuç bulundu', languageId: 'tr' },
-        { id: 169, propertyName: 'noSearchResults', value: 'Sonuç bulunamadı', languageId: 'tr' }
+        { id: 169, propertyName: 'noSearchResults', value: 'Sonuç bulunamadı', languageId: 'tr' },
+
+        // Password Flow Screens
+        { id: 170, propertyName: 'forgotPassword', value: 'Şifremi Unuttum', languageId: 'tr' },
+        { id: 171, propertyName: 'resetPassword', value: 'Şifre Sıfırla', languageId: 'tr' },
+        { id: 172, propertyName: 'currentPassword', value: 'Mevcut Şifre', languageId: 'tr' },
+        { id: 173, propertyName: 'newPassword', value: 'Yeni Şifre', languageId: 'tr' },
+        { id: 174, propertyName: 'confirmPassword', value: 'Şifreyi Onayla', languageId: 'tr' },
+        { id: 175, propertyName: 'forgotPasswordDescription', value: 'E-posta adresinizi girin, şifrenizi sıfırlamanız için size bir doğrulama kodu göndereceğiz.', languageId: 'tr' },
+        { id: 176, propertyName: 'resetPasswordDescription', value: 'Lütfen yeni şifrenizi girin ve onaylayın.', languageId: 'tr' },
+        { id: 177, propertyName: 'passwordResetSuccess', value: 'Şifreniz başarıyla sıfırlandı. Lütfen yeni şifrenizle giriş yapın.', languageId: 'tr' },
+        { id: 178, propertyName: 'passwordChangeSuccess', value: 'Şifreniz başarıyla değiştirildi.', languageId: 'tr' },
+        { id: 179, propertyName: 'enterCurrentPassword', value: 'Mevcut şifrenizi girin', languageId: 'tr' },
+        { id: 180, propertyName: 'enterNewPassword', value: 'Yeni şifrenizi girin', languageId: 'tr' },
+        { id: 181, propertyName: 'confirmNewPassword', value: 'Yeni şifrenizi onaylayın', languageId: 'tr' },
+        { id: 182, propertyName: 'passwordsDontMatch', value: 'Şifreler eşleşmiyor', languageId: 'tr' },
+        { id: 183, propertyName: 'incorrectCurrentPassword', value: 'Mevcut şifre yanlış', languageId: 'tr' }
     ]
 }; 
