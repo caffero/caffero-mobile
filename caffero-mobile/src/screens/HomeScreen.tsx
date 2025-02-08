@@ -17,7 +17,7 @@ import { Header } from '../components/Header';
 import { Carousel } from '../components/Carousel';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackNavigator } from '../navigation/types';
-import { spacing, layout } from '../theme';
+import { spacing, layout, borderRadius } from '../theme';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -236,8 +236,22 @@ export const HomeScreen = () => {
         barStyle={isDark ? "light-content" : "dark-content"}
         backgroundColor={theme.colors.background.primary}
       />
-      <View style={[styles.header, { borderBottomColor: theme.colors.border.primary }]}>
-        <View style={[styles.searchBar, { backgroundColor: theme.colors.surface.primary }]}>
+      <Header title={getText('appName')} />
+      <View style={[styles.searchContainer, { 
+        borderBottomColor: theme.colors.border.primary,
+        backgroundColor: theme.colors.background.primary,
+        ...theme.shadows.small
+      }]}>
+        <View style={[styles.searchBar, { 
+          backgroundColor: theme.colors.surface.primary,
+          ...theme.shadows.small
+        }]}>
+          <Icon 
+            name="search" 
+            size={20} 
+            color={theme.colors.text.secondary}
+            style={styles.searchIcon}
+          />
           <TextInput
             style={[styles.searchInput, { color: theme.colors.text.primary }]}
             placeholder={getText('search')}
@@ -252,25 +266,34 @@ export const HomeScreen = () => {
             }}
             onFocus={() => setIsSearching(true)}
           />
-          <TouchableOpacity
-            style={styles.searchButton}
-            onPress={handleSearch}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <ActivityIndicator color={theme.colors.text.secondary} />
-            ) : (
-              <Icon name="search" size={24} color={theme.colors.text.secondary} />
-            )}
-          </TouchableOpacity>
+          {searchQuery.length > 0 && (
+            <TouchableOpacity
+              style={styles.searchButton}
+              onPress={handleSearch}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator color={theme.colors.text.secondary} />
+              ) : (
+                <Icon name="arrow-forward" size={24} color={theme.colors.text.secondary} />
+              )}
+            </TouchableOpacity>
+          )}
         </View>
       </View>
 
       {isSearching && (
-        <View style={[styles.overlay, { backgroundColor: theme.colors.background.primary + '80' }]} />
+        <View style={[styles.overlay, { 
+          backgroundColor: isDark 
+            ? 'rgba(0, 0, 0, 0.7)' 
+            : 'rgba(0, 0, 0, 0.4)',
+          zIndex: 1
+        }]} />
       )}
 
-      {renderContent()}
+      <View style={[styles.contentContainer, isSearching && styles.blurredContent]}>
+        {renderContent()}
+      </View>
     </Screen>
   );
 };
@@ -279,16 +302,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
+  searchContainer: {
     padding: spacing.md,
     borderBottomWidth: 1,
+    zIndex: 2,
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 8,
+    borderRadius: borderRadius.lg,
     paddingHorizontal: spacing.sm,
-    height: 40,
+    height: 44,
+  },
+  searchIcon: {
+    marginRight: spacing.xs,
   },
   searchInput: {
     flex: 1,
@@ -297,10 +324,18 @@ const styles = StyleSheet.create({
   },
   searchButton: {
     padding: spacing.xs,
+    marginLeft: spacing.xs,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+    zIndex: 0,
+  },
+  blurredContent: {
+    opacity: 0.3,
   },
   content: {
     flex: 1,
@@ -316,9 +351,20 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   searchItem: {
-    borderRadius: 8,
+    borderRadius: borderRadius.lg,
     marginBottom: spacing.sm,
     padding: spacing.md,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
   searchItemContent: {
     flexDirection: 'row',
