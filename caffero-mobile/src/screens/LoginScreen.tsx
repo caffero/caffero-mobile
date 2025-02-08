@@ -82,11 +82,15 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 ) : null}
 
                 <TouchableOpacity
-                    style={[styles.loginButton, { backgroundColor: theme.colors.primary.main }]}
+                    style={[
+                        styles.button,
+                        styles.loginButton,
+                        { backgroundColor: theme.colors.primary.main }
+                    ]}
                     onPress={handleLogin}
                 >
                     <Text style={[
-                        styles.loginButtonText,
+                        styles.buttonText,
                         theme.typography.button.large,
                         { color: theme.colors.primary.contrastText }
                     ]}>
@@ -95,11 +99,11 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={styles.forgotPasswordButton}
+                    style={[styles.button, styles.forgotPasswordButton]}
                     onPress={() => navigation.navigate('ForgotPassword')}
                 >
                     <Text style={[
-                        styles.forgotPasswordText,
+                        styles.buttonText,
                         theme.typography.body.medium,
                         { color: theme.colors.primary.main }
                     ]}>
@@ -108,11 +112,11 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={styles.registerButton}
+                    style={[styles.button, styles.registerButton]}
                     onPress={() => navigation.navigate('Register')}
                 >
                     <Text style={[
-                        styles.registerButtonText,
+                        styles.buttonText,
                         theme.typography.body.medium,
                         { color: theme.colors.text.secondary }
                     ]}>
@@ -148,25 +152,32 @@ const styles = StyleSheet.create({
         marginBottom: spacing.sm,
         textAlign: 'center',
     },
-    loginButton: {
-        marginTop: spacing.md,
+    button: {
+        padding: spacing.md,
+        borderRadius: borderRadius.md,
+        minHeight: 48,
+        justifyContent: 'center',
         alignItems: 'center',
+        marginVertical: spacing.xs,
     },
-    loginButtonText: {
+    buttonText: {
         textAlign: 'center',
+    },
+    loginButton: {
+        marginTop: spacing.lg,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
     },
     forgotPasswordButton: {
         marginTop: spacing.md,
-        alignItems: 'center',
-    },
-    forgotPasswordText: {
-        textAlign: 'center',
     },
     registerButton: {
         marginTop: spacing.lg,
-        alignItems: 'center',
-    },
-    registerButtonText: {
-        textAlign: 'center',
     },
 }); 

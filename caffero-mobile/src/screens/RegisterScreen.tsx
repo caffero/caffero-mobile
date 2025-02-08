@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Platform } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Platform, TouchableOpacity } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -95,16 +95,34 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                         {error}
                     </Text>
                 ) : null}
-                <Button 
-                    title={getText('register')}
+                <TouchableOpacity
+                    style={[
+                        styles.button,
+                        styles.registerButton,
+                        { backgroundColor: theme.colors.primary.main }
+                    ]}
                     onPress={handleRegister}
-                    color={theme.colors.primary.main}
-                />
-                <Button
-                    title={getText('haveAccountLogin')}
+                >
+                    <Text style={[
+                        styles.buttonText,
+                        theme.typography.button.large,
+                        { color: theme.colors.primary.contrastText }
+                    ]}>
+                        {getText('register')}
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.button, styles.loginButton]}
                     onPress={() => navigation.navigate('Login')}
-                    color={theme.colors.primary.light}
-                />
+                >
+                    <Text style={[
+                        styles.buttonText,
+                        theme.typography.body.medium,
+                        { color: theme.colors.primary.main }
+                    ]}>
+                        {getText('haveAccountLogin')}
+                    </Text>
+                </TouchableOpacity>
             </View>
         </Screen>
     );
@@ -131,5 +149,30 @@ const styles = StyleSheet.create({
     error: {
         marginBottom: spacing.sm,
         textAlign: 'center',
+    },
+    button: {
+        padding: spacing.md,
+        borderRadius: borderRadius.md,
+        minHeight: 48,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: spacing.xs,
+    },
+    buttonText: {
+        textAlign: 'center',
+    },
+    registerButton: {
+        marginTop: spacing.lg,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+    },
+    loginButton: {
+        marginTop: spacing.md,
     },
 }); 
