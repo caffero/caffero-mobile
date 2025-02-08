@@ -83,4 +83,33 @@ export const authApi = {
             username: 'DummyUser',
         };
     },
+
+    verifyOtp: async (otp: string): Promise<AuthResponse> => {
+        // Actual API call (commented out for now)
+        /*
+        const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.VERIFY_OTP}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ otp }),
+        });
+        
+        if (!response.ok) {
+            throw new Error('OTP verification failed');
+        }
+        
+        return response.json();
+        */
+
+        // Dummy data
+        return {
+            user: {
+                id: '1',
+                email: 'user@example.com',
+                username: 'DummyUser',
+            },
+            token: 'dummy-token-12345',
+        };
+    },
 }; 

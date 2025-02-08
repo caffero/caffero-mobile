@@ -7,8 +7,10 @@ interface AuthContextType {
     user: User | null;
     token: string | null;
     isPremium: boolean;
+    isRegistered: boolean;
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string, username: string) => Promise<void>;
+    verifyOtp: (otp: string) => Promise<void>;
     logout: () => Promise<void>;
     isLoading: boolean;
     error: string | null;
@@ -20,6 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const [isPremium, setIsPremium] = useState(false);
+    const [isRegistered, setIsRegistered] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -70,12 +73,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
             setIsLoading(true);
             setError(null);
-            const response = await authApi.register({ email, password, username });
+            await authApi.register({ email, password, username });
+            setIsRegistered(true);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Registration failed';
+            setError(message);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const verifyOtp = async (otp: string) => {
+        try {
+            setIsLoading(true);
+            setError(null);
+            const response = await authApi.verifyOtp(otp);
             setUser(response.user);
             setToken(response.token);
             await AsyncStorage.setItem('token', response.token);
+            setIsRegistered(false); // Reset registration state
         } catch (error) {
-            const message = error instanceof Error ? error.message : 'Registration failed';
+            const message = error instanceof Error ? error.message : 'OTP verification failed';
             setError(message);
             throw error;
         } finally {
@@ -89,6 +108,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setError(null);
             setUser(null);
             setToken(null);
+            setIsRegistered(false);
             await AsyncStorage.removeItem('token');
         } catch (error) {
             console.error('Logout failed:', error);
@@ -99,7 +119,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     return (
-        <AuthContext.Provider value={{ user, token, isPremium, login, register, logout, isLoading, error }}>
+        <AuthContext.Provider value={{ 
+            user, 
+            token, 
+            isPremium, 
+            isRegistered,
+            login, 
+            register, 
+            verifyOtp,
+            logout, 
+            isLoading, 
+            error 
+        }}>
             {children}
         </AuthContext.Provider>
     );

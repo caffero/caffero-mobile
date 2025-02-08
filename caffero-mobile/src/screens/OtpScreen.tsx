@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
 import { spacing, borderRadius } from '../theme';
 import Screen from '../components/Screen';
 
@@ -12,7 +13,9 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Otp'>;
 export const OtpScreen: React.FC<Props> = ({ navigation }) => {
     const { theme } = useTheme();
     const { getText } = useLanguage();
+    const { verifyOtp } = useAuth();
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
+    const [error, setError] = useState('');
     const inputRefs = useRef<Array<TextInput | null>>([]);
 
     const handleOtpChange = (value: string, index: number) => {
@@ -34,9 +37,15 @@ export const OtpScreen: React.FC<Props> = ({ navigation }) => {
         }
     };
 
-    const handleSubmit = () => {
-        // For now, directly navigate to home
-        navigation.replace('MainTabs');
+    const handleSubmit = async () => {
+        try {
+            const otpString = otp.join('');
+            await verifyOtp(otpString);
+            // No need to navigate here as the Navigation component will handle it
+            // based on the user state in AuthContext
+        } catch (err) {
+            setError(getText('otpVerificationFailed'));
+        }
     };
 
     return (
@@ -47,7 +56,6 @@ export const OtpScreen: React.FC<Props> = ({ navigation }) => {
                 { color: theme.colors.text.primary }
             ]}>
                 {getText('confirmOtp')}
-
             </Text>
             
             <Text style={[
@@ -81,6 +89,16 @@ export const OtpScreen: React.FC<Props> = ({ navigation }) => {
                 ))}
             </View>
 
+            {error ? (
+                <Text style={[
+                    styles.error,
+                    theme.typography.body.medium,
+                    { color: theme.colors.status.error }
+                ]}>
+                    {error}
+                </Text>
+            ) : null}
+
             <TouchableOpacity
                 style={[
                     styles.submitButton,
@@ -95,7 +113,6 @@ export const OtpScreen: React.FC<Props> = ({ navigation }) => {
                 ]}>
                     {getText('submit')}
                 </Text>
-
             </TouchableOpacity>
         </Screen>
     );
@@ -137,6 +154,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     submitButtonText: {
+        textAlign: 'center',
+    },
+    error: {
+        marginBottom: spacing.sm,
         textAlign: 'center',
     },
 }); 
