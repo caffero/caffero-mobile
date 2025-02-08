@@ -6,6 +6,7 @@ export type RootStackParamList = {
   // Auth screens
   Login: undefined;
   Register: undefined;
+  Otp: undefined;
   
   // Main tabs
   MainTabs: undefined;

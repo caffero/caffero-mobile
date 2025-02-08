@@ -219,19 +219,11 @@ export const PremiumScreen = () => {
   const { theme } = useTheme();
   const { getText } = useLanguage();
   const { isPremium } = useAuth();
-  const navigation = useNavigation();
 
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title={getText('appName')} />
       {isPremium ? <PremiumContent /> : <FreeUserContent />}
-      <BottomNavBar
-        currentRoute="Premium"
-        onNavigate={(screen) => {
-          // @ts-ignore - The type system doesn't understand that this navigation is valid
-          navigation.navigate(screen);
-        }}
-      />
     </Screen>
   );
 };
