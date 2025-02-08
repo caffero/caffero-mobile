@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Platform } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -29,7 +29,13 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
     return (
         <Screen>
-            <View style={styles.languageSelectorContainer}>
+            <View style={[
+                styles.languageSelectorContainer,
+                Platform.select({
+                    ios: { top: 60 }, // Adjusted for iOS status bar + some padding
+                    android: { top: 20 }, // Adjusted for Android
+                })
+            ]}>
                 <LanguageSelector />
             </View>
             <View style={styles.content}>
@@ -96,7 +102,6 @@ const styles = StyleSheet.create({
     },
     languageSelectorContainer: {
         position: 'absolute',
-        top: spacing.lg,
         right: spacing.lg,
         zIndex: 1,
     },
