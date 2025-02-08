@@ -265,6 +265,12 @@ export const mockLocalizations: LocalizationMap = {
         { id: 188, propertyName: 'commercialAgreementContent', value: 'By accepting this agreement, you consent to receive commercial communications from Caffero about:\n\n- Special offers and promotions\n- New features and services\n- Coffee-related content and tips\n- Events and workshops\n- Product recommendations\n\nCommunication Channels:\n- Email newsletters\n- Push notifications\n- SMS messages (if provided)\n\nYou can opt-out of commercial communications at any time through:\n- App settings\n- Unsubscribe links in emails\n- Contacting customer support\n\nThis consent is optional and not accepting will not affect your ability to use the app\'s core features.', languageId: 'en' },
         { id: 189, propertyName: 'kvkkAgreementText', value: 'I have read and accept the Personal Data Protection Agreement', languageId: 'en' },
         { id: 190, propertyName: 'commercialAgreementText', value: 'I have read and accept the Commercial Communication Agreement', languageId: 'en' },
+        // Recipe Privacy Settings
+        { id: 191, propertyName: 'recipePrivacy', value: 'Recipe Privacy', languageId: 'en' },
+        { id: 192, propertyName: 'publicRecipe', value: 'Public Recipe', languageId: 'en' },
+        { id: 193, propertyName: 'privateRecipe', value: 'Private Recipe', languageId: 'en' },
+        { id: 194, propertyName: 'publicRecipeDescription', value: 'Anyone can view this recipe', languageId: 'en' },
+        { id: 195, propertyName: 'privateRecipeDescription', value: 'Only you can view this recipe', languageId: 'en' },
     ],
     tr: [
         // App Settings Screen
@@ -514,5 +520,11 @@ export const mockLocalizations: LocalizationMap = {
         { id: 188, propertyName: 'commercialAgreementContent', value: 'By accepting this agreement, you consent to receive commercial communications from Caffero about:\n\n- Special offers and promotions\n- New features and services\n- Coffee-related content and tips\n- Events and workshops\n- Product recommendations\n\nCommunication Channels:\n- Email newsletters\n- Push notifications\n- SMS messages (if provided)\n\nYou can opt-out of commercial communications at any time through:\n- App settings\n- Unsubscribe links in emails\n- Contacting customer support\n\nThis consent is optional and not accepting will not affect your ability to use the app\'s core features.', languageId: 'tr' },
         { id: 189, propertyName: 'kvkkAgreementText', value: 'KVKK Metni\'ni okudum ve kabul ediyorum', languageId: 'tr' },
         { id: 190, propertyName: 'commercialAgreementText', value: 'Ticari İleti Metni\'ni okudum ve kabul ediyorum', languageId: 'tr' },
+        // Recipe Privacy Settings
+        { id: 191, propertyName: 'recipePrivacy', value: 'Tarif Gizliliği', languageId: 'tr' },
+        { id: 192, propertyName: 'publicRecipe', value: 'Herkese Açık Tarif', languageId: 'tr' },
+        { id: 193, propertyName: 'privateRecipe', value: 'Özel Tarif', languageId: 'tr' },
+        { id: 194, propertyName: 'publicRecipeDescription', value: 'Bu tarifi herkes görebilir', languageId: 'tr' },
+        { id: 195, propertyName: 'privateRecipeDescription', value: 'Bu tarifi sadece siz görebilirsiniz', languageId: 'tr' },
     ]
 }; 
