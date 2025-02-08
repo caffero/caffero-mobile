@@ -143,6 +143,12 @@ export const HomeScreen = () => {
     }
   };
 
+  const handleCancelSearch = () => {
+    setSearchQuery('');
+    setIsSearching(false);
+    setSearchResults([]);
+  };
+
   const renderSearchItem = ({ item }: { item: SearchItem }) => (
     <TouchableOpacity
       style={[styles.searchItem, { backgroundColor: theme.colors.surface.primary }]}
@@ -174,19 +180,34 @@ export const HomeScreen = () => {
   const renderContent = () => {
     if (isSearching) {
       return (
-        <FlatList
-          data={searchResults}
-          renderItem={renderSearchItem}
-          keyExtractor={item => item.id}
-          contentContainerStyle={styles.searchResults}
-          ListEmptyComponent={
-            <View style={styles.emptyState}>
-              <Text style={[styles.emptyStateText, { color: theme.colors.text.secondary }]}>
-                {getText('noSearchResults')}
+        <View style={styles.searchResultsContainer}>
+          <View style={[styles.searchHeader, { borderBottomColor: theme.colors.border.primary }]}>
+            <Text style={[styles.searchResultsTitle, { color: theme.colors.text.primary }]}>
+              {searchResults.length > 0 
+                ? `${searchResults.length} ${getText('searchResults')}` 
+                : getText('noSearchResults')}
+            </Text>
+            <TouchableOpacity onPress={handleCancelSearch}>
+              <Text style={[styles.cancelButton, { color: theme.colors.primary.main }]}>
+                {getText('cancel')}
               </Text>
-            </View>
-          }
-        />
+            </TouchableOpacity>
+          </View>
+          <FlatList
+            data={searchResults}
+            renderItem={renderSearchItem}
+            keyExtractor={item => item.id}
+            contentContainerStyle={styles.searchResults}
+            keyboardShouldPersistTaps="handled"
+            ListEmptyComponent={
+              <View style={styles.emptyState}>
+                <Text style={[styles.emptyStateText, { color: theme.colors.text.secondary }]}>
+                  {getText('noSearchResults')}
+                </Text>
+              </View>
+            }
+          />
+        </View>
       );
     }
 
@@ -265,6 +286,8 @@ export const HomeScreen = () => {
               }
             }}
             onFocus={() => setIsSearching(true)}
+            returnKeyType="search"
+            onSubmitEditing={handleSearch}
           />
           {searchQuery.length > 0 && (
             <TouchableOpacity
@@ -282,18 +305,7 @@ export const HomeScreen = () => {
         </View>
       </View>
 
-      {isSearching && (
-        <View style={[styles.overlay, { 
-          backgroundColor: isDark 
-            ? 'rgba(0, 0, 0, 0.7)' 
-            : 'rgba(0, 0, 0, 0.4)',
-          zIndex: 1
-        }]} />
-      )}
-
-      <View style={[styles.contentContainer, isSearching && styles.blurredContent]}>
-        {renderContent()}
-      </View>
+      {renderContent()}
     </Screen>
   );
 };
@@ -393,5 +405,23 @@ const styles = StyleSheet.create({
   emptyStateText: {
     fontSize: 16,
     textAlign: 'center',
+  },
+  searchResultsContainer: {
+    flex: 1,
+  },
+  searchHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: spacing.md,
+    borderBottomWidth: 1,
+  },
+  searchResultsTitle: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  cancelButton: {
+    fontSize: 16,
+    fontWeight: '500',
   },
 }); 
