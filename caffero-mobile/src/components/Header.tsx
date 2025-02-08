@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, StatusBar, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from '../contexts/ThemeContext';
 
-interface HeaderProps {
+export interface HeaderProps {
   title: string;
   showBack?: boolean;
   onBack?: () => void;
   rightIcon?: string;
   onRightPress?: () => void;
+  titleStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -17,6 +19,8 @@ export const Header: React.FC<HeaderProps> = ({
   onBack,
   rightIcon,
   onRightPress,
+  titleStyle,
+  containerStyle,
 }) => {
   const { theme } = useTheme();
 
@@ -30,18 +34,23 @@ export const Header: React.FC<HeaderProps> = ({
     ]}>
       <View style={[
         styles.container,
-        { backgroundColor: theme.colors.background.primary }
+        { backgroundColor: theme.colors.background.primary },
+        containerStyle,
       ]}>
         {showBack && (
           <TouchableOpacity onPress={onBack} style={styles.backButton}>
             <Icon name="arrow-back" size={24} color={theme.colors.text.primary} />
           </TouchableOpacity>
         )}
-        <Text style={[
-          styles.title,
-          theme.typography.title2,
-          { color: theme.colors.text.primary }
-        ]}>
+        <Text
+          style={[
+            styles.title,
+            theme.typography.title2,
+            { color: theme.colors.text.primary },
+            titleStyle,
+          ]}
+          numberOfLines={2}
+        >
           {title}
         </Text>
         {rightIcon && (

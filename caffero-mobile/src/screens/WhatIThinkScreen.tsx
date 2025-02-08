@@ -69,6 +69,8 @@ export const WhatIThinkScreen = () => {
         title={getText('whatIThink')}
         rightIcon="delete"
         onRightPress={() => navigation.navigate('DeletePosts')}
+        showBack
+        onBack={() => navigation.goBack()}
       />
       <FlatList
         data={posts}

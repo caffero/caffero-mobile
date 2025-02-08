@@ -66,8 +66,11 @@ export const PostDetailScreen = () => {
       <Header
         title={post.title}
         showBack
+        onBack={() => navigation.goBack()}
         rightIcon="edit"
-        onRightPress={() => navigation.navigate('UpdatePost', { id: route.params.id })}
+        onRightPress={() => navigation.navigate('UpdatePost', { id: post.id })}
+        titleStyle={styles.headerTitle}
+        containerStyle={styles.headerContainer}
       />
       <ScrollView contentContainerStyle={styles.content}>
         <Image source={{ uri: post.imageUrl }} style={styles.image} />
@@ -120,6 +123,16 @@ export const PostDetailScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  headerContainer: {
+    minHeight: 56,
+    height: 'auto',
+    paddingVertical: 8,
+  },
+  headerTitle: {
+    flexShrink: 1,
+    marginHorizontal: 16,
+    textAlign: 'center',
   },
   content: {
     padding: spacing.md,
