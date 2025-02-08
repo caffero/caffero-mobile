@@ -127,20 +127,30 @@ export const HomeScreen = () => {
   };
 
   const handleSearchItemPress = (item: SearchItem) => {
+    console.log('Search item pressed:', item);
+    
     switch (item.type) {
       case 'Recipe':
         navigation.navigate('RecipeDetail', { id: item.id });
+        setIsSearching(false);
         break;
       case 'CoffeeBean':
         navigation.navigate('CoffeeBeanDetail', { id: item.id });
+        setIsSearching(false);
         break;
       case 'Roastery':
         navigation.navigate('RoasteryDetail', { id: item.id });
+        setIsSearching(false);
         break;
       case 'Post':
         navigation.navigate('PostDetail', { id: item.id });
+        setIsSearching(false);
         break;
     }
+    
+    // Clear search state after navigation
+    setSearchQuery('');
+    setSearchResults([]);
   };
 
   const handleCancelSearch = () => {
