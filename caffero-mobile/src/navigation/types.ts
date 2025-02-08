@@ -43,6 +43,10 @@ export type RootStackParamList = {
   EventDetail: { event: { title: string; imageUrl: string } };
   TasteMatches: undefined;
   TasteMatchDetail: { match: { title: string; imageUrl: string } };
+
+  // New routes
+  RoasteryDetail: { id: string };
+  PostDetail: { id: string };
 }; 
 
 export type BottomTabParamList = {
