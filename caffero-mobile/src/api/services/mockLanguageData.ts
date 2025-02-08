@@ -232,10 +232,9 @@ export const mockLocalizations: LocalizationMap = {
 
         // OTP Screen
         { id: 163, propertyName: 'confirmOtp', value: 'Confirm OTP', languageId: 'en' },
-        { id: 164, propertyName: 'enterOtpCode', value: 'Enter verification code', languageId: 'en' },
-        { id: 165, propertyName: 'otpVerificationFailed', value: 'OTP verification failed. Please try again.', languageId: 'en' },
-        { id: 166, propertyName: 'checkEmailForOtp', value: 'Check your email for verification code.', languageId: 'en' },
-        { id: 167, propertyName: 'submit', value: 'Submit', languageId: 'en' }
+        { id: 164, propertyName: 'otpVerificationFailed', value: 'OTP verification failed. Please try again.', languageId: 'en' },
+        { id: 165, propertyName: 'checkEmailForOtp', value: 'Check your email for verification code.', languageId: 'en' },
+        { id: 166, propertyName: 'submit', value: 'Submit', languageId: 'en' }
     ],
     tr: [
         // App Settings Screen
@@ -451,10 +450,9 @@ export const mockLocalizations: LocalizationMap = {
         { id: 161, propertyName: 'recipeUpdateSuccess', value: 'Tarif başarıyla güncellendi', languageId: 'tr' },
 
         // OTP Screen
-        { id: 163, propertyName: 'confirmOtp', value: 'OTP Doğrula', languageId: 'tr' },
-        { id: 164, propertyName: 'enterOtpCode', value: 'Doğrulama kodunu girin', languageId: 'tr' },
-        { id: 165, propertyName: 'otpVerificationFailed', value: 'OTP doğrulaması başarısız. Lütfen tekrar deneyin.', languageId: 'tr' },
-        { id: 166, propertyName: 'checkEmailForOtp', value: 'Doğrulama kodu için e-postanızı kontrol edin.', languageId: 'tr' },
-        { id: 167, propertyName: 'submit', value: 'Gönder', languageId: 'tr' }
+        { id: 163, propertyName: 'confirmOtp', value: 'Doğrulama kodunu girin', languageId: 'tr' },
+        { id: 164, propertyName: 'otpVerificationFailed', value: 'OTP doğrulaması başarısız. Lütfen tekrar deneyin.', languageId: 'tr' },
+        { id: 165, propertyName: 'checkEmailForOtp', value: 'Doğrulama kodu için e-postanızı kontrol edin.', languageId: 'tr' },
+        { id: 166, propertyName: 'submit', value: 'Gönder', languageId: 'tr' }
     ]
 }; 

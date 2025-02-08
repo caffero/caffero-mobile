@@ -57,14 +57,6 @@ export const OtpScreen: React.FC<Props> = ({ navigation }) => {
             ]}>
                 {getText('confirmOtp')}
             </Text>
-            
-            <Text style={[
-                styles.subtitle,
-                theme.typography.body.medium,
-                { color: theme.colors.text.secondary }
-            ]}>
-                {getText('enterOtpCode')}
-            </Text>
 
             <Text style={[
                 styles.subheader,
