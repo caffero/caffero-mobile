@@ -33,7 +33,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
                 styles.languageSelectorContainer,
                 Platform.select({
                     ios: { top: 60 }, // Adjusted for iOS status bar + some padding
-                    android: { top: 20 }, // Adjusted for Android
+                    android: { top: 60 }, // Adjusted for Android
                 })
             ]}>
                 <LanguageSelector />
