@@ -64,17 +64,18 @@ export const PostDetailScreen = () => {
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
-        title={post.title}
+        title={getText('appName')}
         showBack
         onBack={() => navigation.goBack()}
         rightIcon="edit"
         onRightPress={() => navigation.navigate('UpdatePost', { id: post.id })}
-        titleStyle={styles.headerTitle}
-        containerStyle={styles.headerContainer}
       />
       <ScrollView contentContainerStyle={styles.content}>
+        <Text style={[styles.postTitle, { color: theme.colors.text.primary }]}>
+          {post.title}
+        </Text>
         <Image source={{ uri: post.imageUrl }} style={styles.image} />
-        <Text style={[styles.content, { color: theme.colors.text.primary }]}>
+        <Text style={[styles.postContent, { color: theme.colors.text.primary }]}>
           {post.content}
         </Text>
         <View style={styles.actions}>
@@ -124,26 +125,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  headerContainer: {
-    minHeight: 56,
-    height: 'auto',
-    paddingVertical: 8,
-  },
-  headerTitle: {
-    flexShrink: 1,
-    marginHorizontal: 16,
-    textAlign: 'center',
-  },
   content: {
     padding: spacing.md,
+  },
+  postTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+    marginBottom: spacing.md,
+    lineHeight: 32,
   },
   image: {
     width: '100%',
     height: 300,
     resizeMode: 'cover',
     marginBottom: spacing.md,
+    borderRadius: 8,
   },
-  text: {
+  postContent: {
     fontSize: 16,
     lineHeight: 24,
     marginBottom: spacing.xl,
