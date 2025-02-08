@@ -271,6 +271,22 @@ export const mockLocalizations: LocalizationMap = {
         { id: 193, propertyName: 'privateRecipe', value: 'Private Recipe', languageId: 'en' },
         { id: 194, propertyName: 'publicRecipeDescription', value: 'Anyone can view this recipe', languageId: 'en' },
         { id: 195, propertyName: 'privateRecipeDescription', value: 'Only you can view this recipe', languageId: 'en' },
+
+        // Post Related
+        { id: 196, propertyName: 'whatIThink', value: 'What I Think', languageId: 'en' },
+        { id: 197, propertyName: 'createPost', value: 'Create Post', languageId: 'en' },
+        { id: 198, propertyName: 'updatePost', value: 'Update Post', languageId: 'en' },
+        { id: 199, propertyName: 'deletePosts', value: 'Delete Posts', languageId: 'en' },
+        { id: 200, propertyName: 'postTitle', value: 'Post Title', languageId: 'en' },
+        { id: 201, propertyName: 'postContent', value: 'Post Content', languageId: 'en' },
+        { id: 202, propertyName: 'enterPostTitle', value: 'Enter post title', languageId: 'en' },
+        { id: 203, propertyName: 'enterPostContent', value: 'Enter post content', languageId: 'en' },
+        { id: 204, propertyName: 'postCreated', value: 'Post created successfully', languageId: 'en' },
+        { id: 205, propertyName: 'postUpdated', value: 'Post updated successfully', languageId: 'en' },
+        { id: 206, propertyName: 'postDeleted', value: 'Selected posts have been deleted', languageId: 'en' },
+        { id: 207, propertyName: 'likes', value: 'Likes', languageId: 'en' },
+        { id: 208, propertyName: 'dislikes', value: 'Dislikes', languageId: 'en' },
+        { id: 209, propertyName: 'addPostImage', value: 'Add Post Image', languageId: 'en' },
     ],
     tr: [
         // App Settings Screen
@@ -526,5 +542,21 @@ export const mockLocalizations: LocalizationMap = {
         { id: 193, propertyName: 'privateRecipe', value: 'Özel Tarif', languageId: 'tr' },
         { id: 194, propertyName: 'publicRecipeDescription', value: 'Bu tarifi herkes görebilir', languageId: 'tr' },
         { id: 195, propertyName: 'privateRecipeDescription', value: 'Bu tarifi sadece siz görebilirsiniz', languageId: 'tr' },
+
+        // Post Related
+        { id: 196, propertyName: 'whatIThink', value: 'Ne Düşünüyorum', languageId: 'tr' },
+        { id: 197, propertyName: 'createPost', value: 'Gönderi Oluştur', languageId: 'tr' },
+        { id: 198, propertyName: 'updatePost', value: 'Gönderi Güncelle', languageId: 'tr' },
+        { id: 199, propertyName: 'deletePosts', value: 'Gönderileri Sil', languageId: 'tr' },
+        { id: 200, propertyName: 'postTitle', value: 'Gönderi Başlığı', languageId: 'tr' },
+        { id: 201, propertyName: 'postContent', value: 'Gönderi İçeriği', languageId: 'tr' },
+        { id: 202, propertyName: 'enterPostTitle', value: 'Gönderi başlığı girin', languageId: 'tr' },
+        { id: 203, propertyName: 'enterPostContent', value: 'Gönderi içeriği girin', languageId: 'tr' },
+        { id: 204, propertyName: 'postCreated', value: 'Gönderi başarıyla oluşturuldu', languageId: 'tr' },
+        { id: 205, propertyName: 'postUpdated', value: 'Gönderi başarıyla güncellendi', languageId: 'tr' },
+        { id: 206, propertyName: 'postDeleted', value: 'Seçili gönderiler silindi', languageId: 'tr' },
+        { id: 207, propertyName: 'likes', value: 'Beğeniler', languageId: 'tr' },
+        { id: 208, propertyName: 'dislikes', value: 'Beğenmemeler', languageId: 'tr' },
+        { id: 209, propertyName: 'addPostImage', value: 'Gönderi Resmi Ekle', languageId: 'tr' },
     ]
 }; 

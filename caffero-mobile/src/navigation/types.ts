@@ -40,6 +40,13 @@ export type RootStackParamList = {
   SuggestProduct: undefined;
   Subscription: undefined;
 
+  // Post screens
+  WhatIThink: undefined;
+  PostDetail: { id: string };
+  CreatePost: undefined;
+  UpdatePost: { id: string };
+  DeletePosts: undefined;
+
   // Premium features
   Coupons: undefined;
   Events: undefined;
@@ -49,7 +56,6 @@ export type RootStackParamList = {
 
   // New routes
   RoasteryDetail: { id: string };
-  PostDetail: { id: string };
 }; 
 
 export type BottomTabParamList = {

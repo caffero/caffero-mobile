@@ -8,38 +8,57 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { RootStackParamList, BottomTabParamList } from './types';
 
+// Auth Screens
 import { LoginScreen } from '../screens/LoginScreen';
 import { RegisterScreen } from '../screens/RegisterScreen';
 import { OtpScreen } from '../screens/OtpScreen';
+import { ForgotPasswordScreen } from '../screens/ForgotPasswordScreen';
+import { ResetForgottenPasswordScreen } from '../screens/ResetForgottenPasswordScreen';
+import { ResetPasswordScreen } from '../screens/ResetPasswordScreen';
+
+// Main Tab Screens
 import { HomeScreen } from '../screens/HomeScreen';
 import { ShelfScreen } from '../screens/ShelfScreen';
 import { ScanScreen } from '../screens/ScanScreen';
 import { PremiumScreen } from '../screens/PremiumScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
+
+// Profile Related Screens
 import { EditProfileScreen } from '../screens/EditProfileScreen';
 import { AppSettingsScreen } from '../screens/AppSettingsScreen';
 import { NotificationSettingsScreen } from '../screens/NotificationSettingsScreen';
 import { PrivacyScreen } from '../screens/PrivacyScreen';
 import { ContactUsScreen } from '../screens/ContactUsScreen';
+
+// Recipe Related Screens
 import { RecipeDetailScreen } from '../screens/RecipeDetailScreen';
+import { CreateRecipeScreen } from '../screens/CreateRecipeScreen';
 import { UpdateRecipeScreen } from '../screens/UpdateRecipeScreen';
-import { SuggestProductScreen } from '../screens/SuggestProductScreen';
-import { UpdateEquipmentScreen } from '../screens/UpdateEquipmentScreen';
-import { AddCoffeeBeanScreen } from '../screens/AddCoffeeBeanScreen';
-import { WhatIBrewScreen } from '../screens/WhatIBrewScreen';
-import { CoffeeBeanDetailScreen } from '../screens/CoffeeBeanDetailScreen';
+import { DeleteRecipeScreen } from '../screens/DeleteRecipeScreen';
+
+// Equipment Related Screens
 import { WhatIBrewWithScreen } from '../screens/WhatIBrewWithScreen';
 import { EquipmentDetailScreen } from '../screens/EquipmentDetailScreen';
 import { CreateEquipmentScreen } from '../screens/CreateEquipmentScreen';
+import { UpdateEquipmentScreen } from '../screens/UpdateEquipmentScreen';
 import { DeleteEquipmentScreen } from '../screens/DeleteEquipmentScreen';
-import { HowIBrewScreen } from '../screens/HowIBrewScreen';
-import { CreateRecipeScreen } from '../screens/CreateRecipeScreen';
-import { DeleteRecipeScreen } from '../screens/DeleteRecipeScreen';
-import { RoasteryDetailScreen } from '../screens/RoasteryDetailScreen';
+
+// Coffee Bean Related Screens
+import { WhatIBrewScreen } from '../screens/WhatIBrewScreen';
+import { CoffeeBeanDetailScreen } from '../screens/CoffeeBeanDetailScreen';
+import { AddCoffeeBeanScreen } from '../screens/AddCoffeeBeanScreen';
+
+// Post Related Screens
+import { WhatIThinkScreen } from '../screens/WhatIThinkScreen';
 import { PostDetailScreen } from '../screens/PostDetailScreen';
-import { ForgotPasswordScreen } from '../screens/ForgotPasswordScreen';
-import { ResetForgottenPasswordScreen } from '../screens/ResetForgottenPasswordScreen';
-import { ResetPasswordScreen } from '../screens/ResetPasswordScreen';
+import { CreatePostScreen } from '../screens/CreatePostScreen';
+import { UpdatePostScreen } from '../screens/UpdatePostScreen';
+import { DeletePostsScreen } from '../screens/DeletePostsScreen';
+
+// Other Screens
+import { HowIBrewScreen } from '../screens/HowIBrewScreen';
+import { SuggestProductScreen } from '../screens/SuggestProductScreen';
+import { RoasteryDetailScreen } from '../screens/RoasteryDetailScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();
@@ -175,6 +194,13 @@ export const Navigation = () => {
               <Stack.Group screenOptions={{ presentation: 'card' }}>
                 <Stack.Screen name="RoasteryDetail" component={RoasteryDetailScreen} />
                 <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+              </Stack.Group>
+
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="WhatIThink" component={WhatIThinkScreen} />
+                <Stack.Screen name="CreatePost" component={CreatePostScreen} />
+                <Stack.Screen name="UpdatePost" component={UpdatePostScreen} />
+                <Stack.Screen name="DeletePosts" component={DeletePostsScreen} />
               </Stack.Group>
             </>
           )}

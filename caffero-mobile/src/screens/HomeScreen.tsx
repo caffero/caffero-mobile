@@ -106,9 +106,7 @@ export const HomeScreen = () => {
   };
 
   const handleBlogPress = (id: string) => {
-    // TODO: Add DiscoverCoffee to RootStackParamList if needed
-    // navigation.navigate('DiscoverCoffee');
-    console.log('Blog post pressed:', id);
+    navigation.navigate('PostDetail', { id });
   };
 
   const handleSearch = async () => {

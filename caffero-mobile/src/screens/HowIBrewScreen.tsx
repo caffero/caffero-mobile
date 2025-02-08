@@ -86,7 +86,7 @@ export const HowIBrewScreen = () => {
         showBack
         onBack={() => navigation.goBack()}
         rightIcon="delete"
-        onRightPress={() => navigation.navigate('DeleteRecipe')}
+        onRightPress={() => navigation.navigate('DeleteRecipe', { id: '' })}
       />
       <FlatList
         data={recipes}
