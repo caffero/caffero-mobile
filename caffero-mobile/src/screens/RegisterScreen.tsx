@@ -124,13 +124,13 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                                 styles.agreementText,
                                 { color: theme.colors.text.primary }
                             ]}>
-                                <Text>KVKK Metni'ni </Text>
                                 <Text
                                     style={[styles.agreementLink, { color: theme.colors.primary.main }]}
                                     onPress={() => setShowPersonalDataAgreement(true)}
                                 >
-                                    okudum ve kabul ediyorum
+                                    {getText('kvkkAgreementTitle')}
                                 </Text>
+                                <Text>'ni {getText('kvkkAgreementText').split('KVKK Metni\'ni ')[1]}</Text>
                             </Text>
                         </View>
                     </View>
@@ -142,13 +142,13 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
                                 styles.agreementText,
                                 { color: theme.colors.text.primary }
                             ]}>
-                                <Text>Ticari İleti Metni'ni </Text>
                                 <Text
                                     style={[styles.agreementLink, { color: theme.colors.primary.main }]}
                                     onPress={() => setShowCommercialAgreement(true)}
                                 >
-                                    okudum ve kabul ediyorum
+                                    {getText('commercialAgreementTitle')}
                                 </Text>
+                                <Text>'ni {getText('commercialAgreementText').split('Ticari İleti Metni\'ni ')[1]}</Text>
                             </Text>
                         </View>
                     </View>
