@@ -255,7 +255,14 @@ export const mockLocalizations: LocalizationMap = {
         { id: 180, propertyName: 'enterNewPassword', value: 'Enter your new password', languageId: 'en' },
         { id: 181, propertyName: 'confirmNewPassword', value: 'Confirm your new password', languageId: 'en' },
         { id: 182, propertyName: 'passwordsDontMatch', value: 'Passwords do not match', languageId: 'en' },
-        { id: 183, propertyName: 'incorrectCurrentPassword', value: 'Current password is incorrect', languageId: 'en' }
+        { id: 183, propertyName: 'incorrectCurrentPassword', value: 'Current password is incorrect', languageId: 'en' },
+
+        // Agreement Related
+        { id: 184, propertyName: 'personalDataAgreementRequired', value: 'You must accept the Personal Data Protection Agreement to continue.', languageId: 'en' },
+        { id: 185, propertyName: 'kvkkAgreementTitle', value: 'Personal Data Protection Agreement', languageId: 'en' },
+        { id: 186, propertyName: 'commercialAgreementTitle', value: 'Commercial Communication Agreement', languageId: 'en' },
+        { id: 187, propertyName: 'kvkkAgreementContent', value: 'This Privacy Notice explains how Caffero ("we," "our," or "us") collects, uses, shares, and protects your personal information.\n\nInformation We Collect:\n- Personal information (name, email, phone number)\n- Usage data (coffee preferences, brewing habits)\n- Device information\n\nHow We Use Your Information:\n- Provide and improve our services\n- Personalize your experience\n- Send important notifications\n- Analyze app performance\n\nData Protection:\n- We implement industry-standard security measures\n- Your data is encrypted and stored securely\n- We regularly review our security practices\n\nYour Rights:\n- Access your personal data\n- Request corrections\n- Delete your account\n- Opt-out of communications\n\nBy accepting this agreement, you acknowledge that you have read and understood our privacy practices.', languageId: 'en' },
+        { id: 188, propertyName: 'commercialAgreementContent', value: 'By accepting this agreement, you consent to receive commercial communications from Caffero about:\n\n- Special offers and promotions\n- New features and services\n- Coffee-related content and tips\n- Events and workshops\n- Product recommendations\n\nCommunication Channels:\n- Email newsletters\n- Push notifications\n- SMS messages (if provided)\n\nYou can opt-out of commercial communications at any time through:\n- App settings\n- Unsubscribe links in emails\n- Contacting customer support\n\nThis consent is optional and not accepting will not affect your ability to use the app\'s core features.', languageId: 'en' },
     ],
     tr: [
         // App Settings Screen
@@ -495,6 +502,13 @@ export const mockLocalizations: LocalizationMap = {
         { id: 180, propertyName: 'enterNewPassword', value: 'Yeni şifrenizi girin', languageId: 'tr' },
         { id: 181, propertyName: 'confirmNewPassword', value: 'Yeni şifrenizi onaylayın', languageId: 'tr' },
         { id: 182, propertyName: 'passwordsDontMatch', value: 'Şifreler eşleşmiyor', languageId: 'tr' },
-        { id: 183, propertyName: 'incorrectCurrentPassword', value: 'Mevcut şifre yanlış', languageId: 'tr' }
+        { id: 183, propertyName: 'incorrectCurrentPassword', value: 'Mevcut şifre yanlış', languageId: 'tr' },
+
+        // Agreement Related
+        { id: 184, propertyName: 'personalDataAgreementRequired', value: 'Devam etmek için Kişisel Verilerin Korunması Sözleşmesi\'ni kabul etmelisiniz.', languageId: 'tr' },
+        { id: 185, propertyName: 'kvkkAgreementTitle', value: 'Kişisel Verilerin Korunması Sözleşmesi', languageId: 'tr' },
+        { id: 186, propertyName: 'commercialAgreementTitle', value: 'Ticari İletişim Sözleşmesi', languageId: 'tr' },
+        { id: 187, propertyName: 'kvkkAgreementContent', value: 'Bu Gizlilik Bildirimi, Caffero ("biz," "bizim" veya "bize") olarak kişisel bilgilerinizi nasıl topladığımızı, kullandığımızı, paylaştığımızı ve koruduğumuzu açıklar.\n\nTopladığımız Bilgiler:\n- Kişisel bilgiler (ad, e-posta, telefon numarası)\n- Kullanım verileri (kahve tercihleri, demleme alışkanlıkları)\n- Cihaz bilgileri\n\nBilgilerinizi Nasıl Kullanıyoruz:\n- Hizmetlerimizi sunmak ve geliştirmek\n- Deneyiminizi kişiselleştirmek\n- Önemli bildirimleri göndermek\n- Uygulama performansını analiz etmek\n\nVeri Koruma:\n- Endüstri standardı güvenlik önlemleri uyguluyoruz\n- Verileriniz şifrelenir ve güvenle saklanır\n- Güvenlik uygulamalarımızı düzenli olarak gözden geçiriyoruz\n\nHaklarınız:\n- Kişisel verilerinize erişim\n- Düzeltme talep etme\n- Hesabınızı silme\n- İletişimden çıkma\n\nBu sözleşmeyi kabul ederek, gizlilik uygulamalarımızı okuduğunuzu ve anladığınızı kabul etmiş olursunuz.', languageId: 'tr' },
+        { id: 188, propertyName: 'commercialAgreementContent', value: 'Bu sözleşmeyi kabul ederek, Caffero\'dan aşağıdaki konularda ticari iletişim almayı kabul etmiş olursunuz:\n\n- Özel teklifler ve promosyonlar\n- Yeni özellikler ve hizmetler\n- Kahve ile ilgili içerik ve ipuçları\n- Etkinlikler ve atölyeler\n- Ürün önerileri\n\nİletişim Kanalları:\n- E-posta bültenleri\n- Push bildirimleri\n- SMS mesajları (sağlanmışsa)\n\nTicari iletişimden istediğiniz zaman şu yollarla çıkabilirsiniz:\n- Uygulama ayarları\n- E-postalardaki abonelikten çıkma bağlantıları\n- Müşteri desteği ile iletişime geçme\n\nBu izin isteğe bağlıdır ve kabul etmemek uygulamanın temel özelliklerini kullanmanızı etkilemeyecektir.', languageId: 'tr' },
     ]
 }; 

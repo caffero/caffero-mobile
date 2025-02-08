@@ -196,15 +196,15 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
             <AgreementBottomSheet
                 isVisible={showPersonalDataAgreement}
                 onClose={() => setShowPersonalDataAgreement(false)}
-                title="KVKK Metni"
-                content="[KVKK Agreement content will be placed here]"
+                title={getText('kvkkAgreementTitle')}
+                content={getText('kvkkAgreementContent')}
             />
 
             <AgreementBottomSheet
                 isVisible={showCommercialAgreement}
                 onClose={() => setShowCommercialAgreement(false)}
-                title="Ticari İleti Metni"
-                content="[Commercial Agreement content will be placed here]"
+                title={getText('commercialAgreementTitle')}
+                content={getText('commercialAgreementContent')}
             />
         </Screen>
     );
