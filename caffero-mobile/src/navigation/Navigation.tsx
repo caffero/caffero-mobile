@@ -35,6 +35,8 @@ import { DeleteEquipmentScreen } from '../screens/DeleteEquipmentScreen';
 import { HowIBrewScreen } from '../screens/HowIBrewScreen';
 import { CreateRecipeScreen } from '../screens/CreateRecipeScreen';
 import { DeleteRecipeScreen } from '../screens/DeleteRecipeScreen';
+import { RoasteryDetailScreen } from '../screens/RoasteryDetailScreen';
+import { PostDetailScreen } from '../screens/PostDetailScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();
@@ -162,6 +164,11 @@ export const Navigation = () => {
                 <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} />
                 <Stack.Screen name="Privacy" component={PrivacyScreen} />
                 <Stack.Screen name="ContactUs" component={ContactUsScreen} />
+              </Stack.Group>
+
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="RoasteryDetail" component={RoasteryDetailScreen} />
+                <Stack.Screen name="PostDetail" component={PostDetailScreen} />
               </Stack.Group>
             </>
           )}
