@@ -66,6 +66,14 @@ export const OtpScreen: React.FC<Props> = ({ navigation }) => {
                 {getText('enterOtpCode')}
             </Text>
 
+            <Text style={[
+                styles.subheader,
+                theme.typography.body.medium,
+                { color: theme.colors.text.secondary }
+            ]}>
+                {getText('checkEmailForOtp')}
+            </Text>
+
             <View style={styles.otpContainer}>
                 {otp.map((digit, index) => (
                     <TextInput
@@ -131,6 +139,10 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         marginBottom: spacing.xl,
+        textAlign: 'center',
+    },
+    subheader: {
+        marginBottom: spacing.lg,
         textAlign: 'center',
     },
     otpContainer: {

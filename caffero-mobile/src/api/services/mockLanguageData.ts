@@ -228,7 +228,14 @@ export const mockLocalizations: LocalizationMap = {
         { id: 158, propertyName: 'enterTemperature', value: 'Enter temperature', languageId: 'en' },
         { id: 159, propertyName: 'addStep', value: 'Add Step', languageId: 'en' },
         { id: 160, propertyName: 'fillRequiredFields', value: 'Please fill all required fields', languageId: 'en' },
-        { id: 161, propertyName: 'recipeUpdateSuccess', value: 'Recipe updated successfully', languageId: 'en' }
+        { id: 161, propertyName: 'recipeUpdateSuccess', value: 'Recipe updated successfully', languageId: 'en' },
+
+        // OTP Screen
+        { id: 163, propertyName: 'confirmOtp', value: 'Confirm OTP', languageId: 'en' },
+        { id: 164, propertyName: 'enterOtpCode', value: 'Enter verification code', languageId: 'en' },
+        { id: 165, propertyName: 'otpVerificationFailed', value: 'OTP verification failed. Please try again.', languageId: 'en' },
+        { id: 166, propertyName: 'checkEmailForOtp', value: 'Check your email for verification code.', languageId: 'en' },
+        { id: 167, propertyName: 'submit', value: 'Submit', languageId: 'en' }
     ],
     tr: [
         // App Settings Screen
@@ -441,6 +448,13 @@ export const mockLocalizations: LocalizationMap = {
         { id: 158, propertyName: 'enterTemperature', value: 'Sıcaklık girin', languageId: 'tr' },
         { id: 159, propertyName: 'addStep', value: 'Adım Ekle', languageId: 'tr' },
         { id: 160, propertyName: 'fillRequiredFields', value: 'Lütfen gerekli alanları doldurun', languageId: 'tr' },
-        { id: 161, propertyName: 'recipeUpdateSuccess', value: 'Tarif başarıyla güncellendi', languageId: 'tr' }
+        { id: 161, propertyName: 'recipeUpdateSuccess', value: 'Tarif başarıyla güncellendi', languageId: 'tr' },
+
+        // OTP Screen
+        { id: 163, propertyName: 'confirmOtp', value: 'OTP Doğrula', languageId: 'tr' },
+        { id: 164, propertyName: 'enterOtpCode', value: 'Doğrulama kodunu girin', languageId: 'tr' },
+        { id: 165, propertyName: 'otpVerificationFailed', value: 'OTP doğrulaması başarısız. Lütfen tekrar deneyin.', languageId: 'tr' },
+        { id: 166, propertyName: 'checkEmailForOtp', value: 'Doğrulama kodu için e-postanızı kontrol edin.', languageId: 'tr' },
+        { id: 167, propertyName: 'submit', value: 'Gönder', languageId: 'tr' }
     ]
 }; 
