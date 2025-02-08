@@ -45,7 +45,7 @@ export const ResetPasswordScreen: React.FC<Props> = ({ navigation }) => {
         [
           {
             text: getText('ok'),
-            onPress: () => navigation.navigate('AppSettings')
+            onPress: () => navigation.navigate('EditProfile')
           }
         ]
       );

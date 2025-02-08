@@ -94,10 +94,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setIsLoading(true);
             setError(null);
             const response = await authApi.verifyOtp(otp);
-            setUser(response.user);
-            setToken(response.token);
-            await AsyncStorage.setItem('token', response.token);
-            setIsRegistered(false); // Reset registration state
+            
+            // Only set user and token if this is a registration flow
+            if (isRegistered) {
+                setUser(response.user);
+                setToken(response.token);
+                await AsyncStorage.setItem('token', response.token);
+                setIsRegistered(false); // Reset registration state
+            }
+            // Don't set user/token for password reset flow
         } catch (error) {
             const message = error instanceof Error ? error.message : 'OTP verification failed';
             setError(message);
