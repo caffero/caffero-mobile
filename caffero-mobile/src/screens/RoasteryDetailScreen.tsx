@@ -70,12 +70,20 @@ const DUMMY_ROASTERY = {
   ]
 };
 
+type CoffeeBean = {
+  id: string;
+  name: string;
+  image: string;
+  roastLevel: string;
+  price: string;
+};
+
 export const RoasteryDetailScreen = ({ route, navigation }: Props) => {
   const { id } = route.params;
   const { theme } = useTheme();
   const { getText } = useLanguage();
 
-  const renderCoffeeBean = ({ item }: { item: typeof DUMMY_ROASTERY.coffeeBeans[0] }) => (
+  const renderCoffeeBean = ({ item }: { item: CoffeeBean }) => (
     <TouchableOpacity
       style={[
         styles.coffeeCard,
