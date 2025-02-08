@@ -49,6 +49,7 @@ export const CreatePostScreen = () => {
       <Header
         title={getText('createPost')}
         showBack
+        onBack={() => navigation.goBack()}
         rightIcon="check"
         onRightPress={handleSubmit}
       />

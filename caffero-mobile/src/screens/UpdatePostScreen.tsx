@@ -67,6 +67,7 @@ export const UpdatePostScreen = () => {
       <Header
         title={getText('updatePost')}
         showBack
+        onBack={() => navigation.goBack()}
         rightIcon="check"
         onRightPress={handleSubmit}
       />
