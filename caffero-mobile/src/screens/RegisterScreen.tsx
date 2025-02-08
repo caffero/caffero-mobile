@@ -30,72 +30,76 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
     };
 
     return (
-        <Screen style={styles.content}>
-            <LanguageSelector />
-            <TextInput
-                style={[
-                    styles.input,
-                    {
-                        borderColor: theme.colors.border.primary,
-                        backgroundColor: theme.colors.surface.primary,
-                        color: theme.colors.text.primary,
-                    }
-                ]}
-                placeholder={getText('email')}
-                placeholderTextColor={theme.colors.text.tertiary}
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-                keyboardType="email-address"
-            />
-            <TextInput
-                style={[
-                    styles.input,
-                    {
-                        borderColor: theme.colors.border.primary,
-                        backgroundColor: theme.colors.surface.primary,
-                        color: theme.colors.text.primary,
-                    }
-                ]}
-                placeholder={getText('username')}
-                placeholderTextColor={theme.colors.text.tertiary}
-                value={username}
-                onChangeText={setUsername}
-            />
-            <TextInput
-                style={[
-                    styles.input,
-                    {
-                        borderColor: theme.colors.border.primary,
-                        backgroundColor: theme.colors.surface.primary,
-                        color: theme.colors.text.primary,
-                    }
-                ]}
-                placeholder={getText('password')}
-                placeholderTextColor={theme.colors.text.tertiary}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
-            {error ? (
-                <Text style={[
-                    styles.error,
-                    theme.typography.body.medium,
-                    { color: theme.colors.status.error }
-                ]}>
-                    {error}
-                </Text>
-            ) : null}
-            <Button 
-                title={getText('register')}
-                onPress={handleRegister}
-                color={theme.colors.primary.main}
-            />
-            <Button
-                title={getText('haveAccountLogin')}
-                onPress={() => navigation.navigate('Login')}
-                color={theme.colors.primary.light}
-            />
+        <Screen>
+            <View style={styles.languageSelectorContainer}>
+                <LanguageSelector />
+            </View>
+            <View style={styles.content}>
+                <TextInput
+                    style={[
+                        styles.input,
+                        {
+                            borderColor: theme.colors.border.primary,
+                            backgroundColor: theme.colors.surface.primary,
+                            color: theme.colors.text.primary,
+                        }
+                    ]}
+                    placeholder={getText('email')}
+                    placeholderTextColor={theme.colors.text.tertiary}
+                    value={email}
+                    onChangeText={setEmail}
+                    autoCapitalize="none"
+                    keyboardType="email-address"
+                />
+                <TextInput
+                    style={[
+                        styles.input,
+                        {
+                            borderColor: theme.colors.border.primary,
+                            backgroundColor: theme.colors.surface.primary,
+                            color: theme.colors.text.primary,
+                        }
+                    ]}
+                    placeholder={getText('username')}
+                    placeholderTextColor={theme.colors.text.tertiary}
+                    value={username}
+                    onChangeText={setUsername}
+                />
+                <TextInput
+                    style={[
+                        styles.input,
+                        {
+                            borderColor: theme.colors.border.primary,
+                            backgroundColor: theme.colors.surface.primary,
+                            color: theme.colors.text.primary,
+                        }
+                    ]}
+                    placeholder={getText('password')}
+                    placeholderTextColor={theme.colors.text.tertiary}
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                />
+                {error ? (
+                    <Text style={[
+                        styles.error,
+                        theme.typography.body.medium,
+                        { color: theme.colors.status.error }
+                    ]}>
+                        {error}
+                    </Text>
+                ) : null}
+                <Button 
+                    title={getText('register')}
+                    onPress={handleRegister}
+                    color={theme.colors.primary.main}
+                />
+                <Button
+                    title={getText('haveAccountLogin')}
+                    onPress={() => navigation.navigate('Login')}
+                    color={theme.colors.primary.light}
+                />
+            </View>
         </Screen>
     );
 };
@@ -105,6 +109,12 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: spacing.lg,
+    },
+    languageSelectorContainer: {
+        position: 'absolute',
+        top: spacing.lg,
+        right: spacing.lg,
+        zIndex: 1,
     },
     input: {
         height: 40,
