@@ -1,13 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserTokenView } from '../api/models/Account';
+import { UserTokenView, Register } from '../api/models/Account';
 import { useAuthService } from '../api/services/authService';
-import { AuthResponse, LoginCredentials, RegisterCredentials, User } from '../types/auth';
-import { authApi } from '../api/auth';
 
 // Storage keys
 const USER_STORAGE_KEY = '@user';
 const TOKEN_STORAGE_KEY = '@token';
+
+interface User {
+    userId: string;
+    email: string;
+    fullName: string;
+    roles: string[];
+}
 
 interface AuthContextType {
     user: User | null;
@@ -16,7 +21,7 @@ interface AuthContextType {
     isRegistered: boolean;
     passwordForgotten: boolean;
     login: (email: string, password: string) => Promise<void>;
-    register: (email: string, password: string, username: string) => Promise<void>;
+    register: (email: string, password: string, fullName: string, phoneNumber: string, genderId: number) => Promise<void>;
     verifyOtp: (otp: string) => Promise<void>;
     forgotPassword: (email: string) => Promise<void>;
     resetForgottenPassword: (newPassword: string) => Promise<void>;
@@ -32,8 +37,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isLoading, setIsLoading] = useState(true);
     const [isRegistered, setIsRegistered] = useState(false);
     const [passwordForgotten, setPasswordForgotten] = useState(false);
+    const authService = useAuthService();
 
-    // Load stored auth data when app starts
     useEffect(() => {
         loadStoredAuth();
     }, []);
@@ -80,19 +85,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const login = async (email: string, password: string) => {
         try {
-            const response = await authApi.login({ email, password });
-            setUser(response.user);
-            setToken(response.token);
-            await storeAuthData(response.user, response.token);
+            const response = await authService.login({ email, password });
+            const userData: User = {
+                userId: response.userId,
+                email: response.email,
+                fullName: response.fullName,
+                roles: response.roles
+            };
+            setUser(userData);
+            setToken(response.authProperties.token);
+            await storeAuthData(userData, response.authProperties.token);
         } catch (error) {
             console.error('Login failed:', error);
             throw error;
         }
     };
 
-    const register = async (email: string, password: string, username: string) => {
+    const register = async (email: string, password: string, fullName: string, phoneNumber: string, genderId: number) => {
         try {
-            const response = await authApi.register({ email, password, username });
+            const registerData: Register = {
+                email,
+                password,
+                fullName,
+                phoneNumber,
+                genderId
+            };
+            const response = await authService.register(registerData);
             setIsRegistered(true);
             // Don't set user and token yet - wait for OTP verification
         } catch (error) {
@@ -103,15 +121,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const verifyOtp = async (otp: string) => {
         try {
-            const response = await authApi.verifyOtp(otp);
+            const response = await authService.verifyOtp(otp);
             if (isRegistered) {
-                // User just registered, set their data
-                setUser(response.user);
-                setToken(response.token);
-                await storeAuthData(response.user, response.token);
+                const userData: User = {
+                    userId: response.userId,
+                    email: response.email,
+                    fullName: response.fullName,
+                    roles: response.roles
+                };
+                setUser(userData);
+                setToken(response.authProperties.token);
+                await storeAuthData(userData, response.authProperties.token);
                 setIsRegistered(false);
             }
-            // If passwordForgotten is true, don't set user data - they need to reset password first
         } catch (error) {
             console.error('OTP verification failed:', error);
             throw error;
@@ -120,7 +142,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const forgotPassword = async (email: string) => {
         try {
-            await authApi.forgotPassword(email);
+            await authService.forgotPassword(email);
             setPasswordForgotten(true);
         } catch (error) {
             console.error('Forgot password request failed:', error);
@@ -130,7 +152,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const resetForgottenPassword = async (newPassword: string) => {
         try {
-            await authApi.resetForgottenPassword(newPassword);
+            await authService.resetForgottenPassword(newPassword);
             setPasswordForgotten(false);
         } catch (error) {
             console.error('Reset forgotten password failed:', error);
@@ -143,7 +165,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             throw new Error('No authentication token found');
         }
         try {
-            await authApi.resetPassword(currentPassword, newPassword, token);
+            await authService.resetPassword(currentPassword, newPassword, token);
         } catch (error) {
             console.error('Reset password failed:', error);
             throw error;
@@ -151,15 +173,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     const logout = async () => {
-        setUser(null);
-        setToken(null);
-        setIsRegistered(false);
-        setPasswordForgotten(false);
-        await clearAuthData();
+        try {
+            await authService.logout();
+            setUser(null);
+            setToken(null);
+            setIsRegistered(false);
+            setPasswordForgotten(false);
+            await clearAuthData();
+        } catch (error) {
+            console.error('Logout failed:', error);
+            throw error;
+        }
     };
 
     if (isLoading) {
-        // You might want to return a loading screen here
         return null;
     }
 

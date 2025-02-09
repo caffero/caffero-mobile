@@ -6,6 +6,11 @@ export const API_ENDPOINTS = {
         REGISTER: '/account/register-user',
         LOGOUT: '/account/logout',
         REFRESH_TOKEN: '/account/refresh-token',
+        PROFILE: '/account/profile',
+        VERIFY_OTP: '/account/verify-otp',
+        FORGOT_PASSWORD: '/account/forgot-password',
+        RESET_FORGOTTEN_PASSWORD: '/account/reset-forgotten-password',
+        RESET_PASSWORD: '/account/reset-password'
     },
     COFFEE_BEAN: {
         BASE: '/coffee-bean',
