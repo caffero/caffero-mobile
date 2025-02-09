@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://localhost:6002';
+export const API_BASE_URL = 'http://10.0.77.8/22:6001/api';
 
 export const API_ENDPOINTS = {
     ACCOUNT: {

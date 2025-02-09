@@ -128,8 +128,11 @@ export const Navigation = () => {
   };
 
   if (isLoading) {
-    // You might want to show a loading screen here
-    return null;
+    return (
+      <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+        <ActivityIndicator size="large" color={theme.colors.background.accent} />
+      </View>
+    );
   }
 
   return (

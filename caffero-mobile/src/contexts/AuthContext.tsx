@@ -43,7 +43,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const authService = useAuthService();
 
     useEffect(() => {
-        loadStoredAuth();
+        const initialize = async () => {
+            setIsLoading(true);
+            try {
+                await loadStoredAuth();
+            } catch (error) {
+                console.error('Failed to initialize auth:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        initialize();
     }, []);
 
     const loadStoredAuth = async () => {
@@ -59,8 +69,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             }
         } catch (error) {
             console.error('Failed to load stored auth data:', error);
-        } finally {
-            setIsLoading(false);
+            // Clear potentially corrupted data
+            await clearAuthData();
+            setUser(null);
+            setToken(null);
         }
     };
 
@@ -190,10 +202,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             throw error;
         }
     };
-
-    if (isLoading) {
-        return null;
-    }
 
     return (
         <AuthContext.Provider
