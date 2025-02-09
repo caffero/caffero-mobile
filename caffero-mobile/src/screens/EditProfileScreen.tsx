@@ -27,7 +27,7 @@ export const EditProfileScreen: React.FC<Props> = ({ navigation }) => {
   const { theme } = useTheme();
 
   const [formData, setFormData] = useState({
-    username: user?.username || '',
+    fullName: user?.fullName || '',
     email: user?.email || '',
   });
 
@@ -37,7 +37,7 @@ export const EditProfileScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleSubmit = () => {
     // Basic validation
-    if (!formData.username.trim() || !formData.email.trim()) {
+    if (!formData.fullName.trim() || !formData.email.trim()) {
       Alert.alert(getText('error'), getText('usernameEmailRequired'));
       return;
     }
@@ -59,7 +59,7 @@ export const EditProfileScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleBack = () => {
     const hasChanges = 
-      formData.username !== (user?.username || '') || 
+      formData.fullName !== (user?.fullName || '') || 
       formData.email !== (user?.email || '');
 
     if (hasChanges) {
@@ -90,7 +90,7 @@ export const EditProfileScreen: React.FC<Props> = ({ navigation }) => {
               theme.typography.body.large,
               { color: theme.colors.text.primary }
             ]}>
-              {getText('username')}
+              {getText('fullName')}
             </Text>
             <TextInput
               style={[styles.input, { 
@@ -99,9 +99,9 @@ export const EditProfileScreen: React.FC<Props> = ({ navigation }) => {
                 backgroundColor: theme.colors.surface.secondary,
                 borderColor: theme.colors.border.primary 
               }]}
-              value={formData.username}
-              onChangeText={(value) => handleChange('username', value)}
-              placeholder={getText('enterUsername')}
+              value={formData.fullName}
+              onChangeText={(value) => handleChange('fullName', value)}
+              placeholder={getText('enterFullName')}
               placeholderTextColor={theme.colors.text.tertiary}
             />
 

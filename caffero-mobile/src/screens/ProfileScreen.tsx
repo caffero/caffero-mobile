@@ -87,7 +87,7 @@ export const ProfileScreen = () => {
             theme.typography.title1,
             { color: theme.colors.text.primary }
           ]}>
-            {user?.username || getText('defaultUsername')}
+            {user?.fullName || getText('defaultUsername')}
           </Text>
           <Text style={[
             styles.email,

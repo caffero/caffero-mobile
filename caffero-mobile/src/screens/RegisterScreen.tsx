@@ -16,11 +16,11 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
     const { theme } = useTheme();
     const { getText } = useLanguage();
+    const { register } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
-    const { register } = useAuth();
 
     // Agreement states
     const [personalDataAccepted, setPersonalDataAccepted] = useState(false);

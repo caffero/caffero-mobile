@@ -218,7 +218,7 @@ const FreeUserContent = () => {
 export const PremiumScreen = () => {
   const { theme } = useTheme();
   const { getText } = useLanguage();
-  const { isPremium } = useAuth();
+  const { user, isPremium } = useAuth();
 
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>

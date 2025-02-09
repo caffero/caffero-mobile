@@ -127,85 +127,84 @@ export const Navigation = () => {
     },
   };
 
+  if (isLoading) {
+    // You might want to show a loading screen here
+    return null;
+  }
+
   return (
     <NavigationContainer theme={navigationTheme}>
-      {isLoading ? (
-        <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-          <ActivityIndicator size="large" color={theme.colors.background.accent} />
-        </View>
-      ) : (
-        <Stack.Navigator 
-          screenOptions={{ 
-            headerShown: false,
-            contentStyle: { backgroundColor: theme.colors.background.primary },
-          }}
-        >
-          {!user ? (
-            // Auth Stack
-            <>
-              <Stack.Screen 
-                name="Login" 
-                component={LoginScreen}
-                options={{
-                  animationTypeForReplace: !user ? 'pop' : 'push',
-                }}
-              />
-              <Stack.Screen name="Register" component={RegisterScreen} />
-              <Stack.Screen name="Otp" component={OtpScreen} />
-              <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-              <Stack.Screen name="ResetForgottenPassword" component={ResetForgottenPasswordScreen} />
-            </>
-          ) : (
-            // Main App Stack
-            <>
-              <Stack.Screen name="MainTabs" component={MainTabs} />
+      <Stack.Navigator 
+        screenOptions={{ 
+          headerShown: false,
+          contentStyle: { backgroundColor: theme.colors.background.primary },
+        }}
+      >
+        {!user ? (
+          // Auth Stack
+          <>
+            <Stack.Screen 
+              name="Login" 
+              component={LoginScreen}
+              options={{
+                animationTypeForReplace: !user ? 'pop' : 'push',
+              }}
+            />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Otp" component={OtpScreen} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+            <Stack.Screen name="ResetForgottenPassword" component={ResetForgottenPasswordScreen} />
+          </>
+        ) : (
+          // Main App Stack
+          <>
+            <Stack.Screen name="MainTabs" component={MainTabs} />
 
-              <Stack.Group screenOptions={{ presentation: 'card' }}>
-                <Stack.Screen name="WhatIBrew" component={WhatIBrewScreen} />
-                <Stack.Screen name="CoffeeBeanDetail" component={CoffeeBeanDetailScreen} />
-                <Stack.Screen name="AddCoffeeBean" component={AddCoffeeBeanScreen} />
-              </Stack.Group>
+            <Stack.Group screenOptions={{ presentation: 'card' }}>
+              <Stack.Screen name="WhatIBrew" component={WhatIBrewScreen} />
+              <Stack.Screen name="CoffeeBeanDetail" component={CoffeeBeanDetailScreen} />
+              <Stack.Screen name="AddCoffeeBean" component={AddCoffeeBeanScreen} />
+            </Stack.Group>
 
-              <Stack.Group screenOptions={{ presentation: 'card' }}>
-                <Stack.Screen name="WhatIBrewWith" component={WhatIBrewWithScreen} />
-                <Stack.Screen name="EquipmentDetail" component={EquipmentDetailScreen} />
-                <Stack.Screen name="CreateEquipment" component={CreateEquipmentScreen} />
-                <Stack.Screen name="UpdateEquipment" component={UpdateEquipmentScreen} />
-                <Stack.Screen name="DeleteEquipment" component={DeleteEquipmentScreen} />
-              </Stack.Group>
+            <Stack.Group screenOptions={{ presentation: 'card' }}>
+              <Stack.Screen name="WhatIBrewWith" component={WhatIBrewWithScreen} />
+              <Stack.Screen name="EquipmentDetail" component={EquipmentDetailScreen} />
+              <Stack.Screen name="CreateEquipment" component={CreateEquipmentScreen} />
+              <Stack.Screen name="UpdateEquipment" component={UpdateEquipmentScreen} />
+              <Stack.Screen name="DeleteEquipment" component={DeleteEquipmentScreen} />
+            </Stack.Group>
 
-              <Stack.Group screenOptions={{ presentation: 'card' }}>
-                <Stack.Screen name="HowIBrew" component={HowIBrewScreen} />
-                <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
-                <Stack.Screen name="CreateRecipe" component={CreateRecipeScreen} />
-                <Stack.Screen name="UpdateRecipe" component={UpdateRecipeScreen} />
-                <Stack.Screen name="DeleteRecipe" component={DeleteRecipeScreen} />
-              </Stack.Group>
+            <Stack.Group screenOptions={{ presentation: 'card' }}>
+              <Stack.Screen name="HowIBrew" component={HowIBrewScreen} />
+              <Stack.Screen name="RecipeDetail" component={RecipeDetailScreen} />
+              <Stack.Screen name="CreateRecipe" component={CreateRecipeScreen} />
+              <Stack.Screen name="UpdateRecipe" component={UpdateRecipeScreen} />
+              <Stack.Screen name="DeleteRecipe" component={DeleteRecipeScreen} />
+            </Stack.Group>
 
-              <Stack.Group screenOptions={{ presentation: 'card' }}>
-                <Stack.Screen name="EditProfile" component={EditProfileScreen} />
-                <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
-                <Stack.Screen name="AppSettings" component={AppSettingsScreen} />
-                <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} />
-                <Stack.Screen name="Privacy" component={PrivacyScreen} />
-                <Stack.Screen name="ContactUs" component={ContactUsScreen} />
-              </Stack.Group>
+            <Stack.Group screenOptions={{ presentation: 'card' }}>
+              <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+              <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+              <Stack.Screen name="AppSettings" component={AppSettingsScreen} />
+              <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} />
+              <Stack.Screen name="Privacy" component={PrivacyScreen} />
+              <Stack.Screen name="ContactUs" component={ContactUsScreen} />
+            </Stack.Group>
 
-              <Stack.Group screenOptions={{ presentation: 'card' }}>
-                <Stack.Screen name="RoasteryDetail" component={RoasteryDetailScreen} />
-                <Stack.Screen name="PostDetail" component={PostDetailScreen} />
-              </Stack.Group>
+            <Stack.Group screenOptions={{ presentation: 'card' }}>
+              <Stack.Screen name="RoasteryDetail" component={RoasteryDetailScreen} />
+              <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+            </Stack.Group>
 
-              <Stack.Group screenOptions={{ presentation: 'card' }}>
-                <Stack.Screen name="WhatIThink" component={WhatIThinkScreen} />
-                <Stack.Screen name="CreatePost" component={CreatePostScreen} />
-                <Stack.Screen name="UpdatePost" component={UpdatePostScreen} />
-                <Stack.Screen name="DeletePosts" component={DeletePostsScreen} />
-              </Stack.Group>
-            </>
-          )}
-        </Stack.Navigator>
-      )}
+            <Stack.Group screenOptions={{ presentation: 'card' }}>
+              <Stack.Screen name="WhatIThink" component={WhatIThinkScreen} />
+              <Stack.Screen name="CreatePost" component={CreatePostScreen} />
+              <Stack.Screen name="UpdatePost" component={UpdatePostScreen} />
+              <Stack.Screen name="DeletePosts" component={DeletePostsScreen} />
+            </Stack.Group>
+          </>
+        )}
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };

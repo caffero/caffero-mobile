@@ -12,6 +12,7 @@ interface User {
     email: string;
     fullName: string;
     roles: string[];
+    isPremium?: boolean;
 }
 
 interface AuthContextType {
@@ -20,8 +21,10 @@ interface AuthContextType {
     isAuthenticated: boolean;
     isRegistered: boolean;
     passwordForgotten: boolean;
+    isLoading: boolean;
+    isPremium: boolean;
     login: (email: string, password: string) => Promise<void>;
-    register: (email: string, password: string, fullName: string, phoneNumber: string, genderId: number) => Promise<void>;
+    register: (email: string, password: string, username: string) => Promise<void>;
     verifyOtp: (otp: string) => Promise<void>;
     forgotPassword: (email: string) => Promise<void>;
     resetForgottenPassword: (newPassword: string) => Promise<void>;
@@ -90,7 +93,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 userId: response.userId,
                 email: response.email,
                 fullName: response.fullName,
-                roles: response.roles
+                roles: response.roles,
+                isPremium: response.isPremium
             };
             setUser(userData);
             setToken(response.authProperties.token);
@@ -101,14 +105,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
-    const register = async (email: string, password: string, fullName: string, phoneNumber: string, genderId: number) => {
+    const register = async (email: string, password: string, username: string) => {
         try {
             const registerData: Register = {
                 email,
                 password,
-                fullName,
-                phoneNumber,
-                genderId
+                fullName: username,
+                phoneNumber: '',
+                genderId: 0
             };
             const response = await authService.register(registerData);
             setIsRegistered(true);
@@ -127,7 +131,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     userId: response.userId,
                     email: response.email,
                     fullName: response.fullName,
-                    roles: response.roles
+                    roles: response.roles,
+                    isPremium: response.isPremium
                 };
                 setUser(userData);
                 setToken(response.authProperties.token);
@@ -198,6 +203,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 isAuthenticated: !!user && !!token,
                 isRegistered,
                 passwordForgotten,
+                isLoading,
+                isPremium: !!user && !!user.isPremium,
                 login,
                 register,
                 verifyOtp,

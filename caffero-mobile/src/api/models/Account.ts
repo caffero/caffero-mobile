@@ -31,4 +31,5 @@ export interface UserTokenView {
     fullName: string;
     roles: string[];
     authProperties: UserToken;
+    isPremium: boolean;
 }
