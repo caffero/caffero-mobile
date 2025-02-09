@@ -85,7 +85,7 @@ export const WhatIBrewWithScreen = () => {
         showBack
         onBack={() => navigation.goBack()}
         rightIcon="delete"
-        onRightPress={() => navigation.navigate('DeleteEquipment')}
+        onRightPress={() => navigation.navigate('DeleteEquipment', { id: '' })}
       />
       <FlatList
         data={equipmentList}

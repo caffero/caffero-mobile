@@ -14,6 +14,7 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { spacing, borderRadius, layout } from '../theme';
 import { useTheme } from '../contexts/ThemeContext';
 import ErrorBoundary from './ErrorBoundary';
@@ -32,8 +33,8 @@ interface CarouselProps {
 }
 
 const { width: WINDOW_WIDTH } = Dimensions.get('window');
-const ITEM_WIDTH = Math.min(WINDOW_WIDTH * 0.8, layout.contentMaxWidth);
-const ITEM_HEIGHT = ITEM_WIDTH * 0.6;
+const ITEM_WIDTH = Math.min(WINDOW_WIDTH * 0.6, layout.contentMaxWidth);
+const ITEM_HEIGHT = ITEM_WIDTH * 1.5;
 const SPACING = spacing.md;
 
 const CarouselContent: React.FC<CarouselProps> = ({ title, items, onItemPress }) => {
@@ -90,11 +91,12 @@ const CarouselContent: React.FC<CarouselProps> = ({ title, items, onItemPress })
             style={styles.image}
             resizeMode="cover"
           />
-          <View 
-            style={[
-              styles.overlay,
-              { backgroundColor: 'rgba(0, 0, 0, 0.5)' }
-            ]}
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,0.8)']}
+            style={styles.overlay}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            locations={[0.3, 1]}
           >
             <View style={styles.contentContainer}>
               <Text 
@@ -102,9 +104,9 @@ const CarouselContent: React.FC<CarouselProps> = ({ title, items, onItemPress })
                   styles.itemTitle,
                   {
                     color: '#FFFFFF',
-                    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                    textShadowColor: 'rgba(0, 0, 0, 0.3)',
                     textShadowOffset: { width: 0, height: 1 },
-                    textShadowRadius: 3,
+                    textShadowRadius: 2,
                   }
                 ]}
                 numberOfLines={2}
@@ -116,10 +118,10 @@ const CarouselContent: React.FC<CarouselProps> = ({ title, items, onItemPress })
                   style={[
                     styles.subtitle,
                     {
-                      color: '#FFFFFF',
-                      textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                      color: 'rgba(255, 255, 255, 0.9)',
+                      textShadowColor: 'rgba(0, 0, 0, 0.3)',
                       textShadowOffset: { width: 0, height: 1 },
-                      textShadowRadius: 3,
+                      textShadowRadius: 2,
                     }
                   ]}
                   numberOfLines={1}
@@ -128,7 +130,7 @@ const CarouselContent: React.FC<CarouselProps> = ({ title, items, onItemPress })
                 </Text>
               )}
             </View>
-          </View>
+          </LinearGradient>
         </TouchableOpacity>
       </Animated.View>
     );
@@ -199,17 +201,26 @@ const styles = StyleSheet.create({
   contentContainer: {
     padding: spacing.md,
     paddingBottom: spacing.lg,
+    paddingTop: spacing.xl,
   } as ViewStyle,
   itemTitle: {
-    fontSize: 17,
-    lineHeight: 22,
+    fontSize: 20,
+    lineHeight: 24,
     fontWeight: '600',
+    color: '#FFFFFF',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   } as TextStyle,
   subtitle: {
     fontSize: 14,
     lineHeight: 20,
     fontWeight: '400',
     marginTop: spacing.xs,
+    color: 'rgba(255, 255, 255, 0.9)',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   } as TextStyle,
   errorContainer: {
     height: ITEM_HEIGHT,

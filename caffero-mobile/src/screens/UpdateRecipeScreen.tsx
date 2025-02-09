@@ -38,6 +38,7 @@ const getRecipe = (id: string) => ({
     volume: '100',
     temperature: '65',
   },
+  isPublic: true,
   pouringSteps: [
     { volume: '50', time: '30', temperature: '93' },
     { volume: '100', time: '60', temperature: '93' },
@@ -57,6 +58,7 @@ export const UpdateRecipeScreen = () => {
   const [useMilk, setUseMilk] = useState(false);
   const [milkVolume, setMilkVolume] = useState('');
   const [milkTemperature, setMilkTemperature] = useState('');
+  const [isPublic, setIsPublic] = useState(false);
   const [pouringSteps, setPouringSteps] = useState<PouringStep[]>([]);
 
   useEffect(() => {
@@ -69,6 +71,7 @@ export const UpdateRecipeScreen = () => {
       setMilkVolume(recipe.milk.volume);
       setMilkTemperature(recipe.milk.temperature);
     }
+    setIsPublic(recipe.isPublic);
     setPouringSteps(recipe.pouringSteps);
   }, [id]);
 
@@ -128,6 +131,26 @@ export const UpdateRecipeScreen = () => {
             placeholder={getText('enterRecipeName')}
             placeholderTextColor={theme.colors.text.tertiary}
           />
+        </View>
+
+        <View style={[styles.privacySection, { backgroundColor: theme.colors.surface.secondary }]}>
+          <View style={styles.privacyHeader}>
+            <Text style={[styles.label, { color: theme.colors.text.primary }]}>
+              {getText('recipePrivacy')}
+            </Text>
+            <Switch
+              value={isPublic}
+              onValueChange={setIsPublic}
+              trackColor={{ 
+                false: theme.colors.border.primary, 
+                true: theme.colors.primary.main 
+              }}
+              thumbColor={theme.colors.background.primary}
+            />
+          </View>
+          <Text style={[styles.privacyDescription, { color: theme.colors.text.secondary }]}>
+            {isPublic ? getText('publicRecipeDescription') : getText('privateRecipeDescription')}
+          </Text>
         </View>
 
         <TouchableOpacity
@@ -374,5 +397,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  privacySection: {
+    marginBottom: 24,
+    padding: 16,
+    borderRadius: 8,
+  },
+  privacyHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  privacyDescription: {
+    fontSize: 14,
   },
 }); 

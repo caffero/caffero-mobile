@@ -49,7 +49,7 @@ const ShelfItemContent: React.FC<ShelfItemProps> = ({
           <Text 
             style={[
               styles.title,
-              theme.typography.h2,
+              theme.typography.title2,
               {
                 color: '#FFFFFF',
                 textShadowColor: 'rgba(0, 0, 0, 0.75)',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Switch, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Switch, TouchableOpacity, Alert } from 'react-native';
 import { Header } from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '../contexts/ThemeContext';
@@ -35,9 +35,28 @@ export const NotificationSettingsScreen = () => {
     setHasChanges(false);
   };
 
+  const handleBack = () => {
+    if (hasChanges) {
+      Alert.alert(
+        getText('discardChanges'),
+        getText('discardChangesMessage'),
+        [
+          { text: getText('cancel'), style: 'cancel' },
+          { text: getText('discard'), style: 'destructive', onPress: () => navigation.goBack() },
+        ]
+      );
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header title={getText('manageNotifications')} showBack />
+      <Header 
+        title={getText('manageNotifications')} 
+        showBack 
+        onBack={handleBack}
+      />
       <View style={[styles.content, { padding: theme.spacing.md }]}>
         <View style={[
           styles.section,
@@ -50,7 +69,7 @@ export const NotificationSettingsScreen = () => {
           <View style={[styles.row, { borderBottomColor: theme.colors.border.primary }]}>
             <Text style={[
               styles.label,
-              theme.typography.body1,
+              theme.typography.body.large,
               { color: theme.colors.text.primary }
             ]}>
               {getText('pushNotifications')}
@@ -68,7 +87,7 @@ export const NotificationSettingsScreen = () => {
           <View style={[styles.row, { borderBottomColor: theme.colors.border.primary }]}>
             <Text style={[
               styles.label,
-              theme.typography.body1,
+              theme.typography.body.large,
               { color: theme.colors.text.primary }
             ]}>
               {getText('emailNotifications')}
@@ -86,7 +105,7 @@ export const NotificationSettingsScreen = () => {
           <View style={[styles.row, { borderBottomColor: theme.colors.border.primary }]}>
             <Text style={[
               styles.label,
-              theme.typography.body1,
+              theme.typography.body.large,
               { color: theme.colors.text.primary }
             ]}>
               {getText('smsNotifications')}
@@ -116,7 +135,7 @@ export const NotificationSettingsScreen = () => {
         >
           <Text style={[
             styles.submitButtonText,
-            theme.typography.button,
+            theme.typography.body.large,
             { color: hasChanges ? theme.colors.primary.contrastText : theme.colors.disabled.contrastText }
           ]}>
             {getText('saveChanges')}

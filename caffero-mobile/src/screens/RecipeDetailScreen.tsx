@@ -37,6 +37,7 @@ const getRecipe = (id: string) => ({
     volume: 100,
     temperature: 65,
   },
+  isPublic: true,
   pouringSteps: [
     { volume: 50, time: 30, temperature: 93 },
     { volume: 100, time: 60, temperature: 93 },
@@ -94,6 +95,17 @@ export const RecipeDetailScreen = () => {
           {recipe.title}
         </Text>
         
+        <View style={[styles.privacyContainer, { backgroundColor: theme.colors.surface.primary }]}>
+          <Icon 
+            name={recipe.isPublic ? "public" : "lock"} 
+            size={20} 
+            color={theme.colors.text.secondary} 
+          />
+          <Text style={[styles.privacyText, { color: theme.colors.text.secondary }]}>
+            {recipe.isPublic ? getText('publicRecipe') : getText('privateRecipe')}
+          </Text>
+        </View>
+
         <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
             {getText('equipment')}
@@ -242,5 +254,16 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
+  },
+  privacyContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  privacyText: {
+    marginLeft: 8,
+    fontSize: 14,
   },
 }); 
