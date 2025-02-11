@@ -27,15 +27,21 @@ export const useAuthService = () => {
         },
 
         async register(credentials: Register): Promise<UserTokenView> {
-            credentials.email = 'test@test.com'
+            credentials.email = 'barisvarlik19@hotmail.com'
             credentials.password = '123456'
-            credentials.fullName = 'Test'
+            credentials.fullName = 'Baris Varlik'
+            credentials.phoneNumber = '1234567890'
+            credentials.genderId = 1
+
 
             const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ACCOUNT.REGISTER}`, {
                 method: 'POST',
                 headers: getHeaders(),
                 body: JSON.stringify(credentials)
             });
+
+            console.log(response.status);
+            console.log(await response.json());
             
             if (!response.ok) 
             {
