@@ -13,7 +13,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Otp'>;
 export const OtpScreen: React.FC<Props> = ({ navigation }) => {
     const { theme } = useTheme();
     const { getText } = useLanguage();
-    const { verifyOtp, isRegistered, passwordForgotten } = useAuth();
+    const { verifyOtp, verifyOtpAndLogin, isRegistered, passwordForgotten } = useAuth();
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [error, setError] = useState('');
     const inputRefs = useRef<Array<TextInput | null>>([]);
@@ -40,13 +40,15 @@ export const OtpScreen: React.FC<Props> = ({ navigation }) => {
     const handleSubmit = async () => {
         try {
             const otpString = otp.join('');
-            await verifyOtp(otpString);
+            
             
             if (isRegistered) {
                 // User just registered, they will be automatically logged in
                 // Navigation component will handle the redirection based on user state
+                await verifyOtpAndLogin(otpString);
             } else if (passwordForgotten) {
                 // User is resetting their forgotten password
+                await verifyOtp(otpString);
                 navigation.navigate('ResetForgottenPassword');
             }
         } catch (err) {

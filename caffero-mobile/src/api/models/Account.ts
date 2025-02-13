@@ -3,6 +3,11 @@ export interface Login {
     password: string;
 }
 
+export interface Logout {
+    email: string;
+    clientId: string;
+}
+
 export interface Register {
     email: string;
     password: string;
@@ -32,4 +37,10 @@ export interface UserTokenView {
     roles: string[];
     authProperties: UserToken;
     isPremium: boolean;
+}
+
+export interface VerifyOtpAndLogin {
+    email: string;
+    password: string;
+    otp: string;
 }

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserTokenView, Register } from '../api/models/Account';
+import { UserTokenView, Register, Login, VerifyOtpAndLogin, UserToken } from '../api/models/Account';
 import { useAuthService } from '../api/services/authService';
 
 // Storage keys
@@ -13,6 +13,7 @@ interface User {
     fullName: string;
     roles: string[];
     isPremium?: boolean;
+    authProperties: UserToken;
 }
 
 interface AuthContextType {
@@ -26,6 +27,7 @@ interface AuthContextType {
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string, username: string) => Promise<void>;
     verifyOtp: (otp: string) => Promise<void>;
+    verifyOtpAndLogin: (otp: string) => Promise<void>;
     forgotPassword: (email: string) => Promise<void>;
     resetForgottenPassword: (newPassword: string) => Promise<void>;
     resetPassword: (currentPassword: string, newPassword: string) => Promise<void>;
@@ -40,6 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [isLoading, setIsLoading] = useState(true);
     const [isRegistered, setIsRegistered] = useState(false);
     const [passwordForgotten, setPasswordForgotten] = useState(false);
+    const [loginInformation, setLoginInformation] = useState<Login | null>(null);
     const authService = useAuthService();
 
     useEffect(() => {
@@ -106,6 +109,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 email: response.email,
                 fullName: response.fullName,
                 roles: response.roles,
+                authProperties: response.authProperties,
                 isPremium: response.isPremium
             };
             setUser(userData);
@@ -128,6 +132,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             };
             const response = await authService.register(registerData);
             setIsRegistered(true);
+            setLoginInformation({ email: registerData.email, password: registerData.password });
             // Don't set user and token yet - wait for OTP verification
         } catch (error) {
             console.error('Registration failed:', error);
@@ -144,6 +149,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     email: response.email,
                     fullName: response.fullName,
                     roles: response.roles,
+                    authProperties: response.authProperties,
+                    isPremium: response.isPremium
+                };
+                setUser(userData);
+                setToken(response.authProperties.token);
+                await storeAuthData(userData, response.authProperties.token);
+                setIsRegistered(false);
+            }
+        } catch (error) {
+            console.error('OTP verification failed:', error);
+            throw error;
+        }
+    };
+
+    const verifyOtpAndLogin = async (otp: string) => {
+        try {
+            if (!loginInformation) {
+                throw new Error('Login information not found');
+            }
+            const response = await authService.verifyOtpAndLogin({
+                email: loginInformation.email,
+                password: loginInformation.password,
+                otp: otp
+            });
+            if (isRegistered) {
+                const userData: User = {
+                    userId: response.userId,
+                    email: response.email,
+                    fullName: response.fullName,
+                    roles: response.roles,
+                    authProperties: response.authProperties,
                     isPremium: response.isPremium
                 };
                 setUser(userData);
@@ -191,7 +227,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const logout = async () => {
         try {
-            await authService.logout();
+            if (!user) {
+                throw new Error('User not found');
+            }
+            await authService.logout({ email: user.email, clientId: user.authProperties.clientId });
             setUser(null);
             setToken(null);
             setIsRegistered(false);
@@ -216,6 +255,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 login,
                 register,
                 verifyOtp,
+                verifyOtpAndLogin,
                 forgotPassword,
                 resetForgottenPassword,
                 resetPassword,
