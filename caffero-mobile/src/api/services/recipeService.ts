@@ -2,6 +2,8 @@ import { API_ENDPOINTS } from '../config';
 import { GetRecipe, GetRecipeList, CreateRecipe, UpdateRecipe, DeleteRecipe } from '../models/Recipe';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { ApiResponse } from '../models/ApiResponse';
+import { ApiException } from 'exceptions';
 
 export const useRecipeService = () => {
     const { token } = useAuth();
@@ -19,8 +21,18 @@ export const useRecipeService = () => {
                 method: 'GET',
                 headers: getHeaders()
             });
-            if (!response.ok) throw new Error('Failed to fetch recipes');
-            return response.json();
+
+            const result: ApiResponse<GetRecipeList[]> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to fetch recipes',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
+
+            return result.result.data;
         },
 
         async getById(id: string): Promise<GetRecipe> {
@@ -28,8 +40,18 @@ export const useRecipeService = () => {
                 method: 'GET',
                 headers: getHeaders()
             });
-            if (!response.ok) throw new Error('Failed to fetch recipe');
-            return response.json();
+
+            const result: ApiResponse<GetRecipe> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to fetch recipe',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
+
+            return result.result.data;
         },
 
         async create(data: CreateRecipe): Promise<GetRecipe> {
@@ -38,8 +60,18 @@ export const useRecipeService = () => {
                 headers: getHeaders(),
                 body: JSON.stringify(data)
             });
-            if (!response.ok) throw new Error('Failed to create recipe');
-            return response.json();
+
+            const result: ApiResponse<GetRecipe> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to create recipe',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
+
+            return result.result.data;
         },
 
         async update(data: UpdateRecipe): Promise<GetRecipe> {
@@ -48,8 +80,18 @@ export const useRecipeService = () => {
                 headers: getHeaders(),
                 body: JSON.stringify(data)
             });
-            if (!response.ok) throw new Error('Failed to update recipe');
-            return response.json();
+
+            const result: ApiResponse<GetRecipe> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to update recipe',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
+
+            return result.result.data;
         },
 
         async delete(data: DeleteRecipe): Promise<void> {
@@ -57,7 +99,16 @@ export const useRecipeService = () => {
                 method: 'DELETE',
                 headers: getHeaders()
             });
-            if (!response.ok) throw new Error('Failed to delete recipe');
+
+            const result: ApiResponse<void> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to delete recipe',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
         }
     };
 }; 

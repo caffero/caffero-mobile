@@ -2,6 +2,8 @@ import { API_ENDPOINTS } from '../config';
 import { GetEquipment, GetEquipmentList, CreateEquipment, UpdateEquipment, DeleteEquipment } from '../models/Equipment';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { ApiResponse } from '../models/ApiResponse';
+import { ApiException } from 'exceptions';
 
 export const useEquipmentService = () => {
     const { token } = useAuth();
@@ -19,8 +21,18 @@ export const useEquipmentService = () => {
                 method: 'GET',
                 headers: getHeaders()
             });
-            if (!response.ok) throw new Error('Failed to fetch equipment list');
-            return response.json();
+
+            const result: ApiResponse<GetEquipmentList[]> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to fetch equipment list',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
+
+            return result.result.data;
         },
 
         async getById(id: string): Promise<GetEquipment> {
@@ -28,8 +40,18 @@ export const useEquipmentService = () => {
                 method: 'GET',
                 headers: getHeaders()
             });
-            if (!response.ok) throw new Error('Failed to fetch equipment');
-            return response.json();
+
+            const result: ApiResponse<GetEquipment> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to fetch equipment',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
+
+            return result.result.data;
         },
 
         async create(data: CreateEquipment): Promise<GetEquipment> {
@@ -38,8 +60,18 @@ export const useEquipmentService = () => {
                 headers: getHeaders(),
                 body: JSON.stringify(data)
             });
-            if (!response.ok) throw new Error('Failed to create equipment');
-            return response.json();
+
+            const result: ApiResponse<GetEquipment> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to create equipment',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
+
+            return result.result.data;
         },
 
         async update(data: UpdateEquipment): Promise<GetEquipment> {
@@ -48,8 +80,18 @@ export const useEquipmentService = () => {
                 headers: getHeaders(),
                 body: JSON.stringify(data)
             });
-            if (!response.ok) throw new Error('Failed to update equipment');
-            return response.json();
+
+            const result: ApiResponse<GetEquipment> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to update equipment',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
+
+            return result.result.data;
         },
 
         async delete(data: DeleteEquipment): Promise<void> {
@@ -57,7 +99,16 @@ export const useEquipmentService = () => {
                 method: 'DELETE',
                 headers: getHeaders()
             });
-            if (!response.ok) throw new Error('Failed to delete equipment');
+
+            const result: ApiResponse<void> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to delete equipment',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
         }
     };
 }; 

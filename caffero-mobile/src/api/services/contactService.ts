@@ -2,6 +2,8 @@ import { API_ENDPOINTS } from '../config';
 import { CreateContact } from '../models/Contact';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { ApiResponse } from '../models/ApiResponse';
+import { ApiException } from 'exceptions';
 
 export const useContactService = () => {
     const { token } = useAuth();
@@ -20,7 +22,16 @@ export const useContactService = () => {
                 headers: getHeaders(),
                 body: JSON.stringify(data)
             });
-            if (!response.ok) throw new Error('Failed to submit contact form');
+
+            const result: ApiResponse<void> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to submit contact form',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
         }
     };
 }; 

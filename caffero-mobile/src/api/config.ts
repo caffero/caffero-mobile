@@ -50,5 +50,14 @@ export const API_ENDPOINTS = {
     PRODUCT: {
         BASE: '/product',
         CREATE: '/product'
+    },
+    LANGUAGE: {
+        BASE: '/language',
+        GET_ALL: '/language',
+        GET_LOCALIZATIONS: '/language/:id/localizations'
+    },
+    SEARCH: {
+        BASE: '/search',
+        SEARCH: '/search'
     }
 }; 

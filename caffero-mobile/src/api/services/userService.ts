@@ -2,6 +2,8 @@ import { API_ENDPOINTS } from '../config';
 import { GetUser, UpdateUser, DeleteUser } from '../models/User';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { ApiResponse } from '../models/ApiResponse';
+import { ApiException } from 'exceptions';
 
 export const useUserService = () => {
     const { token } = useAuth();
@@ -19,8 +21,18 @@ export const useUserService = () => {
                 method: 'GET',
                 headers: getHeaders()
             });
-            if (!response.ok) throw new Error('Failed to fetch user');
-            return response.json();
+
+            const result: ApiResponse<GetUser> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to fetch user',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
+
+            return result.result.data;
         },
 
         async update(data: UpdateUser): Promise<GetUser> {
@@ -29,8 +41,18 @@ export const useUserService = () => {
                 headers: getHeaders(),
                 body: JSON.stringify(data)
             });
-            if (!response.ok) throw new Error('Failed to update user');
-            return response.json();
+
+            const result: ApiResponse<GetUser> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to update user',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
+
+            return result.result.data;
         },
 
         async delete(data: DeleteUser): Promise<void> {
@@ -38,7 +60,16 @@ export const useUserService = () => {
                 method: 'DELETE',
                 headers: getHeaders()
             });
-            if (!response.ok) throw new Error('Failed to delete user');
+
+            const result: ApiResponse<void> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to delete user',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
         }
     };
 }; 

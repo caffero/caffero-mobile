@@ -1,4 +1,8 @@
 import { SearchItem } from '../models/SearchItem';
+import { API_ENDPOINTS } from '../config';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { ApiResponse } from '../models/ApiResponse';
+import { ApiException } from 'exceptions';
 
 // Mock data for search results
 const mockSearchResults: SearchItem[] = [
@@ -20,4 +24,34 @@ export const searchItems = async (query: string): Promise<SearchItem[]> => {
   return mockSearchResults.filter(item => 
     item.title.toLowerCase().includes(query.toLowerCase())
   );
+};
+
+export const useSearchService = () => {
+    const { currentLanguage } = useLanguage();
+
+    const getHeaders = (): HeadersInit => ({
+        'Content-Type': 'application/json',
+        'X-Language': currentLanguage?.id || 'tr'
+    });
+
+    return {
+        async search(query: string): Promise<SearchItem[]> {
+            const response = await fetch(`${API_ENDPOINTS.SEARCH.SEARCH}?query=${encodeURIComponent(query)}`, {
+                method: 'GET',
+                headers: getHeaders()
+            });
+
+            const result: ApiResponse<SearchItem[]> = await response.json();
+
+            if (!result.isSuccess || !result.result) {
+                throw new ApiException(
+                    result.errorResult?.data.message || 'Failed to search items',
+                    result.errorResult?.status || response.status,
+                    result.errorResult?.data.detail || response.statusText
+                );
+            }
+
+            return result.result.data;
+        }
+    };
 }; 
