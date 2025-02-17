@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { RootStackParamList, BottomTabParamList } from './types';
+import { LoadingScreen } from '../components/LoadingScreen';
 
 // Auth Screens
 import { LoginScreen } from '../screens/LoginScreen';
@@ -130,9 +131,7 @@ export const Navigation = () => {
   return (
     <NavigationContainer theme={navigationTheme}>
       {isLoading ? (
-        <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-          <ActivityIndicator size="large" color={theme.colors.background.accent} />
-        </View>
+        <LoadingScreen />
       ) : (
         <Stack.Navigator 
           screenOptions={{ 
