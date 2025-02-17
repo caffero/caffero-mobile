@@ -59,5 +59,11 @@ export const API_ENDPOINTS = {
     SEARCH: {
         BASE: '/search',
         SEARCH: '/search'
+    },
+    COIN: {
+        BASE: '/coin',
+        GET_CURRENT_USER: '/coin/current-user',
+        INCREASE: '/coin/current-user/increase',
+        DECREASE: '/coin/current-user/decrease'
     }
 }; 

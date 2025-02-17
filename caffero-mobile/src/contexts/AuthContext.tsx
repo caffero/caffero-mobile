@@ -103,6 +103,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const login = async (email: string, password: string) => {
         try {
+            setIsLoading(true);
             const response = await authService.login({ email, password });
             const userData: User = {
                 userId: response.userId,
@@ -118,11 +119,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } catch (error) {
             console.error('Login failed:', error);
             throw error;
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const register = async (email: string, password: string, username: string) => {
         try {
+            setIsLoading(true);
             const registerData: Register = {
                 email,
                 password,
@@ -137,11 +141,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } catch (error) {
             console.error('Registration failed:', error);
             throw error;
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const verifyOtp = async (otp: string) => {
         try {
+            setIsLoading(true);
             const response = await authService.verifyOtp(otp);
             if (isRegistered) {
                 const userData: User = {
@@ -160,11 +167,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } catch (error) {
             console.error('OTP verification failed:', error);
             throw error;
+        } finally {
+            setIsLoading(false);
         }
+
     };
 
     const verifyOtpAndLogin = async (otp: string) => {
         try {
+            setIsLoading(true);
             if (!loginInformation) {
                 throw new Error('Login information not found');
             }
@@ -190,26 +201,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } catch (error) {
             console.error('OTP verification failed:', error);
             throw error;
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const forgotPassword = async (email: string) => {
         try {
+            setIsLoading(true);
             await authService.forgotPassword(email);
             setPasswordForgotten(true);
         } catch (error) {
             console.error('Forgot password request failed:', error);
             throw error;
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const resetForgottenPassword = async (newPassword: string) => {
         try {
+            setIsLoading(true);
             await authService.resetForgottenPassword(newPassword);
             setPasswordForgotten(false);
         } catch (error) {
             console.error('Reset forgotten password failed:', error);
             throw error;
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -218,15 +237,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             throw new Error('No authentication token found');
         }
         try {
+            setIsLoading(true);
             await authService.resetPassword(currentPassword, newPassword, token);
         } catch (error) {
             console.error('Reset password failed:', error);
             throw error;
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const logout = async () => {
         try {
+            setIsLoading(true);
             if (!user) {
                 throw new Error('User not found');
             }
@@ -239,6 +262,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         } catch (error) {
             console.error('Logout failed:', error);
             throw error;
+        } finally {
+            setIsLoading(false);
         }
     };
 
