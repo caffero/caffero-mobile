@@ -4,10 +4,10 @@
     "slug": "caffero-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/coffe-maker-logo.jpg",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/coffe-maker-logo.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -22,9 +22,14 @@
     },
     "android": {
       "adaptiveIcon": {
+<<<<<<< HEAD
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff",
         "useCleartextTraffic": true
+=======
+        "foregroundImage": "./assets/coffe-maker-logo.jpg",
+        "backgroundColor": "#ffffff"
+>>>>>>> dd5042dfcde1737dfe1c6d9bd120749bdaf5042b
       },
       "package": "com.caffero.app"
     },

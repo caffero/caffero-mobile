@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { RootStackParamList, BottomTabParamList } from './types';
+import { LoadingScreen } from '../components/LoadingScreen';
 
 // Auth Screens
 import { LoginScreen } from '../screens/LoginScreen';
@@ -137,6 +138,7 @@ export const Navigation = () => {
 
   return (
     <NavigationContainer theme={navigationTheme}>
+<<<<<<< HEAD
       <Stack.Navigator 
         screenOptions={{ 
           headerShown: false,
@@ -162,6 +164,36 @@ export const Navigation = () => {
           // Main App Stack
           <>
             <Stack.Screen name="MainTabs" component={MainTabs} />
+=======
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <Stack.Navigator 
+          screenOptions={{ 
+            headerShown: false,
+            contentStyle: { backgroundColor: theme.colors.background.primary },
+          }}
+        >
+          {!user ? (
+            // Auth Stack
+            <>
+              <Stack.Screen 
+                name="Login" 
+                component={LoginScreen}
+                options={{
+                  animationTypeForReplace: !user ? 'pop' : 'push',
+                }}
+              />
+              <Stack.Screen name="Register" component={RegisterScreen} />
+              <Stack.Screen name="Otp" component={OtpScreen} />
+              <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+              <Stack.Screen name="ResetForgottenPassword" component={ResetForgottenPasswordScreen} />
+            </>
+          ) : (
+            // Main App Stack
+            <>
+              <Stack.Screen name="MainTabs" component={MainTabs} />
+>>>>>>> dd5042dfcde1737dfe1c6d9bd120749bdaf5042b
 
             <Stack.Group screenOptions={{ presentation: 'card' }}>
               <Stack.Screen name="WhatIBrew" component={WhatIBrewScreen} />
