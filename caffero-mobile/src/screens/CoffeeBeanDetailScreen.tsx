@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -10,6 +10,7 @@ import {
   Modal,
   Animated,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -19,35 +20,11 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { RootStackParamList } from '../navigation/types';
 import { spacing, borderRadius, typography, layout, fonts } from '../theme';
+import { useCoffeeService } from '../api/services/coffeeService';
+import { useCoffeeBeanService } from '../api/services/coffeeBeanService';
+import { GetCoffee } from '../api/models/Coffee';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CoffeeBeanDetail'>;
-
-// Dummy data for the coffee bean
-const DUMMY_COFFEE_BEAN = {
-  id: '1',
-  title: 'Ethiopian Yirgacheffe',
-  roastry: 'Artisan Coffee Roasters',
-  image: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9',
-  origin: {
-    country: 'Ethiopia',
-    region: 'Yirgacheffe',
-  },
-  properties: {
-    roastLevel: 'Medium Light',
-    acidity: 'High',
-    body: 'Medium',
-    altitude: '1,750 - 2,200 masl',
-    process: 'Washed',
-    variety: 'Heirloom',
-  },
-  tasteProfile: [
-    'Floral',
-    'Citrus',
-    'Bergamot',
-    'Jasmine',
-    'Honey',
-  ],
-};
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const IMAGE_HEIGHT = SCREEN_HEIGHT * 0.6;
@@ -59,24 +36,57 @@ export const CoffeeBeanDetailScreen = ({ route, navigation }: Props) => {
   const { getText } = useLanguage();
   const [showAddedModal, setShowAddedModal] = useState(false);
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
+  const [coffee, setCoffee] = useState<GetCoffee | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAdding, setIsAdding] = useState(false);
+  const coffeeService = useCoffeeService();
+  const coffeeBeanService = useCoffeeBeanService();
 
-  const handleAddToShelf = () => {
-    setShowAddedModal(true);
-    Animated.sequence([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.delay(1500),
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      setShowAddedModal(false);
-    });
+  useEffect(() => {
+    const fetchCoffee = async () => {
+      try {
+        const data = await coffeeService.getById(route.params.id);
+        setCoffee(data);
+      } catch (error) {
+        console.error('Error fetching coffee:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchCoffee();
+  }, [route.params.id]);
+
+  const handleAddToShelf = async () => {
+    if (!coffee || isAdding) return;
+
+    setIsAdding(true);
+    try {
+      await coffeeBeanService.create({
+        id: coffee.id,
+        hasTasted: false
+      });
+
+      setShowAddedModal(true);
+      Animated.sequence([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.delay(1500),
+        Animated.timing(fadeAnim, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        setShowAddedModal(false);
+      });
+    } catch (error) {
+      console.error('Error adding coffee to shelf:', error);
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   const renderProperty = (label: string, value: string) => (
@@ -90,12 +100,22 @@ export const CoffeeBeanDetailScreen = ({ route, navigation }: Props) => {
     </View>
   );
 
+  if (isLoading || !coffee) {
+    return (
+      <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.colors.primary.main} />
+        </View>
+      </Screen>
+    );
+  }
+
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <ScrollView style={styles.scrollView} bounces={false}>
         <View style={styles.imageContainer}>
           <Image
-            source={{ uri: DUMMY_COFFEE_BEAN.image }}
+            source={{ uri: coffee.imageUrl || 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9' }}
             style={styles.image}
             resizeMode="cover"
           />
@@ -107,65 +127,63 @@ export const CoffeeBeanDetailScreen = ({ route, navigation }: Props) => {
           />
           <View style={styles.header}>
             <TouchableOpacity
-              style={[
-                styles.backButton,
-                { backgroundColor: 'rgba(255, 255, 255, 0.1)' }
-              ]}
+              style={[styles.backButton, { backgroundColor: 'rgba(255, 255, 255, 0.1)' }]}
               onPress={() => navigation.goBack()}
             >
               <Icon name="arrow-back" size={24} color="#FFFFFF" />
             </TouchableOpacity>
             <Text style={styles.headerTitle} numberOfLines={1}>
-              {DUMMY_COFFEE_BEAN.title}
+              {coffee.name}
             </Text>
           </View>
         </View>
 
         <View style={[styles.content, { backgroundColor: theme.colors.surface.primary }]}>
           <Text style={[styles.title, { color: theme.colors.text.primary }]}>
-            {DUMMY_COFFEE_BEAN.title}
+            {coffee.name}
           </Text>
           <Text style={[styles.roastry, { color: theme.colors.text.secondary }]}>
-            {DUMMY_COFFEE_BEAN.roastry}
+            {coffee.roasteryName}
           </Text>
 
           <View style={styles.section}>
             <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
               Origin
             </Text>
-            {renderProperty('Country', DUMMY_COFFEE_BEAN.origin.country)}
-            {renderProperty('Region', DUMMY_COFFEE_BEAN.origin.region)}
+            {renderProperty('Country', coffee.countryName)}
+            {renderProperty('Region', coffee.county)}
           </View>
 
-          <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-              Properties
-            </Text>
-            {Object.entries(DUMMY_COFFEE_BEAN.properties).map(([key, value]) => (
-              renderProperty(key, value)
-            ))}
-          </View>
-
-          <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-              Taste Profile
-            </Text>
-            <View style={styles.tasteContainer}>
-              {DUMMY_COFFEE_BEAN.tasteProfile.map((taste, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.tastePill,
-                    { backgroundColor: theme.colors.background.accent }
-                  ]}
-                >
-                  <Text style={[styles.tasteText, { color: theme.colors.text.primary }]}>
-                    {taste}
-                  </Text>
-                </View>
-              ))}
+          {coffee.coffeeDetails && (
+            <View style={styles.section}>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+                Properties
+              </Text>
+              {coffee.coffeeDetails.acidityValue && renderProperty('Acidity', coffee.coffeeDetails.acidityValue.toString())}
+              {coffee.coffeeDetails.bodyValue && renderProperty('Body', coffee.coffeeDetails.bodyValue.toString())}
+              {renderProperty('Altitude', `${coffee.coffeeDetails.altitude} masl`)}
             </View>
-          </View>
+          )}
+
+          {coffee.tasteNotes && coffee.tasteNotes.length > 0 && (
+            <View style={styles.section}>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+                Taste Profile
+              </Text>
+              <View style={styles.tasteContainer}>
+                {coffee.tasteNotes.map((taste, index) => (
+                  <View
+                    key={index}
+                    style={[styles.tastePill, { backgroundColor: theme.colors.background.accent }]}
+                  >
+                    <Text style={[styles.tasteText, { color: theme.colors.text.primary }]}>
+                      {taste}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          )}
         </View>
       </ScrollView>
 
@@ -175,11 +193,17 @@ export const CoffeeBeanDetailScreen = ({ route, navigation }: Props) => {
           {
             backgroundColor: theme.colors.primary.main,
             ...theme.shadows.medium,
-          }
+          },
+          isAdding && styles.fabDisabled
         ]}
         onPress={handleAddToShelf}
+        disabled={isAdding}
       >
-        <Icon name="add" size={24} color="#FFFFFF" />
+        {isAdding ? (
+          <ActivityIndicator size="small" color="#FFFFFF" />
+        ) : (
+          <Icon name="add" size={24} color="#FFFFFF" />
+        )}
       </TouchableOpacity>
 
       <Modal
@@ -352,4 +376,12 @@ const styles = StyleSheet.create({
   modalText: {
     ...typography.button.medium,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  fabDisabled: {
+    opacity: 0.6
+  }
 }); 

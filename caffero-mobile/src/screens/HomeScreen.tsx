@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -23,6 +23,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { SearchItem } from '../api/models/SearchItem';
 import { searchItems } from '../api/services/searchService';
+import { useCoffeeService } from '../api/services/coffeeService';
+import { GetCoffeeList } from '../api/models/Coffee';
 
 // Dummy data (replace with API calls later)
 const trendingRecipes = [
@@ -40,24 +42,6 @@ const trendingRecipes = [
     id: '3', 
     title: 'French Press Classic', 
     imageUrl: 'https://images.unsplash.com/photo-1544233726-9f1d2b27be8b?w=500&auto=format'
-  },
-];
-
-const recommendedBeans = [
-  { 
-    id: '1', 
-    title: 'Ethiopian Yirgacheffe', 
-    imageUrl: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=500&auto=format'
-  },
-  { 
-    id: '2', 
-    title: 'Colombian Supremo', 
-    imageUrl: 'https://images.unsplash.com/photo-1611854779393-1b2da9d400fe?w=500&auto=format'
-  },
-  { 
-    id: '3', 
-    title: 'Brazilian Santos', 
-    imageUrl: 'https://images.unsplash.com/photo-1587734005433-78ec37761d12?w=500&auto=format'
   },
 ];
 
@@ -88,13 +72,34 @@ export const HomeScreen = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [recommendedBeans, setRecommendedBeans] = useState<GetCoffeeList[]>([]);
+  const coffeeService = useCoffeeService();
 
-  const onRefresh = React.useCallback(() => {
+  const fetchCoffees = async () => {
+    try {
+      const coffees = await coffeeService.getAll(new URLSearchParams({
+        pageNumber: '5',
+        pageSize: '10'
+    }));
+      setRecommendedBeans(coffees);
+    } catch (error) {
+      console.error('Error fetching coffees:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCoffees();
+  }, []);
+
+  const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    // TODO: Add refresh logic here
-    setTimeout(() => {
+    try {
+      await fetchCoffees();
+    } catch (error) {
+      console.error('Error refreshing coffees:', error);
+    } finally {
       setRefreshing(false);
-    }, 1000);
+    }
   }, []);
 
   const handleTrendingPress = (id: string) => {
@@ -246,7 +251,12 @@ export const HomeScreen = () => {
           />
           <Carousel
             title={getText('forYourTaste')}
-            items={recommendedBeans}
+            items={recommendedBeans.map(coffee => ({
+              id: coffee.id,
+              title: coffee.name,
+              imageUrl: coffee.imageUrl || 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=500&auto=format', // fallback image
+              subtitle: coffee.roasteryName
+            }))}
             onItemPress={handleBeanPress}
           />
           <Carousel

@@ -21,6 +21,14 @@ export const API_ENDPOINTS = {
         UPDATE: '/coffee-bean/:id',
         DELETE: '/coffee-bean/:id'
     },
+    COFFEE: {
+        BASE: '/coffee',
+        GET_ALL: '/coffee',
+        GET: '/coffee/:id',
+        CREATE: '/coffee',
+        UPDATE: '/coffee/:id',
+        DELETE: '/coffee/:id'
+    },
     EQUIPMENT: {
         BASE: '/equipment',
         GET_ALL: '/equipment',

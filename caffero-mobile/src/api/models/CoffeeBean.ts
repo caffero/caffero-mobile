@@ -16,6 +16,7 @@ export interface GetCoffeeBean extends GetCoffeeBeanList {
 // Add coffee bean to user's shelf
 export interface CreateCoffeeBean {
     id: string;
+    hasTasted: boolean;
 }
 
 export interface UpdateCoffeeBean {
