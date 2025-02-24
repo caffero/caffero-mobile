@@ -53,9 +53,11 @@ export type RootStackParamList = {
   EventDetail: { event: { title: string; imageUrl: string } };
   TasteMatches: undefined;
   TasteMatchDetail: { match: { title: string; imageUrl: string } };
+  PromotionCodeDetail: { promotionId: string };
 
   // New routes
   RoasteryDetail: { id: string };
+  PaymentScreen: undefined;
 }; 
 
 export type BottomTabParamList = {
