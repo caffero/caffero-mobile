@@ -14,6 +14,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { spacing } from '../theme';
 import { useLanguage } from '../contexts/LanguageContext';
+import Screen from '../components/Screen';
 
 interface SettingsTabProps {
   title: string;
@@ -29,7 +30,7 @@ const SettingsTab: React.FC<SettingsTabProps> = ({ title, onPress }) => {
     >
       <Text style={[
         styles.settingsTabText,
-        theme.typography.body1,
+        theme.typography.body.medium,
         { color: theme.colors.text.primary }
       ]}>
         {title}
@@ -73,7 +74,7 @@ export const ProfileScreen = () => {
   ];
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title={getText('profile')} />
       <ScrollView style={styles.content}>
         <View style={[styles.profileHeader, { borderBottomColor: theme.colors.border.primary }]}>
@@ -83,14 +84,14 @@ export const ProfileScreen = () => {
           />
           <Text style={[
             styles.username,
-            theme.typography.h1,
+            theme.typography.title1,
             { color: theme.colors.text.primary }
           ]}>
             {user?.username || getText('defaultUsername')}
           </Text>
           <Text style={[
             styles.email,
-            theme.typography.body1,
+            theme.typography.body.medium,
             { color: theme.colors.text.secondary }
           ]}>
             {user?.email || getText('defaultEmail')}
@@ -104,7 +105,7 @@ export const ProfileScreen = () => {
           ]}>
             <Text style={[
               styles.premiumText,
-              theme.typography.button,
+              theme.typography.body.large,
               { color: theme.colors.primary.contrastText }
             ]}>
               {isPremium ? getText('premiumUser') : getText('freeUser')}
@@ -122,7 +123,7 @@ export const ProfileScreen = () => {
           ))}
         </View>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

@@ -14,6 +14,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import Screen from '../components/Screen';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -79,13 +80,13 @@ export const HowIBrewScreen = () => {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title={getText('howIBrew')}
         showBack
         onBack={() => navigation.goBack()}
         rightIcon="delete"
-        onRightPress={() => navigation.navigate('DeleteRecipe')}
+        onRightPress={() => navigation.navigate('DeleteRecipe', { id: '' })}
       />
       <FlatList
         data={recipes}
@@ -100,7 +101,7 @@ export const HowIBrewScreen = () => {
       >
         <Icon name="add" size={24} color={theme.colors.text.inverse} />
       </TouchableOpacity>
-    </View>
+    </Screen>
   );
 };
 

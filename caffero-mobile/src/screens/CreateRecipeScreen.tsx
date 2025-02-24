@@ -9,12 +9,14 @@ import {
   Switch,
   Alert,
 } from 'react-native';
+import Screen from '../components/Screen';
 import { Header } from '../components/Header';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -27,12 +29,14 @@ interface PouringStep {
 export const CreateRecipeScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const { getText } = useLanguage();
+  const { theme } = useTheme();
   const [title, setTitle] = useState('');
   const [selectedEquipment, setSelectedEquipment] = useState('');
   const [selectedCoffee, setSelectedCoffee] = useState('');
   const [useMilk, setUseMilk] = useState(false);
   const [milkVolume, setMilkVolume] = useState('');
   const [milkTemperature, setMilkTemperature] = useState('');
+  const [isPublic, setIsPublic] = useState(true);
   const [pouringSteps, setPouringSteps] = useState<PouringStep[]>([
     { volume: '', time: '', temperature: '' },
   ]);
@@ -49,31 +53,31 @@ export const CreateRecipeScreen = () => {
 
   const handleSave = () => {
     if (!title || !selectedEquipment || !selectedCoffee) {
-      Alert.alert('Error', 'Please fill in all required fields');
+      Alert.alert(getText('error'), getText('fillRequiredFields'));
       return;
     }
 
     // Save recipe logic here
     Alert.alert(
-      'Success',
-      'Recipe saved successfully!',
-      [{ text: 'OK', onPress: () => navigation.goBack() }]
+      getText('success'),
+      getText('recipeUpdateSuccess'),
+      [{ text: getText('ok'), onPress: () => navigation.goBack() }]
     );
   };
 
   const handleBack = () => {
     Alert.alert(
-      'Discard Changes',
-      'Your changes will be lost. Are you sure?',
+      getText('discardChanges'),
+      getText('discardChangesMessage'),
       [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Discard', style: 'destructive', onPress: () => navigation.goBack() },
+        { text: getText('cancel'), style: 'cancel' },
+        { text: getText('discard'), style: 'destructive', onPress: () => navigation.goBack() },
       ]
     );
   };
 
   return (
-    <View style={styles.container}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title={getText('createRecipe')}
         showBack
@@ -81,23 +85,51 @@ export const CreateRecipeScreen = () => {
       />
       <ScrollView style={styles.content}>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>{getText('recipeTitle')}</Text>
+          <Text style={[styles.label, { color: theme.colors.text.primary }]}>{getText('recipeTitle')}</Text>
           <TextInput
-            style={styles.input}
+            style={[styles.input, { 
+              color: theme.colors.text.primary,
+              backgroundColor: theme.colors.surface.primary,
+              borderColor: theme.colors.border.primary 
+            }]}
             value={title}
             onChangeText={setTitle}
             placeholder={getText('enterRecipeName')}
+            placeholderTextColor={theme.colors.text.tertiary}
           />
         </View>
 
+        <View style={styles.privacySection}>
+          <View style={styles.privacyHeader}>
+            <Text style={[styles.label, { color: theme.colors.text.primary }]}>
+              {getText('recipePrivacy')}
+            </Text>
+            <Switch
+              value={isPublic}
+              onValueChange={setIsPublic}
+              trackColor={{ 
+                false: theme.colors.border.primary, 
+                true: theme.colors.primary.main 
+              }}
+              thumbColor={theme.colors.background.primary}
+            />
+          </View>
+          <Text style={[styles.privacyDescription, { color: theme.colors.text.secondary }]}>
+            {isPublic ? getText('publicRecipeDescription') : getText('privateRecipeDescription')}
+          </Text>
+        </View>
+
         <TouchableOpacity
-          style={styles.selectButton}
+          style={[styles.selectButton, { 
+            backgroundColor: theme.colors.surface.secondary,
+            borderColor: theme.colors.border.primary 
+          }]}
           onPress={() => {/* Navigate to equipment selection */}}
         >
-          <Text style={styles.selectButtonText}>
+          <Text style={[styles.selectButtonText, { color: theme.colors.text.primary }]}>
             {selectedEquipment || getText('selectEquipment')}
           </Text>
-          <Icon name="chevron-right" size={24} color="#666" />
+          <Icon name="chevron-right" size={24} color={theme.colors.text.secondary} />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -190,7 +222,7 @@ export const CreateRecipeScreen = () => {
           <Text style={styles.saveButtonText}>{getText('saveRecipe')}</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 
@@ -291,5 +323,21 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 24,
+  },
+  privacySection: {
+    marginBottom: 24,
+    padding: 16,
+    backgroundColor: '#f8f9fa',
+    borderRadius: 8,
+  },
+  privacyHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  privacyDescription: {
+    fontSize: 14,
+    color: '#666',
   },
 }); 

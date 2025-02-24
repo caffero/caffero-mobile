@@ -7,33 +7,59 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { RootStackParamList, BottomTabParamList } from './types';
+import { LoadingScreen } from '../components/LoadingScreen';
 
+// Auth Screens
 import { LoginScreen } from '../screens/LoginScreen';
 import { RegisterScreen } from '../screens/RegisterScreen';
+import { OtpScreen } from '../screens/OtpScreen';
+import { ForgotPasswordScreen } from '../screens/ForgotPasswordScreen';
+import { ResetForgottenPasswordScreen } from '../screens/ResetForgottenPasswordScreen';
+import { ResetPasswordScreen } from '../screens/ResetPasswordScreen';
+
+// Main Tab Screens
 import { HomeScreen } from '../screens/HomeScreen';
 import { ShelfScreen } from '../screens/ShelfScreen';
 import { ScanScreen } from '../screens/ScanScreen';
 import { PremiumScreen } from '../screens/PremiumScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
+
+// Profile Related Screens
 import { EditProfileScreen } from '../screens/EditProfileScreen';
 import { AppSettingsScreen } from '../screens/AppSettingsScreen';
 import { NotificationSettingsScreen } from '../screens/NotificationSettingsScreen';
 import { PrivacyScreen } from '../screens/PrivacyScreen';
 import { ContactUsScreen } from '../screens/ContactUsScreen';
+
+// Recipe Related Screens
 import { RecipeDetailScreen } from '../screens/RecipeDetailScreen';
+import { CreateRecipeScreen } from '../screens/CreateRecipeScreen';
 import { UpdateRecipeScreen } from '../screens/UpdateRecipeScreen';
-import { SuggestProductScreen } from '../screens/SuggestProductScreen';
-import { UpdateEquipmentScreen } from '../screens/UpdateEquipmentScreen';
-import { AddCoffeeBeanScreen } from '../screens/AddCoffeeBeanScreen';
-import { WhatIBrewScreen } from '../screens/WhatIBrewScreen';
-import { CoffeeBeanDetailScreen } from '../screens/CoffeeBeanDetailScreen';
+import { DeleteRecipeScreen } from '../screens/DeleteRecipeScreen';
+
+// Equipment Related Screens
 import { WhatIBrewWithScreen } from '../screens/WhatIBrewWithScreen';
 import { EquipmentDetailScreen } from '../screens/EquipmentDetailScreen';
 import { CreateEquipmentScreen } from '../screens/CreateEquipmentScreen';
+import { UpdateEquipmentScreen } from '../screens/UpdateEquipmentScreen';
 import { DeleteEquipmentScreen } from '../screens/DeleteEquipmentScreen';
+
+// Coffee Bean Related Screens
+import { WhatIBrewScreen } from '../screens/WhatIBrewScreen';
+import { CoffeeBeanDetailScreen } from '../screens/CoffeeBeanDetailScreen';
+import { AddCoffeeBeanScreen } from '../screens/AddCoffeeBeanScreen';
+
+// Post Related Screens
+import { WhatIThinkScreen } from '../screens/WhatIThinkScreen';
+import { PostDetailScreen } from '../screens/PostDetailScreen';
+import { CreatePostScreen } from '../screens/CreatePostScreen';
+import { UpdatePostScreen } from '../screens/UpdatePostScreen';
+import { DeletePostsScreen } from '../screens/DeletePostsScreen';
+
+// Other Screens
 import { HowIBrewScreen } from '../screens/HowIBrewScreen';
-import { CreateRecipeScreen } from '../screens/CreateRecipeScreen';
-import { DeleteRecipeScreen } from '../screens/DeleteRecipeScreen';
+import { SuggestProductScreen } from '../screens/SuggestProductScreen';
+import { RoasteryDetailScreen } from '../screens/RoasteryDetailScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();
@@ -49,7 +75,7 @@ const MainTabs = () => {
           backgroundColor: theme.colors.background.primary,
           borderTopColor: theme.colors.border.primary,
         },
-        tabBarActiveTintColor: theme.colors.vibrantAqua,
+        tabBarActiveTintColor: theme.colors.background.accent,
         tabBarInactiveTintColor: theme.colors.text.tertiary,
         tabBarIcon: ({ color, size }: { color: string; size: number }) => {
           let iconName: string;
@@ -93,7 +119,7 @@ export const Navigation = () => {
   const navigationTheme = {
     dark: false,
     colors: {
-      primary: theme.colors.vibrantAqua,
+      primary: theme.colors.background.accent,
       background: theme.colors.background.primary,
       card: theme.colors.surface.primary,
       text: theme.colors.text.primary,
@@ -105,9 +131,7 @@ export const Navigation = () => {
   return (
     <NavigationContainer theme={navigationTheme}>
       {isLoading ? (
-        <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-          <ActivityIndicator size="large" color={theme.colors.vibrantAqua} />
-        </View>
+        <LoadingScreen />
       ) : (
         <Stack.Navigator 
           screenOptions={{ 
@@ -126,6 +150,9 @@ export const Navigation = () => {
                 }}
               />
               <Stack.Screen name="Register" component={RegisterScreen} />
+              <Stack.Screen name="Otp" component={OtpScreen} />
+              <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+              <Stack.Screen name="ResetForgottenPassword" component={ResetForgottenPasswordScreen} />
             </>
           ) : (
             // Main App Stack
@@ -156,10 +183,23 @@ export const Navigation = () => {
 
               <Stack.Group screenOptions={{ presentation: 'card' }}>
                 <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+                <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
                 <Stack.Screen name="AppSettings" component={AppSettingsScreen} />
                 <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} />
                 <Stack.Screen name="Privacy" component={PrivacyScreen} />
                 <Stack.Screen name="ContactUs" component={ContactUsScreen} />
+              </Stack.Group>
+
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="RoasteryDetail" component={RoasteryDetailScreen} />
+                <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+              </Stack.Group>
+
+              <Stack.Group screenOptions={{ presentation: 'card' }}>
+                <Stack.Screen name="WhatIThink" component={WhatIThinkScreen} />
+                <Stack.Screen name="CreatePost" component={CreatePostScreen} />
+                <Stack.Screen name="UpdatePost" component={UpdatePostScreen} />
+                <Stack.Screen name="DeletePosts" component={DeletePostsScreen} />
               </Stack.Group>
             </>
           )}

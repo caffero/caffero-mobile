@@ -14,6 +14,8 @@ import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
+import Screen from '../components/Screen';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -54,28 +56,36 @@ const equipmentList: Equipment[] = [
 export const WhatIBrewWithScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const { getText } = useLanguage();
+  const { theme } = useTheme();
 
   const renderEquipment = ({ item }: { item: Equipment }) => (
     <TouchableOpacity
-      style={styles.equipmentCard}
+      style={[styles.equipmentCard, { 
+        backgroundColor: theme.colors.surface.primary,
+        shadowColor: theme.colors.text.primary,
+      }]}
       onPress={() => navigation.navigate('EquipmentDetail', { id: item.id })}
     >
       <Image source={{ uri: item.imageUrl }} style={styles.equipmentImage} />
       <View style={styles.equipmentInfo}>
-        <Text style={styles.equipmentTitle}>{item.title}</Text>
-        <Text style={styles.equipmentType}>{getText(`equipment.type.${item.type}`)}</Text>
+        <Text style={[styles.equipmentTitle, { color: theme.colors.text.primary }]}>
+          {item.title}
+        </Text>
+        <Text style={[styles.equipmentType, { color: theme.colors.text.secondary }]}>
+          {getText(`equipment.type.${item.type}`)}
+        </Text>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <View style={styles.container}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title={getText('myEquipment')}
         showBack
         onBack={() => navigation.goBack()}
         rightIcon="delete"
-        onRightPress={() => navigation.navigate('DeleteEquipment')}
+        onRightPress={() => navigation.navigate('DeleteEquipment', { id: '' })}
       />
       <FlatList
         data={equipmentList}
@@ -85,19 +95,18 @@ export const WhatIBrewWithScreen = () => {
         contentContainerStyle={styles.listContent}
       />
       <TouchableOpacity
-        style={styles.fab}
+        style={[styles.fab, { backgroundColor: theme.colors.primary.main }]}
         onPress={() => navigation.navigate('CreateEquipment')}
       >
-        <Icon name="add" size={24} color="#fff" />
+        <Icon name="add" size={24} color={theme.colors.primary.contrastText} />
       </TouchableOpacity>
-    </View>
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   listContent: {
     padding: 8,
@@ -106,9 +115,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 8,
     borderRadius: 8,
-    backgroundColor: '#fff',
     elevation: 2,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
@@ -129,7 +136,6 @@ const styles = StyleSheet.create({
   },
   equipmentType: {
     fontSize: 14,
-    color: '#666',
   },
   fab: {
     position: 'absolute',
@@ -138,11 +144,9 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#007AFF',
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 4,
-    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,

@@ -14,11 +14,17 @@ import { Header } from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../contexts/AuthContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
+import Screen from '../components/Screen';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/types';
 
-export const EditProfileScreen = () => {
-  const navigation = useNavigation();
+type Props = NativeStackScreenProps<RootStackParamList, 'EditProfile'>;
+
+export const EditProfileScreen: React.FC<Props> = ({ navigation }) => {
   const { user } = useAuth();
   const { getText } = useLanguage();
+  const { theme } = useTheme();
 
   const [formData, setFormData] = useState({
     username: user?.username || '',
@@ -51,52 +57,111 @@ export const EditProfileScreen = () => {
     );
   };
 
+  const handleBack = () => {
+    const hasChanges = 
+      formData.username !== (user?.username || '') || 
+      formData.email !== (user?.email || '');
+
+    if (hasChanges) {
+      Alert.alert(
+        getText('discardChanges'),
+        getText('discardChangesMessage'),
+        [
+          { text: getText('cancel'), style: 'cancel' },
+          { text: getText('discard'), style: 'destructive', onPress: () => navigation.goBack() },
+        ]
+      );
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <Header title={getText('editProfile')} showBack />
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+      <Header title={getText('editProfile')} showBack onBack={handleBack} />
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoid}
       >
         <ScrollView style={styles.content}>
           <View style={styles.form}>
-            <Text style={styles.label}>{getText('username')}</Text>
+            <Text style={[
+              styles.label,
+              theme.typography.body.large,
+              { color: theme.colors.text.primary }
+            ]}>
+              {getText('username')}
+            </Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { 
+                ...theme.typography.body.medium,
+                color: theme.colors.text.primary,
+                backgroundColor: theme.colors.surface.secondary,
+                borderColor: theme.colors.border.primary 
+              }]}
               value={formData.username}
               onChangeText={(value) => handleChange('username', value)}
               placeholder={getText('enterUsername')}
-              placeholderTextColor="#999"
+              placeholderTextColor={theme.colors.text.tertiary}
             />
 
-            <Text style={styles.label}>{getText('email')}</Text>
+            <Text style={[
+              styles.label,
+              theme.typography.body.large,
+              { color: theme.colors.text.primary }
+            ]}>
+              {getText('email')}
+            </Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, { 
+                ...theme.typography.body.medium,
+                color: theme.colors.text.primary,
+                backgroundColor: theme.colors.surface.secondary,
+                borderColor: theme.colors.border.primary 
+              }]}
               value={formData.email}
               onChangeText={(value) => handleChange('email', value)}
               placeholder={getText('enterEmail')}
-              placeholderTextColor="#999"
+              placeholderTextColor={theme.colors.text.tertiary}
               keyboardType="email-address"
               autoCapitalize="none"
             />
 
             <TouchableOpacity
-              style={styles.submitButton}
+              style={[styles.submitButton, { backgroundColor: theme.colors.primary.main }]}
               onPress={handleSubmit}
             >
-              <Text style={styles.submitButtonText}>{getText('saveChanges')}</Text>
+              <Text style={[
+                styles.submitButtonText,
+                theme.typography.body.large,
+                { color: theme.colors.primary.contrastText }
+              ]}>
+                {getText('saveChanges')}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.resetPasswordButton, { backgroundColor: theme.colors.surface.primary }]}
+              onPress={() => navigation.navigate('ResetPassword')}
+            >
+              <Text style={[
+                styles.resetPasswordButtonText,
+                theme.typography.button.large,
+                { color: theme.colors.primary.main }
+              ]}>
+                {getText('resetPassword')}
+              </Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
-    </View>
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   keyboardAvoid: {
     flex: 1,
@@ -110,28 +175,35 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
     marginBottom: 8,
   },
   input: {
-    backgroundColor: '#f5f5f5',
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
   },
   submitButton: {
-    backgroundColor: '#007AFF',
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 16,
   },
   submitButtonText: {
-    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  resetPasswordButton: {
+    height: 48,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  resetPasswordButtonText: {
+    textAlign: 'center',
   },
 }); 

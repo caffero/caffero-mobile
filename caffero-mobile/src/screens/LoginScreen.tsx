@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Platform, TouchableOpacity } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -7,6 +7,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { spacing, borderRadius } from '../theme';
 import { LanguageSelector } from '../components/LanguageSelector';
+import Screen from '../components/Screen';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -27,67 +28,118 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
     };
 
     return (
-        <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-            <LanguageSelector />
-            <TextInput
-                style={[
-                    styles.input,
-                    {
-                        borderColor: theme.colors.border.primary,
-                        backgroundColor: theme.colors.surface.primary,
-                        color: theme.colors.text.primary,
-                    }
-                ]}
-                placeholder={getText('email')}
-                placeholderTextColor={theme.colors.text.tertiary}
-                value={email}
-                onChangeText={setEmail}
-                autoCapitalize="none"
-                keyboardType="email-address"
-            />
-            <TextInput
-                style={[
-                    styles.input,
-                    {
-                        borderColor: theme.colors.border.primary,
-                        backgroundColor: theme.colors.surface.primary,
-                        color: theme.colors.text.primary,
-                    }
-                ]}
-                placeholder={getText('password')}
-                placeholderTextColor={theme.colors.text.tertiary}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-            />
-            {error ? (
+        <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+            <View style={styles.content}>
                 <Text style={[
-                    styles.error,
-                    theme.typography.body1,
-                    { color: theme.colors.status.error }
+                    styles.title,
+                    theme.typography.title1,
+                    { color: theme.colors.text.primary }
                 ]}>
-                    {error}
+                    {getText('login')}
                 </Text>
-            ) : null}
-            <Button 
-                title={getText('login')}
-                onPress={handleLogin}
-                color={theme.colors.primary.main}
-            />
-            <Button
-                title={getText('noAccountRegister')}
-                onPress={() => navigation.navigate('Register')}
-                color={theme.colors.primary.light}
-            />
-        </View>
+
+                <TextInput
+                    style={[
+                        styles.input,
+                        {
+                            backgroundColor: theme.colors.surface.primary,
+                            borderColor: theme.colors.border.primary,
+                            color: theme.colors.text.primary
+                        }
+                    ]}
+                    placeholder={getText('email')}
+                    placeholderTextColor={theme.colors.text.tertiary}
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                />
+
+                <TextInput
+                    style={[
+                        styles.input,
+                        {
+                            backgroundColor: theme.colors.surface.primary,
+                            borderColor: theme.colors.border.primary,
+                            color: theme.colors.text.primary
+                        }
+                    ]}
+                    placeholder={getText('password')}
+                    placeholderTextColor={theme.colors.text.tertiary}
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                />
+
+                {error ? (
+                    <Text style={[
+                        styles.error,
+                        theme.typography.body.medium,
+                        { color: theme.colors.status.error }
+                    ]}>
+                        {error}
+                    </Text>
+                ) : null}
+
+                <TouchableOpacity
+                    style={[
+                        styles.button,
+                        styles.loginButton,
+                        { backgroundColor: theme.colors.primary.main }
+                    ]}
+                    onPress={handleLogin}
+                >
+                    <Text style={[
+                        styles.buttonText,
+                        theme.typography.button.large,
+                        { color: theme.colors.primary.contrastText }
+                    ]}>
+                        {getText('login')}
+                    </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={[styles.button, styles.forgotPasswordButton]}
+                    onPress={() => navigation.navigate('ForgotPassword')}
+                >
+                    <Text style={[
+                        styles.buttonText,
+                        theme.typography.body.medium,
+                        { color: theme.colors.primary.main }
+                    ]}>
+                        {getText('forgotPassword')}
+                    </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    style={[styles.button, styles.registerButton]}
+                    onPress={() => navigation.navigate('Register')}
+                >
+                    <Text style={[
+                        styles.buttonText,
+                        theme.typography.body.medium,
+                        { color: theme.colors.text.secondary }
+                    ]}>
+                        {getText('noAccountRegister')}
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        </Screen>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    content: {
+        flex: 1,
         justifyContent: 'center',
         padding: spacing.lg,
+    },
+    title: {
+        marginBottom: spacing.md,
+        textAlign: 'center',
     },
     input: {
         height: 40,
@@ -99,5 +151,33 @@ const styles = StyleSheet.create({
     error: {
         marginBottom: spacing.sm,
         textAlign: 'center',
+    },
+    button: {
+        padding: spacing.md,
+        borderRadius: borderRadius.md,
+        minHeight: 48,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: spacing.xs,
+    },
+    buttonText: {
+        textAlign: 'center',
+    },
+    loginButton: {
+        marginTop: spacing.lg,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+    },
+    forgotPasswordButton: {
+        marginTop: spacing.md,
+    },
+    registerButton: {
+        marginTop: spacing.lg,
     },
 }); 

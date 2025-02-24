@@ -3,16 +3,20 @@ import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { NavigationProp } from '@react-navigation/native';
 
 export type RootStackParamList = {
-  // Auth screens
+  // Auth Stack
   Login: undefined;
   Register: undefined;
+  Otp: undefined;
+  ForgotPassword: undefined;
+  ResetForgottenPassword: undefined;
   
-  // Main tabs
+  // Main App Stack
   MainTabs: undefined;
   Scan: undefined;
 
   // Profile screens
   EditProfile: undefined;
+  ResetPassword: undefined;
   AppSettings: undefined;
   NotificationSettings: undefined;
   Privacy: undefined;
@@ -27,14 +31,31 @@ export type RootStackParamList = {
   EquipmentDetail: { id: string };
   CreateEquipment: undefined;
   UpdateEquipment: { id: string };
-  DeleteEquipment: undefined;
+  DeleteEquipment: { id: string };
   HowIBrew: undefined;
   RecipeDetail: { id: string };
   CreateRecipe: undefined;
   UpdateRecipe: { id: string };
-  DeleteRecipe: undefined;
+  DeleteRecipe: { id: string };
   SuggestProduct: undefined;
   Subscription: undefined;
+
+  // Post screens
+  WhatIThink: undefined;
+  PostDetail: { id: string };
+  CreatePost: undefined;
+  UpdatePost: { id: string };
+  DeletePosts: undefined;
+
+  // Premium features
+  Coupons: undefined;
+  Events: undefined;
+  EventDetail: { event: { title: string; imageUrl: string } };
+  TasteMatches: undefined;
+  TasteMatchDetail: { match: { title: string; imageUrl: string } };
+
+  // New routes
+  RoasteryDetail: { id: string };
 }; 
 
 export type BottomTabParamList = {

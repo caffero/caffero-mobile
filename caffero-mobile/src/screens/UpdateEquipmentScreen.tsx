@@ -13,6 +13,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useLanguage } from '../contexts/LanguageContext';
+import Screen from '../components/Screen';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'UpdateEquipment'>['route'];
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
@@ -71,7 +72,7 @@ export const UpdateEquipmentScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <Header
         title={getText('updateEquipment')}
         showBack
@@ -142,7 +143,7 @@ export const UpdateEquipmentScreen = () => {
           <Text style={styles.saveButtonText}>{getText('updateEquipment')}</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

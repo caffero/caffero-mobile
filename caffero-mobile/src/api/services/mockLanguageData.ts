@@ -228,7 +228,65 @@ export const mockLocalizations: LocalizationMap = {
         { id: 158, propertyName: 'enterTemperature', value: 'Enter temperature', languageId: 'en' },
         { id: 159, propertyName: 'addStep', value: 'Add Step', languageId: 'en' },
         { id: 160, propertyName: 'fillRequiredFields', value: 'Please fill all required fields', languageId: 'en' },
-        { id: 161, propertyName: 'recipeUpdateSuccess', value: 'Recipe updated successfully', languageId: 'en' }
+        { id: 161, propertyName: 'recipeUpdateSuccess', value: 'Recipe updated successfully', languageId: 'en' },
+
+        // OTP Screen
+        { id: 163, propertyName: 'confirmOtp', value: 'Confirm OTP', languageId: 'en' },
+        { id: 164, propertyName: 'otpVerificationFailed', value: 'OTP verification failed. Please try again.', languageId: 'en' },
+        { id: 165, propertyName: 'checkEmailForOtp', value: 'Check your email for verification code.', languageId: 'en' },
+        { id: 166, propertyName: 'submit', value: 'Submit', languageId: 'en' },
+
+        // Search Related
+        { id: 167, propertyName: 'search', value: 'Search', languageId: 'en' },
+        { id: 168, propertyName: 'searchResults', value: 'results found', languageId: 'en' },
+        { id: 169, propertyName: 'noSearchResults', value: 'No results found', languageId: 'en' },
+
+        // Password Flow Screens
+        { id: 170, propertyName: 'forgotPassword', value: 'Forgot Password', languageId: 'en' },
+        { id: 171, propertyName: 'resetPassword', value: 'Reset Password', languageId: 'en' },
+        { id: 172, propertyName: 'currentPassword', value: 'Current Password', languageId: 'en' },
+        { id: 173, propertyName: 'newPassword', value: 'New Password', languageId: 'en' },
+        { id: 174, propertyName: 'confirmPassword', value: 'Confirm Password', languageId: 'en' },
+        { id: 175, propertyName: 'forgotPasswordDescription', value: 'Enter your email address and we will send you a verification code to reset your password.', languageId: 'en' },
+        { id: 176, propertyName: 'resetPasswordDescription', value: 'Please enter and confirm your new password.', languageId: 'en' },
+        { id: 177, propertyName: 'passwordResetSuccess', value: 'Your password has been reset successfully. Please login with your new password.', languageId: 'en' },
+        { id: 178, propertyName: 'passwordChangeSuccess', value: 'Your password has been changed successfully.', languageId: 'en' },
+        { id: 179, propertyName: 'enterCurrentPassword', value: 'Enter your current password', languageId: 'en' },
+        { id: 180, propertyName: 'enterNewPassword', value: 'Enter your new password', languageId: 'en' },
+        { id: 181, propertyName: 'confirmNewPassword', value: 'Confirm your new password', languageId: 'en' },
+        { id: 182, propertyName: 'passwordsDontMatch', value: 'Passwords do not match', languageId: 'en' },
+        { id: 183, propertyName: 'incorrectCurrentPassword', value: 'Current password is incorrect', languageId: 'en' },
+
+        // Agreement Related
+        { id: 184, propertyName: 'personalDataAgreementRequired', value: 'You must accept the Personal Data Protection Agreement to continue.', languageId: 'en' },
+        { id: 185, propertyName: 'kvkkAgreementTitle', value: 'Personal Data Protection Agreement', languageId: 'en' },
+        { id: 186, propertyName: 'commercialAgreementTitle', value: 'Commercial Communication Agreement', languageId: 'en' },
+        { id: 187, propertyName: 'kvkkAgreementContent', value: 'This Privacy Notice explains how Caffero ("we," "our," or "us") collects, uses, shares, and protects your personal information.\n\nInformation We Collect:\n- Personal information (name, email, phone number)\n- Usage data (coffee preferences, brewing habits)\n- Device information\n\nHow We Use Your Information:\n- Provide and improve our services\n- Personalize your experience\n- Send important notifications\n- Analyze app performance\n\nData Protection:\n- We implement industry-standard security measures\n- Your data is encrypted and stored securely\n- We regularly review our security practices\n\nYour Rights:\n- Access your personal data\n- Request corrections\n- Delete your account\n- Opt-out of communications\n\nBy accepting this agreement, you acknowledge that you have read and understood our privacy practices.', languageId: 'en' },
+        { id: 188, propertyName: 'commercialAgreementContent', value: 'By accepting this agreement, you consent to receive commercial communications from Caffero about:\n\n- Special offers and promotions\n- New features and services\n- Coffee-related content and tips\n- Events and workshops\n- Product recommendations\n\nCommunication Channels:\n- Email newsletters\n- Push notifications\n- SMS messages (if provided)\n\nYou can opt-out of commercial communications at any time through:\n- App settings\n- Unsubscribe links in emails\n- Contacting customer support\n\nThis consent is optional and not accepting will not affect your ability to use the app\'s core features.', languageId: 'en' },
+        { id: 189, propertyName: 'kvkkAgreementText', value: 'I have read and accept the Personal Data Protection Agreement', languageId: 'en' },
+        { id: 190, propertyName: 'commercialAgreementText', value: 'I have read and accept the Commercial Communication Agreement', languageId: 'en' },
+        // Recipe Privacy Settings
+        { id: 191, propertyName: 'recipePrivacy', value: 'Recipe Privacy', languageId: 'en' },
+        { id: 192, propertyName: 'publicRecipe', value: 'Public Recipe', languageId: 'en' },
+        { id: 193, propertyName: 'privateRecipe', value: 'Private Recipe', languageId: 'en' },
+        { id: 194, propertyName: 'publicRecipeDescription', value: 'Anyone can view this recipe', languageId: 'en' },
+        { id: 195, propertyName: 'privateRecipeDescription', value: 'Only you can view this recipe', languageId: 'en' },
+
+        // Post Related
+        { id: 196, propertyName: 'whatIThink', value: 'What I Think', languageId: 'en' },
+        { id: 197, propertyName: 'createPost', value: 'Create Post', languageId: 'en' },
+        { id: 198, propertyName: 'updatePost', value: 'Update Post', languageId: 'en' },
+        { id: 199, propertyName: 'deletePosts', value: 'Delete Posts', languageId: 'en' },
+        { id: 200, propertyName: 'postTitle', value: 'Post Title', languageId: 'en' },
+        { id: 201, propertyName: 'postContent', value: 'Post Content', languageId: 'en' },
+        { id: 202, propertyName: 'enterPostTitle', value: 'Enter post title', languageId: 'en' },
+        { id: 203, propertyName: 'enterPostContent', value: 'Enter post content', languageId: 'en' },
+        { id: 204, propertyName: 'postCreated', value: 'Post created successfully', languageId: 'en' },
+        { id: 205, propertyName: 'postUpdated', value: 'Post updated successfully', languageId: 'en' },
+        { id: 206, propertyName: 'postDeleted', value: 'Selected posts have been deleted', languageId: 'en' },
+        { id: 207, propertyName: 'likes', value: 'Likes', languageId: 'en' },
+        { id: 208, propertyName: 'dislikes', value: 'Dislikes', languageId: 'en' },
+        { id: 209, propertyName: 'addPostImage', value: 'Add Post Image', languageId: 'en' },
     ],
     tr: [
         // App Settings Screen
@@ -441,6 +499,64 @@ export const mockLocalizations: LocalizationMap = {
         { id: 158, propertyName: 'enterTemperature', value: 'Sıcaklık girin', languageId: 'tr' },
         { id: 159, propertyName: 'addStep', value: 'Adım Ekle', languageId: 'tr' },
         { id: 160, propertyName: 'fillRequiredFields', value: 'Lütfen gerekli alanları doldurun', languageId: 'tr' },
-        { id: 161, propertyName: 'recipeUpdateSuccess', value: 'Tarif başarıyla güncellendi', languageId: 'tr' }
+        { id: 161, propertyName: 'recipeUpdateSuccess', value: 'Tarif başarıyla güncellendi', languageId: 'tr' },
+
+        // OTP Screen
+        { id: 163, propertyName: 'confirmOtp', value: 'Doğrulama kodunu girin', languageId: 'tr' },
+        { id: 164, propertyName: 'otpVerificationFailed', value: 'OTP doğrulaması başarısız. Lütfen tekrar deneyin.', languageId: 'tr' },
+        { id: 165, propertyName: 'checkEmailForOtp', value: 'Doğrulama kodu için e-postanızı kontrol edin.', languageId: 'tr' },
+        { id: 166, propertyName: 'submit', value: 'Gönder', languageId: 'tr' },
+
+        // Search Related
+        { id: 167, propertyName: 'search', value: 'Arama Yapın', languageId: 'tr' },
+        { id: 168, propertyName: 'searchResults', value: 'Sonuç bulundu', languageId: 'tr' },
+        { id: 169, propertyName: 'noSearchResults', value: 'Sonuç bulunamadı', languageId: 'tr' },
+
+        // Password Flow Screens
+        { id: 170, propertyName: 'forgotPassword', value: 'Şifremi Unuttum', languageId: 'tr' },
+        { id: 171, propertyName: 'resetPassword', value: 'Şifre Sıfırla', languageId: 'tr' },
+        { id: 172, propertyName: 'currentPassword', value: 'Mevcut Şifre', languageId: 'tr' },
+        { id: 173, propertyName: 'newPassword', value: 'Yeni Şifre', languageId: 'tr' },
+        { id: 174, propertyName: 'confirmPassword', value: 'Şifreyi Onayla', languageId: 'tr' },
+        { id: 175, propertyName: 'forgotPasswordDescription', value: 'E-posta adresinizi girin, şifrenizi sıfırlamanız için size bir doğrulama kodu göndereceğiz.', languageId: 'tr' },
+        { id: 176, propertyName: 'resetPasswordDescription', value: 'Lütfen yeni şifrenizi girin ve onaylayın.', languageId: 'tr' },
+        { id: 177, propertyName: 'passwordResetSuccess', value: 'Şifreniz başarıyla sıfırlandı. Lütfen yeni şifrenizle giriş yapın.', languageId: 'tr' },
+        { id: 178, propertyName: 'passwordChangeSuccess', value: 'Şifreniz başarıyla değiştirildi.', languageId: 'tr' },
+        { id: 179, propertyName: 'enterCurrentPassword', value: 'Mevcut şifrenizi girin', languageId: 'tr' },
+        { id: 180, propertyName: 'enterNewPassword', value: 'Yeni şifrenizi girin', languageId: 'tr' },
+        { id: 181, propertyName: 'confirmNewPassword', value: 'Yeni şifrenizi onaylayın', languageId: 'tr' },
+        { id: 182, propertyName: 'passwordsDontMatch', value: 'Şifreler eşleşmiyor', languageId: 'tr' },
+        { id: 183, propertyName: 'incorrectCurrentPassword', value: 'Mevcut şifre yanlış', languageId: 'tr' },
+
+        // Agreement Related
+        { id: 184, propertyName: 'personalDataAgreementRequired', value: 'Devam etmek için Kişisel Verilerin Korunması Sözleşmesi\'ni kabul etmelisiniz.', languageId: 'tr' },
+        { id: 185, propertyName: 'kvkkAgreementTitle', value: 'Kişisel Verilerin Korunması Sözleşmesi', languageId: 'tr' },
+        { id: 186, propertyName: 'commercialAgreementTitle', value: 'Ticari İletişim Sözleşmesi', languageId: 'tr' },
+        { id: 187, propertyName: 'kvkkAgreementContent', value: 'Bu Gizlilik Bildirimi, Caffero ("biz," "bizim" veya "bize") olarak kişisel bilgilerinizi nasıl topladığımızı, kullandığımızı, paylaştığımızı ve koruduğumuzu açıklar.\n\nTopladığımız Bilgiler:\n- Kişisel bilgiler (ad, e-posta, telefon numarası)\n- Kullanım verileri (kahve tercihleri, demleme alışkanlıkları)\n- Cihaz bilgileri\n\nBilgilerinizi Nasıl Kullanıyoruz:\n- Hizmetlerimizi sunmak ve geliştirmek\n- Deneyiminizi kişiselleştirmek\n- Önemli bildirimleri göndermek\n- Uygulama performansını analiz etmek\n\nVeri Koruma:\n- Endüstri standardı güvenlik önlemleri uyguluyoruz\n- Verileriniz şifrelenir ve güvenle saklanır\n- Güvenlik uygulamalarımızı düzenli olarak gözden geçiriyoruz\n\nHaklarınız:\n- Kişisel verilerinize erişim\n- Düzeltme talep etme\n- Hesabınızı silme\n- İletişimden çıkma\n\nBu sözleşmeyi kabul ederek, gizlilik uygulamalarımızı okuduğunuzu ve anladığınızı kabul etmiş olursunuz.', languageId: 'tr' },
+        { id: 188, propertyName: 'commercialAgreementContent', value: 'By accepting this agreement, you consent to receive commercial communications from Caffero about:\n\n- Special offers and promotions\n- New features and services\n- Coffee-related content and tips\n- Events and workshops\n- Product recommendations\n\nCommunication Channels:\n- Email newsletters\n- Push notifications\n- SMS messages (if provided)\n\nYou can opt-out of commercial communications at any time through:\n- App settings\n- Unsubscribe links in emails\n- Contacting customer support\n\nThis consent is optional and not accepting will not affect your ability to use the app\'s core features.', languageId: 'tr' },
+        { id: 189, propertyName: 'kvkkAgreementText', value: 'KVKK Metni\'ni okudum ve kabul ediyorum', languageId: 'tr' },
+        { id: 190, propertyName: 'commercialAgreementText', value: 'Ticari İleti Metni\'ni okudum ve kabul ediyorum', languageId: 'tr' },
+        // Recipe Privacy Settings
+        { id: 191, propertyName: 'recipePrivacy', value: 'Tarif Gizliliği', languageId: 'tr' },
+        { id: 192, propertyName: 'publicRecipe', value: 'Herkese Açık Tarif', languageId: 'tr' },
+        { id: 193, propertyName: 'privateRecipe', value: 'Özel Tarif', languageId: 'tr' },
+        { id: 194, propertyName: 'publicRecipeDescription', value: 'Bu tarifi herkes görebilir', languageId: 'tr' },
+        { id: 195, propertyName: 'privateRecipeDescription', value: 'Bu tarifi sadece siz görebilirsiniz', languageId: 'tr' },
+
+        // Post Related
+        { id: 196, propertyName: 'whatIThink', value: 'Ne Düşünüyorum', languageId: 'tr' },
+        { id: 197, propertyName: 'createPost', value: 'Gönderi Oluştur', languageId: 'tr' },
+        { id: 198, propertyName: 'updatePost', value: 'Gönderi Güncelle', languageId: 'tr' },
+        { id: 199, propertyName: 'deletePosts', value: 'Gönderileri Sil', languageId: 'tr' },
+        { id: 200, propertyName: 'postTitle', value: 'Gönderi Başlığı', languageId: 'tr' },
+        { id: 201, propertyName: 'postContent', value: 'Gönderi İçeriği', languageId: 'tr' },
+        { id: 202, propertyName: 'enterPostTitle', value: 'Gönderi başlığı girin', languageId: 'tr' },
+        { id: 203, propertyName: 'enterPostContent', value: 'Gönderi içeriği girin', languageId: 'tr' },
+        { id: 204, propertyName: 'postCreated', value: 'Gönderi başarıyla oluşturuldu', languageId: 'tr' },
+        { id: 205, propertyName: 'postUpdated', value: 'Gönderi başarıyla güncellendi', languageId: 'tr' },
+        { id: 206, propertyName: 'postDeleted', value: 'Seçili gönderiler silindi', languageId: 'tr' },
+        { id: 207, propertyName: 'likes', value: 'Beğeniler', languageId: 'tr' },
+        { id: 208, propertyName: 'dislikes', value: 'Beğenmemeler', languageId: 'tr' },
+        { id: 209, propertyName: 'addPostImage', value: 'Gönderi Resmi Ekle', languageId: 'tr' },
     ]
 }; 

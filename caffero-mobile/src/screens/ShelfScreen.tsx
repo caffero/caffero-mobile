@@ -7,11 +7,12 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { spacing } from '../theme';
 import { ShelfItem } from '../components/ShelfItem';
+import Screen from '../components/Screen';
 
 interface ShelfItemType {
   id: string;
   title: string;
-  route: 'WhatIBrew' | 'WhatIBrewWith' | 'HowIBrew';
+  route: 'WhatIBrew' | 'WhatIBrewWith' | 'HowIBrew' | 'WhatIThink';
   imageUrl: string;
 }
 
@@ -34,6 +35,12 @@ const shelfItems: ShelfItemType[] = [
     route: 'HowIBrew',
     imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085', // Pour over brewing
   },
+  { 
+    id: '4', 
+    title: 'whatIThink', 
+    route: 'WhatIThink',
+    imageUrl: 'https://images.unsplash.com/photo-1511920170033-f8396924c348', // Coffee thoughts
+  },
 ];
 
 export const ShelfScreen = () => {
@@ -46,7 +53,7 @@ export const ShelfScreen = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header title={getText('appName')} showBack={false} />
       <ScrollView 
         style={styles.content}
@@ -69,7 +76,7 @@ export const ShelfScreen = () => {
           />
         ))}
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

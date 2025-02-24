@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import Screen from '../components/Screen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -36,6 +37,7 @@ const getRecipe = (id: string) => ({
     volume: 100,
     temperature: 65,
   },
+  isPublic: true,
   pouringSteps: [
     { volume: 50, time: 30, temperature: 93 },
     { volume: 100, time: 60, temperature: 93 },
@@ -87,12 +89,23 @@ export const RecipeDetailScreen = () => {
   );
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <ScrollView style={styles.content}>
         <Text style={[styles.title, { color: theme.colors.text.primary }]}>
           {recipe.title}
         </Text>
         
+        <View style={[styles.privacyContainer, { backgroundColor: theme.colors.surface.primary }]}>
+          <Icon 
+            name={recipe.isPublic ? "public" : "lock"} 
+            size={20} 
+            color={theme.colors.text.secondary} 
+          />
+          <Text style={[styles.privacyText, { color: theme.colors.text.secondary }]}>
+            {recipe.isPublic ? getText('publicRecipe') : getText('privateRecipe')}
+          </Text>
+        </View>
+
         <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
             {getText('equipment')}
@@ -144,7 +157,7 @@ export const RecipeDetailScreen = () => {
       >
         <Icon name="edit" size={24} color="#fff" />
       </TouchableOpacity>
-    </View>
+    </Screen>
   );
 };
 
@@ -241,5 +254,16 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
+  },
+  privacyContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+    borderRadius: 8,
+    marginBottom: 16,
+  },
+  privacyText: {
+    marginLeft: 8,
+    fontSize: 14,
   },
 }); 

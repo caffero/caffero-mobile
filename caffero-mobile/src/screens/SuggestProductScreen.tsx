@@ -16,6 +16,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import * as ImagePicker from 'expo-image-picker';
 import { useLanguage } from '../contexts/LanguageContext';
+import Screen from '../components/Screen';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -61,7 +62,7 @@ export const SuggestProductScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <Header
         title={getText('suggestProduct')}
         showBack
@@ -119,7 +120,7 @@ export const SuggestProductScreen = () => {
           <Text style={styles.submitButtonText}>{getText('submitSuggestion')}</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

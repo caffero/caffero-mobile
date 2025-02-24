@@ -5,10 +5,13 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { spacing, typography, borderRadius, shadows } from '../theme';
 import { LanguageSelector } from '../components/LanguageSelector';
+import Screen from '../components/Screen';
+import { useNavigation } from '@react-navigation/native';
 
 export const AppSettingsScreen = () => {
   const { theme, isDark, toggleTheme } = useTheme();
   const { getText } = useLanguage();
+  const navigation = useNavigation();
 
   const appInfo = {
     version: '1.0.0',
@@ -18,8 +21,12 @@ export const AppSettingsScreen = () => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <Header title={getText('appSettings')} showBack />
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+      <Header 
+        title={getText('appSettings')} 
+        showBack 
+        onBack={() => navigation.goBack()} 
+      />
       <ScrollView style={styles.content}>
         <View style={[styles.section, { backgroundColor: theme.colors.surface.secondary }]}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>{getText('theme')}</Text>
@@ -28,7 +35,7 @@ export const AppSettingsScreen = () => {
             <Switch
               value={isDark}
               onValueChange={toggleTheme}
-              trackColor={{ false: theme.colors.border.primary, true: theme.colors.vibrantAqua }}
+              trackColor={{ false: theme.colors.border.primary, true: theme.colors.background.accent }}
               thumbColor={isDark ? theme.colors.background.primary : theme.colors.background.primary}
             />
           </View>
@@ -51,7 +58,7 @@ export const AppSettingsScreen = () => {
           ))}
         </View>
       </ScrollView>
-    </View>
+    </Screen>
   );
 };
 

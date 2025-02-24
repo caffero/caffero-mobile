@@ -14,8 +14,10 @@ import {
   NativeScrollEvent,
   NativeSyntheticEvent,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { spacing, borderRadius, layout } from '../theme';
 import { useTheme } from '../contexts/ThemeContext';
+import ErrorBoundary from './ErrorBoundary';
 
 interface CarouselItem {
   id: string;
@@ -31,11 +33,11 @@ interface CarouselProps {
 }
 
 const { width: WINDOW_WIDTH } = Dimensions.get('window');
-const ITEM_WIDTH = Math.min(WINDOW_WIDTH * 0.8, layout.contentMaxWidth);
-const ITEM_HEIGHT = ITEM_WIDTH * 0.6;
+const ITEM_WIDTH = Math.min(WINDOW_WIDTH * 0.6, layout.contentMaxWidth);
+const ITEM_HEIGHT = ITEM_WIDTH * 1.5;
 const SPACING = spacing.md;
 
-export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress }) => {
+const CarouselContent: React.FC<CarouselProps> = ({ title, items, onItemPress }) => {
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const { theme } = useTheme();
 
@@ -89,11 +91,12 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
             style={styles.image}
             resizeMode="cover"
           />
-          <View 
-            style={[
-              styles.overlay,
-              { backgroundColor: 'rgba(0, 0, 0, 0.5)' }
-            ]}
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,0.8)']}
+            style={styles.overlay}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            locations={[0.3, 1]}
           >
             <View style={styles.contentContainer}>
               <Text 
@@ -101,9 +104,9 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
                   styles.itemTitle,
                   {
                     color: '#FFFFFF',
-                    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                    textShadowColor: 'rgba(0, 0, 0, 0.3)',
                     textShadowOffset: { width: 0, height: 1 },
-                    textShadowRadius: 3,
+                    textShadowRadius: 2,
                   }
                 ]}
                 numberOfLines={2}
@@ -115,10 +118,10 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
                   style={[
                     styles.subtitle,
                     {
-                      color: '#FFFFFF',
-                      textShadowColor: 'rgba(0, 0, 0, 0.75)',
+                      color: 'rgba(255, 255, 255, 0.9)',
+                      textShadowColor: 'rgba(0, 0, 0, 0.3)',
                       textShadowOffset: { width: 0, height: 1 },
-                      textShadowRadius: 3,
+                      textShadowRadius: 2,
                     }
                   ]}
                   numberOfLines={1}
@@ -127,7 +130,7 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
                 </Text>
               )}
             </View>
-          </View>
+          </LinearGradient>
         </TouchableOpacity>
       </Animated.View>
     );
@@ -148,6 +151,18 @@ export const Carousel: React.FC<CarouselProps> = ({ title, items, onItemPress })
         {items.map((item, index) => renderItem({ item, index }))}
       </ScrollView>
     </View>
+  );
+};
+
+export const Carousel: React.FC<CarouselProps> = (props) => {
+  return (
+    <ErrorBoundary fallback={
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>Failed to load carousel.</Text>
+      </View>
+    }>
+      <CarouselContent {...props} />
+    </ErrorBoundary>
   );
 };
 
@@ -186,16 +201,37 @@ const styles = StyleSheet.create({
   contentContainer: {
     padding: spacing.md,
     paddingBottom: spacing.lg,
+    paddingTop: spacing.xl,
   } as ViewStyle,
   itemTitle: {
-    fontSize: 17,
-    lineHeight: 22,
+    fontSize: 20,
+    lineHeight: 24,
     fontWeight: '600',
+    color: '#FFFFFF',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   } as TextStyle,
   subtitle: {
     fontSize: 14,
     lineHeight: 20,
     fontWeight: '400',
     marginTop: spacing.xs,
+    color: 'rgba(255, 255, 255, 0.9)',
+    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  } as TextStyle,
+  errorContainer: {
+    height: ITEM_HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f8f8f8',
+    borderRadius: borderRadius.lg,
+    marginHorizontal: spacing.gutter,
+  } as ViewStyle,
+  errorText: {
+    fontSize: 16,
+    color: '#666',
   } as TextStyle,
 }); 

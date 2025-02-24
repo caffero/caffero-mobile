@@ -14,48 +14,72 @@ export const fonts = {
 
 export const colors = {
   // Primary palette
-  deepNavy: '#2E4057',
-  deepNavyAlpha: {
-    95: 'rgba(46, 64, 87, 0.95)',
-    90: 'rgba(46, 64, 87, 0.90)',
-    80: 'rgba(46, 64, 87, 0.80)',
-    60: 'rgba(46, 64, 87, 0.60)',
-    40: 'rgba(46, 64, 87, 0.40)',
-    20: 'rgba(46, 64, 87, 0.20)',
-    10: 'rgba(46, 64, 87, 0.10)',
+  coffeeRust: '#A3633B', // Coffee Rust (primary accent)
+  coffeeRustAlpha: {
+    95: 'rgba(163, 99, 59, 0.95)',
+    90: 'rgba(163, 99, 59, 0.90)',
+    80: 'rgba(163, 99, 59, 0.80)',
+    60: 'rgba(163, 99, 59, 0.60)',
+    40: 'rgba(163, 99, 59, 0.40)',
+    20: 'rgba(163, 99, 59, 0.20)',
+    10: 'rgba(163, 99, 59, 0.10)',
   },
-  mutedTeal: '#66A182',
-  vibrantAqua: '#119DA4',
-  brightYellow: '#FFC857',
+  primaryUi: '#F5E4DA', // Muted Peach (primary UI)
+  accent: '#A3633B', // Coffee Rust (for accents)
+  highlights: '#F5E4DA', // Muted Peach (for highlights)
   
-  // UI colors
-  background: {
-    primary: '#FFFFFF',
-    secondary: '#F8F9FA',
-    tertiary: '#F1F3F5',
-    accent: 'rgba(17, 157, 164, 0.08)', // vibrantAqua with opacity
+  // Light mode colors
+  light: {
+    background: {
+      primary: '#FAF7F2', // Linen White
+      secondary: '#F5E4DA', // Muted Peach
+      tertiary: '#FAF7F2', // Linen White
+      accent: 'rgba(163, 99, 59, 0.08)', // Coffee Rust with opacity
+    },
+    surface: {
+      primary: '#FAF7F2', // Linen White
+      secondary: '#F5E4DA', // Muted Peach
+      elevated: '#FFFFFF',
+    },
+    text: {
+      primary: '#2C1810', // Dark Coffee
+      secondary: '#5C4030', // Medium Coffee
+      tertiary: '#8B6B5A', // Light Coffee
+      inverse: '#FAF7F2', // Linen White
+    },
   },
-  surface: {
-    primary: '#FFFFFF',
-    secondary: '#F8F9FA',
-    elevated: '#FFFFFF',
+
+  // Dark mode colors
+  dark: {
+    background: {
+      primary: '#181512', // Deep Espresso
+      secondary: '#241E1B', // Dark Cocoa
+      tertiary: '#181512', // Deep Espresso
+      accent: 'rgba(163, 99, 59, 0.15)', // Coffee Rust with opacity
+    },
+    surface: {
+      primary: '#241E1B', // Dark Cocoa
+      secondary: '#2F2925', // Slightly lighter cocoa
+      elevated: '#3A332E', // Even lighter for elevation
+    },
+    text: {
+      primary: '#EAE0D5', // Latte Cream
+      secondary: '#BFAF9C', // Mocha Beige
+      tertiary: '#A3978A', // Lighter Mocha
+      inverse: '#241E1B', // Dark Cocoa
+    },
   },
-  text: {
-    primary: '#2E4057',
-    secondary: '#66768E',
-    tertiary: '#8E99AB',
-    inverse: '#FFFFFF',
-  },
+
   border: {
-    light: '#E1E4E8',
-    medium: '#D1D5DB',
-    dark: '#9CA3AF',
+    light: '#F5E4DA', // Muted Peach
+    medium: '#E5D4CA', // Darker Muted Peach
+    dark: '#A3633B', // Coffee Rust
   },
   status: {
-    error: '#DC3545',
-    success: '#66A182',
-    warning: '#FFC857',
-    info: '#119DA4',
+    error: '#A3633B', // Coffee Rust
+    success: '#8B6B5A', // Light Coffee
+    warning: '#F5E4DA', // Muted Peach
+    info: '#A3633B', // Coffee Rust
   }
 };
 
@@ -172,21 +196,21 @@ export const borderRadius = {
 // Following Apple's guidelines for elevation and depth
 export const shadows = {
   small: {
-    shadowColor: colors.deepNavy,
+    shadowColor: '#2C1810', // Dark Coffee
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 4,
     elevation: 2,
   },
   medium: {
-    shadowColor: colors.deepNavy,
+    shadowColor: '#2C1810', // Dark Coffee
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.12,
     shadowRadius: 8,
     elevation: 4,
   },
   large: {
-    shadowColor: colors.deepNavy,
+    shadowColor: '#2C1810', // Dark Coffee
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.16,
     shadowRadius: 16,
@@ -194,12 +218,12 @@ export const shadows = {
   },
   // Glass effect for modern UI elements
   glass: {
-    shadowColor: colors.deepNavy,
+    shadowColor: '#2C1810', // Dark Coffee
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 12,
     elevation: 4,
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    backgroundColor: 'rgba(250, 247, 242, 0.85)', // Linen White with opacity
   }
 };
 
