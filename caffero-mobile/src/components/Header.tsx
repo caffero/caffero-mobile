@@ -7,7 +7,9 @@ import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export interface HeaderProps {
   title: string;
+  showBack?: boolean;
   showBackButton?: boolean;
+  onBack?: () => void;
   onBackPress?: () => void;
   rightIcon?: string;
   onRightPress?: () => void;
@@ -17,7 +19,9 @@ export interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({
   title,
+  showBack,
   showBackButton,
+  onBack,
   onBackPress,
   rightIcon,
   onRightPress,
@@ -25,6 +29,8 @@ export const Header: React.FC<HeaderProps> = ({
   containerStyle,
 }) => {
   const { theme } = useTheme();
+  const shouldShowBack = showBack || showBackButton;
+  const handleBackPress = onBack || onBackPress;
 
   return (
     <View style={[
@@ -39,8 +45,8 @@ export const Header: React.FC<HeaderProps> = ({
         { backgroundColor: theme.colors.background.primary },
         containerStyle,
       ]}>
-        {showBackButton && (
-          <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
+        {shouldShowBack && (
+          <TouchableOpacity style={styles.backButton} onPress={handleBackPress}>
             <IconCommunity name="arrow-left" size={24} color={theme.colors.text.primary} />
           </TouchableOpacity>
         )}
