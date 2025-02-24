@@ -46,6 +46,7 @@ export const colors = {
       secondary: '#5C4030', // Medium Coffee
       tertiary: '#8B6B5A', // Light Coffee
       inverse: '#FAF7F2', // Linen White
+      disabled: '#C0C0C0', // Disabled text
     },
   },
 
@@ -67,6 +68,7 @@ export const colors = {
       secondary: '#BFAF9C', // Mocha Beige
       tertiary: '#A3978A', // Lighter Mocha
       inverse: '#241E1B', // Dark Cocoa
+      disabled: '#C0C0C0', // Disabled text
     },
   },
 
