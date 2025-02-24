@@ -2,11 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform, StatusBar, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useTheme } from '../contexts/ThemeContext';
+import { spacing } from '../theme';
+import IconCommunity from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export interface HeaderProps {
   title: string;
-  showBack?: boolean;
-  onBack?: () => void;
+  showBackButton?: boolean;
+  onBackPress?: () => void;
   rightIcon?: string;
   onRightPress?: () => void;
   titleStyle?: StyleProp<TextStyle>;
@@ -15,8 +17,8 @@ export interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({
   title,
-  showBack,
-  onBack,
+  showBackButton,
+  onBackPress,
   rightIcon,
   onRightPress,
   titleStyle,
@@ -37,9 +39,9 @@ export const Header: React.FC<HeaderProps> = ({
         { backgroundColor: theme.colors.background.primary },
         containerStyle,
       ]}>
-        {showBack && (
-          <TouchableOpacity onPress={onBack} style={styles.backButton}>
-            <Icon name="arrow-back" size={24} color={theme.colors.text.primary} />
+        {showBackButton && (
+          <TouchableOpacity style={styles.backButton} onPress={onBackPress}>
+            <IconCommunity name="arrow-left" size={24} color={theme.colors.text.primary} />
           </TouchableOpacity>
         )}
         <Text
@@ -80,6 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: spacing.lg,
   },
   title: {
     flex: 1,
@@ -88,10 +91,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   backButton: {
-    width: 56,
-    height: 56,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginRight: spacing.md,
   },
   rightButton: {
     width: 56,

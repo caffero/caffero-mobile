@@ -60,6 +60,8 @@ import { DeletePostsScreen } from '../screens/DeletePostsScreen';
 import { HowIBrewScreen } from '../screens/HowIBrewScreen';
 import { SuggestProductScreen } from '../screens/SuggestProductScreen';
 import { RoasteryDetailScreen } from '../screens/RoasteryDetailScreen';
+import { PromotionCodeDetailScreen } from '../screens/PromotionCodeDetailScreen';
+import { PaymentScreen } from '../screens/PaymentScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();
@@ -193,6 +195,8 @@ export const Navigation = () => {
               <Stack.Group screenOptions={{ presentation: 'card' }}>
                 <Stack.Screen name="RoasteryDetail" component={RoasteryDetailScreen} />
                 <Stack.Screen name="PostDetail" component={PostDetailScreen} />
+                <Stack.Screen name="PromotionCodeDetail" component={PromotionCodeDetailScreen} />
+                <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
               </Stack.Group>
 
               <Stack.Group screenOptions={{ presentation: 'card' }}>

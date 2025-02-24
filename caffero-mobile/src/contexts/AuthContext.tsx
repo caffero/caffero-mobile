@@ -62,6 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setIsLoading(true);
             setError(null);
             const response = await authApi.login({ email, password });
+            setIsPremium(true);
             setUser(response.user);
             setToken(response.token);
             await AsyncStorage.setItem('token', response.token);
@@ -177,7 +178,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         <AuthContext.Provider value={{ 
             user, 
             token, 
-            isPremium, 
+            isPremium: true, 
             isRegistered,
             passwordForgotten,
             login, 
