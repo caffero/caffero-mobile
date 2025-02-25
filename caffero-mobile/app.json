@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "caffero-mobile",
+    "name": "Caffero",
     "slug": "caffero-mobile",
+    "owner": "cafferobrew",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/coffe-maker-logo.jpg",
