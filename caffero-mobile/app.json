@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "caffero-mobile",
+    "name": "Caffero",
     "slug": "caffero-mobile",
+    "owner": "cafferobrew",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/coffee-maker-logo.png",
@@ -35,6 +36,12 @@
       "eas": {
         "projectId": "e200074a-fd6f-4b2d-a6ab-634fb4ba3c56"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e200074a-fd6f-4b2d-a6ab-634fb4ba3c56"
     }
   }
 }
