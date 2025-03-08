@@ -1,58 +1,32 @@
 import { Language } from '../models/Language';
 import { Localization } from '../models/Localization';
-import { API_ENDPOINTS } from '../config';
+import { API_BASE_URL, API_ENDPOINTS } from '../config';
 import { ApiResponse } from '../models/ApiResponse';
 import { ApiException } from 'exceptions';
 import { mockLanguages, mockLocalizations } from './mockLanguageData';
+import { cafferoBackendBuilder } from '../utils/CafferoBackendBuilder';
+import { LoggingResponseInterceptor } from 'api/utils/interceptors/loggingInterceptor';
+import { LoggingInterceptor } from 'api/utils/interceptors/loggingInterceptor';
 
-// Implementation with API endpoints - commented out for now
-/*
 export const useLanguageService = () => {
-    const getHeaders = (): HeadersInit => ({
-        'Content-Type': 'application/json'
-    });
+    const client = cafferoBackendBuilder().build();
 
     return {
         async getLanguages(): Promise<Language[]> {
-            const response = await fetch(API_ENDPOINTS.LANGUAGE.GET_ALL, {
-                method: 'GET',
-                headers: getHeaders()
-            });
-
-            const result: ApiResponse<Language[]> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to fetch languages',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
-            }
-
-            return result.result.data;
+            const request = client
+            .get<ApiResponse<Language[]>>(API_ENDPOINTS.LANGUAGE.GET_ALL);
+            
+            const response = await request.execute();
+            return response.result?.data || [];
         },
 
         async getLocalizations(languageId: string): Promise<Localization[]> {
-            const response = await fetch(API_ENDPOINTS.LANGUAGE.GET_LOCALIZATIONS.replace(':id', languageId), {
-                method: 'GET',
-                headers: getHeaders()
-            });
-
-            const result: ApiResponse<Localization[]> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to fetch localizations',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
-            }
-
-            return result.result.data;
+            const response = await client.get<ApiResponse<Localization[]>>(API_ENDPOINTS.LANGUAGE.GET_LOCALIZATIONS.replace(':id', languageId)).execute();
+            return response.result?.data || [];
         }
     };
 };
-*/
+
 
 // Mock implementation - currently in use
 export const languageService = {
