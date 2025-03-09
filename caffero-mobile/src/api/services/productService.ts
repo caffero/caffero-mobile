@@ -4,33 +4,27 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { ApiResponse } from '../models/ApiResponse';
 import { ApiException } from 'exceptions';
+import { cafferoBackendBuilder } from '../utils/CafferoBackendBuilder';
 
 export const useProductService = () => {
     const { token } = useAuth();
     const { currentLanguage } = useLanguage();
-
-    const getHeaders = (): HeadersInit => ({
-        'Content-Type': 'application/json',
-        'Authorization': token ? `Bearer ${token}` : '',
-        'X-Language': currentLanguage?.id || 'tr'
-    });
+    const apiClient = cafferoBackendBuilder()
+        .withDefaultHeader('Authorization', token ? `Bearer ${token}` : '')
+        .withDefaultHeader('X-Language', currentLanguage?.id || 'tr')
+        .build();
 
     return {
         async create(data: CreateProduct): Promise<void> {
-            const response = await fetch(API_ENDPOINTS.PRODUCT.CREATE, {
-                method: 'POST',
-                headers: getHeaders(),
-                body: JSON.stringify(data)
-            });
-
-            const result: ApiResponse<void> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to suggest product',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+            try {
+                const response = await apiClient
+                    .post<ApiResponse<void>>(API_ENDPOINTS.PRODUCT.CREATE, data)
+                    .execute();
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to suggest product', 500, 'Unknown error');
             }
         }
     };

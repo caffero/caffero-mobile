@@ -4,110 +4,90 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { ApiResponse } from '../models/ApiResponse';
 import { ApiException } from 'exceptions';
+import { cafferoBackendBuilder } from '../utils/CafferoBackendBuilder';
 
 export const useRecipeService = () => {
     const { token } = useAuth();
     const { currentLanguage } = useLanguage();
-
-    const getHeaders = (): HeadersInit => ({
-        'Content-Type': 'application/json',
-        'Authorization': token ? `Bearer ${token}` : '',
-        'X-Language': currentLanguage?.id || 'tr'
-    });
+    const apiClient = cafferoBackendBuilder()
+        .withDefaultHeader('Authorization', token ? `Bearer ${token}` : '')
+        .withDefaultHeader('X-Language', currentLanguage?.id || 'tr')
+        .build();
 
     return {
         async getAll(): Promise<GetRecipeList[]> {
-            const response = await fetch(API_ENDPOINTS.RECIPE.GET_ALL, {
-                method: 'GET',
-                headers: getHeaders()
-            });
+            try {
+                const response = await apiClient
+                    .get<ApiResponse<GetRecipeList[]>>(API_ENDPOINTS.RECIPE.GET_ALL)
+                    .execute();
 
-            const result: ApiResponse<GetRecipeList[]> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to fetch recipes',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to fetch recipes', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async getById(id: string): Promise<GetRecipe> {
-            const response = await fetch(API_ENDPOINTS.RECIPE.GET.replace(':id', id), {
-                method: 'GET',
-                headers: getHeaders()
-            });
+            try {
+                const url = API_ENDPOINTS.RECIPE.GET.replace(':id', id);
+                const response = await apiClient
+                    .get<ApiResponse<GetRecipe>>(url)
+                    .execute();
 
-            const result: ApiResponse<GetRecipe> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to fetch recipe',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to fetch recipe', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async create(data: CreateRecipe): Promise<GetRecipe> {
-            const response = await fetch(API_ENDPOINTS.RECIPE.CREATE, {
-                method: 'POST',
-                headers: getHeaders(),
-                body: JSON.stringify(data)
-            });
+            try {
+                const response = await apiClient
+                    .post<ApiResponse<GetRecipe>>(API_ENDPOINTS.RECIPE.CREATE, data)
+                    .execute();
 
-            const result: ApiResponse<GetRecipe> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to create recipe',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to create recipe', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async update(data: UpdateRecipe): Promise<GetRecipe> {
-            const response = await fetch(API_ENDPOINTS.RECIPE.UPDATE.replace(':id', data.id), {
-                method: 'PUT',
-                headers: getHeaders(),
-                body: JSON.stringify(data)
-            });
+            try {
+                const url = API_ENDPOINTS.RECIPE.UPDATE;
+                const response = await apiClient
+                    .put<ApiResponse<GetRecipe>>(url, data.id, data)
+                    .execute();
 
-            const result: ApiResponse<GetRecipe> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to update recipe',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to update recipe', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async delete(data: DeleteRecipe): Promise<void> {
-            const response = await fetch(API_ENDPOINTS.RECIPE.DELETE.replace(':id', data.id), {
-                method: 'DELETE',
-                headers: getHeaders()
-            });
-
-            const result: ApiResponse<void> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to delete recipe',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+            try {
+                const url = API_ENDPOINTS.RECIPE.DELETE;
+                const response = await apiClient
+                    .delete<ApiResponse<void>>(url, data.id)
+                    .execute();
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to delete recipe', 500, 'Unknown error');
             }
         }
     };

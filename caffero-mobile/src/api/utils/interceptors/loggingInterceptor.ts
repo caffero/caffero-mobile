@@ -1,32 +1,30 @@
 import { RequestInterceptor, ResponseInterceptor } from '@barisvarlik/api-client/src/';
 
-// export class LoggingInterceptor implements RequestInterceptor {
-//     intercept(request: RequestInit, url: string): RequestInit {
-//         console.log('Request Signature:', request.method, url);
-//         console.log('Request Headers:', request.headers);
-//         console.log('Request Body:', request.body);
-//         return request;
-//     }
-// }
-
-// export class LoggingResponseInterceptor implements ResponseInterceptor {
-//     intercept(response: Response): Promise<Response> {
-//         console.log('Response status:', response.status, response.statusText);
-//         return Promise.resolve(response);
-//     }
-// }
-
-
 export class LoggingInterceptor implements RequestInterceptor {
-    intercept(request: RequestInit, url: string): RequestInit {
-        console.log(`Sending request (Logged by interceptor): ${request.method} ${url}`);
+    intercept(request: Request, url: string): Request {
+
+        if (request.method === 'GET' && url.includes('?') && url.endsWith('/')) {
+            const newRequest = new Request(url.slice(0, -1), request);
+            request = newRequest;
+        }
+
+        console.log(`${request.method} ${request.url}`);
+        console.log(request);
         return request;
     }
-}
+} 
 
 export class LoggingResponseInterceptor implements ResponseInterceptor {
     intercept(response: Response): Promise<Response> {
-        console.log(`Received response (Logged by interceptor): ${response.status} ${response.statusText}`);
+        console.log(`Response from ${response.url} - Status: ${response.status}`);
+        const clonedResponse = response.clone();
+        clonedResponse.json().then(data => {
+            if (data && 'isSuccess' in data && 'result' in data) {
+                console.log('ApiResponse data count:', data.result.pagination);
+            }
+        }).catch(() => {
+            // Silently fail if response is not JSON or ApiResponse
+        });
         return Promise.resolve(response);
     }
 }

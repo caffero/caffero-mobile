@@ -4,19 +4,21 @@
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
+    "start:fresh": "npx tsc --build --clean && expo start -c",
     "clean": "npx tsc --build --clean",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
   "dependencies": {
-    "@barisvarlik/api-client": "^1.0.0",
+    "@barisvarlik/api-client": "1.1.1",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/slider": "4.5.5",
     "@react-native-picker/picker": "2.9.0",
     "@react-navigation/bottom-tabs": "6.5.11",
     "@react-navigation/native": "6.1.9",
     "@react-navigation/native-stack": "6.9.17",
+    "axios": "^1.8.2",
     "expo": "^52.0.0",
     "expo-camera": "~16.0.16",
     "expo-image-picker": "~16.0.6",

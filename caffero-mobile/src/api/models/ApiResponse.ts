@@ -16,6 +16,13 @@ export interface ApiResponse<T> {
     result: {
         status: number;
         data: T;
+        pagination: Pagination;
     } | null;
     errorResult: ApiErrorResult | null;
 } 
+
+export interface Pagination {
+    pageNumber: number;
+    pageSize: number;
+    totalPageCount: number;
+}

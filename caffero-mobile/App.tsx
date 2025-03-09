@@ -5,7 +5,7 @@ import { LanguageProvider } from './src/contexts/LanguageContext';
 import { ExceptionProvider } from './src/contexts/ExceptionContext';
 import { Navigation } from './src/navigation/Navigation';
 import { SplashScreen } from './src/components/SplashScreen';
-import { languageService } from './src/api/services/languageService';
+import LanguageService, { useLanguageService } from './src/api/services/languageService';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,21 +15,6 @@ const App = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 2000); // Show splash screen for 2 seconds
-  }, []);
-
-  // Test getLanguages method
-  useEffect(() => {
-    const testLanguageService = async () => {
-      try {
-        console.log('Fetching languages...');
-        const languages = await languageService.getLanguages();
-        console.log('Languages fetched successfully:', languages);
-      } catch (error) {
-        console.error('Error fetching languages:', error);
-      }
-    };
-
-    testLanguageService();
   }, []);
 
   if (isLoading) {

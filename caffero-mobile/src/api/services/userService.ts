@@ -4,71 +4,60 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { ApiResponse } from '../models/ApiResponse';
 import { ApiException } from 'exceptions';
+import { cafferoBackendBuilder } from '../utils/CafferoBackendBuilder';
 
 export const useUserService = () => {
     const { token } = useAuth();
     const { currentLanguage } = useLanguage();
-
-    const getHeaders = (): HeadersInit => ({
-        'Content-Type': 'application/json',
-        'Authorization': token ? `Bearer ${token}` : '',
-        'X-Language': currentLanguage?.id || 'tr'
-    });
+    const apiClient = cafferoBackendBuilder()
+        .withDefaultHeader('Authorization', token ? `Bearer ${token}` : '')
+        .withDefaultHeader('X-Language', currentLanguage?.id || 'tr')
+        .build();
 
     return {
         async getById(id: string): Promise<GetUser> {
-            const response = await fetch(API_ENDPOINTS.USER.GET.replace(':id', id), {
-                method: 'GET',
-                headers: getHeaders()
-            });
+            try {
+                const url = API_ENDPOINTS.USER.GET.replace(':id', id);
+                const response = await apiClient
+                    .get<ApiResponse<GetUser>>(url)
+                    .execute();
 
-            const result: ApiResponse<GetUser> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to fetch user',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to fetch user', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async update(data: UpdateUser): Promise<GetUser> {
-            const response = await fetch(API_ENDPOINTS.USER.UPDATE.replace(':id', data.id), {
-                method: 'PUT',
-                headers: getHeaders(),
-                body: JSON.stringify(data)
-            });
+            try {
+                const url = API_ENDPOINTS.USER.UPDATE;
+                const response = await apiClient
+                    .put<ApiResponse<GetUser>>(url, data.id, data)
+                    .execute();
 
-            const result: ApiResponse<GetUser> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to update user',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to update user', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async delete(data: DeleteUser): Promise<void> {
-            const response = await fetch(API_ENDPOINTS.USER.DELETE.replace(':id', data.id), {
-                method: 'DELETE',
-                headers: getHeaders()
-            });
-
-            const result: ApiResponse<void> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to delete user',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+            try {
+                const url = API_ENDPOINTS.USER.DELETE;
+                const response = await apiClient
+                    .delete<ApiResponse<void>>(url, data.id)
+                    .execute();
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to delete user', 500, 'Unknown error');
             }
         }
     };

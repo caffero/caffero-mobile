@@ -1,40 +1,33 @@
 import { ApiException, CafferoException } from 'exceptions';
-import { API_ENDPOINTS, API_BASE_URL } from '../config';
+import { API_ENDPOINTS } from '../config';
 import { Login, Register, Account, UserToken, UserTokenView, VerifyOtpAndLogin, Logout } from '../models/Account';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { GetUser } from '../models/User';
 import { ApiResponse } from '../models/ApiResponse';
+import { cafferoBackendBuilder } from '../utils/CafferoBackendBuilder';
 
 export const useAuthService = () => {
     const { currentLanguage } = useLanguage();
-
-    const getHeaders = (token?: string): HeadersInit => ({
-        'Content-Type': 'application/json',
-        'X-Language': currentLanguage?.id || 'tr',
-        ...(token && { 'Authorization': `Bearer ${token}` })
-    });
+    const apiClient = cafferoBackendBuilder()
+    .withDefaultHeader('X-Language', currentLanguage?.id || 'tr')
+    .build();
 
     return {
         async login(credentials: Login): Promise<UserTokenView> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ACCOUNT.LOGIN}`, {
-                method: 'POST',
-                headers: getHeaders(),
-                body: JSON.stringify(credentials)
-            });
+            try {
+                credentials = {"email":"premiumuser@caffero.co","password":"Caffero123!"}  
+                const response = await apiClient
+                    .post<ApiResponse<UserTokenView>>(API_ENDPOINTS.ACCOUNT.LOGIN, credentials)
+                    .withHeader('Content-Type', 'application/json')
+                    .execute();
 
-            const result: ApiResponse<UserTokenView> = await response.json();
-
-            console.log(result.result);
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Login failed',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Login failed', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async register(credentials: Register): Promise<UserTokenView> {
@@ -46,174 +39,150 @@ export const useAuthService = () => {
                 throw new CafferoException('Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (./!@#$%^&*)');
             }
 
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ACCOUNT.REGISTER}`, {
-                method: 'POST',
-                headers: getHeaders(),
-                body: JSON.stringify(credentials)
-            });
+            try {
+                const response = await apiClient
+                    .post<ApiResponse<UserTokenView>>(API_ENDPOINTS.ACCOUNT.REGISTER, credentials)
+                    .execute();
 
-            const result: ApiResponse<UserTokenView> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Registration failed',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Registration failed', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async logout(model: Logout): Promise<void> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ACCOUNT.LOGOUT}`, {
-                method: 'POST',
-                headers: getHeaders(),
-                body: JSON.stringify(model)
-            });
-
-            const result: ApiResponse<void> = await response.json();
-
-            console.log(result);
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Logout failed',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+            try {
+                const response = await apiClient
+                    .post<ApiResponse<void>>(API_ENDPOINTS.ACCOUNT.LOGOUT, model)
+                    //.withHeader('Authorization', `Bearer ${token}}`)
+                    .execute();
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Logout failed', 500, 'Unknown error');
             }
         },
 
-        async refreshToken(token: string): Promise<UserToken> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ACCOUNT.REFRESH_TOKEN}`, {
-                method: 'POST',
-                headers: getHeaders(token)
-            });
+        async refreshToken(email: string | undefined, clientId: string | undefined): Promise<UserTokenView> {
+            try {
+                if (!email || !clientId) {
+                    throw new ApiException('Email and clientId are required', 400, 'Invalid request');
+                }
 
-            const result: ApiResponse<UserToken> = await response.json();
+                const response = await apiClient
+                    .post<ApiResponse<UserTokenView>>(API_ENDPOINTS.ACCOUNT.REFRESH_TOKEN, { email, clientId })
+                    .execute();
 
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Refresh token failed',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                console.log("Error refreshing token:", error);
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Refresh token failed', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async getProfile(token: string): Promise<GetUser> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ACCOUNT.PROFILE}`, {
-                method: 'GET',
-                headers: getHeaders(token)
-            });
+            try {
+                const response = await apiClient
+                    .get<ApiResponse<GetUser>>(API_ENDPOINTS.ACCOUNT.PROFILE)
+                    .withHeader('X-Language', currentLanguage?.id || 'tr')
+                    .withHeader('Authorization', `Bearer ${token}`)
+                    .execute();
 
-            const result: ApiResponse<GetUser> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to fetch profile',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to fetch profile', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async verifyOtpAndLogin(model: VerifyOtpAndLogin): Promise<UserTokenView> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ACCOUNT.VERIFY_OTP_AND_LOGIN}`, {
-                method: 'POST',
-                headers: getHeaders(),
-                body: JSON.stringify(model)
-            });
+            try {
+                const response = await apiClient
+                    .post<ApiResponse<UserTokenView>>(API_ENDPOINTS.ACCOUNT.VERIFY_OTP_AND_LOGIN, model)
+                    .execute();
 
-            const result: ApiResponse<UserTokenView> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'OTP verification failed',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('OTP verification failed', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async verifyOtp(otp: string): Promise<UserTokenView> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ACCOUNT.VERIFY_OTP}`, {
-                method: 'POST',
-                headers: getHeaders(),
-                body: JSON.stringify({ otp })
-            });
+            try {
+                const response = await apiClient
+                    .post<ApiResponse<UserTokenView>>(API_ENDPOINTS.ACCOUNT.VERIFY_OTP, { otp })
+                    .execute();
 
-            const result: ApiResponse<UserTokenView> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'OTP verification failed',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('OTP verification failed', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
         async forgotPassword(email: string): Promise<void> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ACCOUNT.FORGOT_PASSWORD}`, {
-                method: 'POST',
-                headers: getHeaders(),
-                body: JSON.stringify({ email })
-            });
+            try {
+                const response = await apiClient
+                    .post<ApiResponse<void>>(API_ENDPOINTS.ACCOUNT.FORGOT_PASSWORD, { email })
+                    .execute();
 
-            const result: ApiResponse<void> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to process forgot password request',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to process forgot password request', 500, 'Unknown error');
             }
         },
 
         async resetForgottenPassword(newPassword: string): Promise<void> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ACCOUNT.RESET_FORGOTTEN_PASSWORD}`, {
-                method: 'POST',
-                headers: getHeaders(),
-                body: JSON.stringify({ newPassword })
-            });
+            try {
+                const response = await apiClient
+                    .post<ApiResponse<void>>(API_ENDPOINTS.ACCOUNT.RESET_FORGOTTEN_PASSWORD, { newPassword })
+                    .execute();
 
-            const result: ApiResponse<void> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to reset password',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to reset password', 500, 'Unknown error');
             }
         },
 
         async resetPassword(currentPassword: string, newPassword: string, token: string): Promise<void> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.ACCOUNT.RESET_PASSWORD}`, {
-                method: 'POST',
-                headers: getHeaders(token),
-                body: JSON.stringify({ currentPassword, newPassword })
-            });
+            try {
+                const response = await apiClient
+                    .post<ApiResponse<void>>(API_ENDPOINTS.ACCOUNT.RESET_PASSWORD, { currentPassword, newPassword })
+                    .withHeader('Authorization', `Bearer ${token}`)
+                    .execute();
 
-            const result: ApiResponse<void> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to change password',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                if (!response.isSuccess || !response.result) {
+                    throw new ApiException(
+                        response.errorResult?.data.message || 'Failed to change password',
+                        response.errorResult?.status || 500,
+                        response.errorResult?.data.detail || 'Unknown error'
+                    );
+                }
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to change password', 500, 'Unknown error');
             }
         }
     }

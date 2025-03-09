@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { Language } from '../api/models/Language';
 import { Localization } from '../api/models/Localization';
-import { languageService } from '../api/services/languageService';
+import { useLanguageService } from '../api/services/languageService';
 
 interface LanguageContextType {
     currentLanguage: Language | null;
@@ -22,7 +22,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     const loadLanguages = useCallback(async () => {
         try {
-            const availableLanguages = await languageService.getLanguages();
+            const availableLanguages = await useLanguageService().getLanguages();
             setLanguages(availableLanguages);
             
             // Set default language if none selected
@@ -37,7 +37,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const setLanguage = async (language: Language) => {
         try {
             setLoading(true);
-            const localizationData = await languageService.getLocalizations(language.id);
+            const localizationData = await useLanguageService().getLocalizations(language.id);
             setCurrentLanguage(language);
             setLocalizations(localizationData);
         } catch (error) {

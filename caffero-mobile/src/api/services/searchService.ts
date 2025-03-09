@@ -3,17 +3,19 @@ import { API_ENDPOINTS } from '../config';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { ApiResponse } from '../models/ApiResponse';
 import { ApiException } from 'exceptions';
+import { cafferoBackendBuilder } from '../utils/CafferoBackendBuilder';
+import { useAuth } from 'contexts/AuthContext';
 
 // Mock data for search results
 const mockSearchResults: SearchItem[] = [
-  { id: '1', title: 'V60 Pour Over', type: 'Recipe' },
-  { id: '2', title: 'Aeropress Recipe', type: 'Recipe' },
-  { id: '3', title: 'Ethiopian Yirgacheffe', type: 'CoffeeBean' },
-  { id: '4', title: 'Colombian Supremo', type: 'CoffeeBean' },
-  { id: '5', title: 'Artisan Coffee Roasters', type: 'Roastery' },
-  { id: '6', title: 'Coffee Masters', type: 'Roastery' },
-  { id: '7', title: 'The Art of Coffee Roasting', type: 'Post' },
-  { id: '8', title: 'Understanding Coffee Origins', type: 'Post' },
+  { id: '1', name: 'V60 Pour Over', type: 'Recipe' },
+  { id: '2', name: 'Aeropress Recipe', type: 'Recipe' },
+  { id: '3', name: 'Ethiopian Yirgacheffe', type: 'CoffeeBean' },
+  { id: '4', name: 'Colombian Supremo', type: 'CoffeeBean' },
+  { id: '5', name: 'Artisan Coffee Roasters', type: 'Roastery' },
+  { id: '6', name: 'Coffee Masters', type: 'Roastery' },
+  { id: '7', name: 'The Art of Coffee Roasting', type: 'Post' },
+  { id: '8', name: 'Understanding Coffee Origins', type: 'Post' },
 ];
 
 export const searchItems = async (query: string): Promise<SearchItem[]> => {
@@ -22,36 +24,33 @@ export const searchItems = async (query: string): Promise<SearchItem[]> => {
   
   // Filter items based on query
   return mockSearchResults.filter(item => 
-    item.title.toLowerCase().includes(query.toLowerCase())
+    item.name.toLowerCase().includes(query.toLowerCase())
   );
 };
 
 export const useSearchService = () => {
     const { currentLanguage } = useLanguage();
-
-    const getHeaders = (): HeadersInit => ({
-        'Content-Type': 'application/json',
-        'X-Language': currentLanguage?.id || 'tr'
-    });
+    const { token } = useAuth();
+    const apiClient = cafferoBackendBuilder()
+        .withDefaultHeader('X-Language', currentLanguage?.id || 'tr')
+        .withDefaultHeader('Authorization', `Bearer ${token}`)
+        .build();
 
     return {
         async search(query: string): Promise<SearchItem[]> {
-            const response = await fetch(`${API_ENDPOINTS.SEARCH.SEARCH}?query=${encodeURIComponent(query)}`, {
-                method: 'GET',
-                headers: getHeaders()
-            });
+            try {
+                const url = `${API_ENDPOINTS.HOME.SEARCH}?searchText=${encodeURIComponent(query)}`;
+                const response = await apiClient
+                    .get<ApiResponse<SearchItem[]>>(url)
+                    .execute();
 
-            const result: ApiResponse<SearchItem[]> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to search items',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to search items', 500, 'Unknown error');
             }
-
-            return result.result.data;
         }
     };
 }; 

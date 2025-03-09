@@ -1,3 +1,5 @@
+import { ApiErrorResult } from "api/models/ApiResponse";
+
 export class CafferoException extends Error {
     constructor(
         message: string,

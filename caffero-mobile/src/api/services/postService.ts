@@ -1,12 +1,12 @@
 import { API_ENDPOINTS } from '../config';
-import { GetEquipment, GetEquipmentList, CreateEquipment, UpdateEquipment, DeleteEquipment } from '../models/Equipment';
+import { GetPost, GetPostList, CreatePost, UpdatePost, DeletePost } from '../models/Post';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { ApiResponse } from '../models/ApiResponse';
 import { ApiException } from 'exceptions';
 import { cafferoBackendBuilder } from '../utils/CafferoBackendBuilder';
 
-export const useEquipmentService = () => {
+export const usePostService = () => {
     const { token } = useAuth();
     const { currentLanguage } = useLanguage();
     const apiClient = cafferoBackendBuilder()
@@ -15,10 +15,10 @@ export const useEquipmentService = () => {
         .build();
 
     return {
-        async getAll(): Promise<GetEquipmentList[]> {
+        async getAll(): Promise<GetPostList[]> {
             try {
                 const response = await apiClient
-                    .get<ApiResponse<GetEquipmentList[]>>(API_ENDPOINTS.EQUIPMENT.GET_ALL)
+                    .get<ApiResponse<GetPostList[]>>(API_ENDPOINTS.POST.GET_ALL)
                     .execute();
 
                 return response.result!.data;
@@ -26,15 +26,15 @@ export const useEquipmentService = () => {
                 if (error instanceof ApiException) {
                     throw error;
                 }
-                throw new ApiException('Failed to fetch equipment list', 500, 'Unknown error');
+                throw new ApiException('Failed to fetch posts', 500, 'Unknown error');
             }
         },
 
-        async getById(id: string): Promise<GetEquipment> {
+        async getById(id: string): Promise<GetPost> {
             try {
-                const url = API_ENDPOINTS.EQUIPMENT.GET.replace(':id', id);
+                const url = API_ENDPOINTS.POST.GET.replace(':id', id);
                 const response = await apiClient
-                    .get<ApiResponse<GetEquipment>>(url)
+                    .get<ApiResponse<GetPost>>(url)
                     .execute();
 
                 return response.result!.data;
@@ -42,14 +42,14 @@ export const useEquipmentService = () => {
                 if (error instanceof ApiException) {
                     throw error;
                 }
-                throw new ApiException('Failed to fetch equipment', 500, 'Unknown error');
+                throw new ApiException('Failed to fetch post', 500, 'Unknown error');
             }
         },
 
-        async create(data: CreateEquipment): Promise<GetEquipment> {
+        async create(data: CreatePost): Promise<GetPost> {
             try {
                 const response = await apiClient
-                    .post<ApiResponse<GetEquipment>>(API_ENDPOINTS.EQUIPMENT.CREATE, data)
+                    .post<ApiResponse<GetPost>>(API_ENDPOINTS.POST.CREATE, data)
                     .execute();
 
                 return response.result!.data;
@@ -57,15 +57,15 @@ export const useEquipmentService = () => {
                 if (error instanceof ApiException) {
                     throw error;
                 }
-                throw new ApiException('Failed to create equipment', 500, 'Unknown error');
+                throw new ApiException('Failed to create post', 500, 'Unknown error');
             }
         },
 
-        async update(data: UpdateEquipment): Promise<GetEquipment> {
+        async update(data: UpdatePost): Promise<GetPost> {
             try {
-                const url = API_ENDPOINTS.EQUIPMENT.UPDATE;
+                const url = API_ENDPOINTS.POST.UPDATE;
                 const response = await apiClient
-                    .put<ApiResponse<GetEquipment>>(url, data.id, data)
+                    .put<ApiResponse<GetPost>>(url, data.id, data)
                     .execute();
 
                 return response.result!.data;
@@ -73,13 +73,13 @@ export const useEquipmentService = () => {
                 if (error instanceof ApiException) {
                     throw error;
                 }
-                throw new ApiException('Failed to update equipment', 500, 'Unknown error');
+                throw new ApiException('Failed to update post', 500, 'Unknown error');
             }
         },
 
-        async delete(data: DeleteEquipment): Promise<void> {
+        async delete(data: DeletePost): Promise<void> {
             try {
-                const url = API_ENDPOINTS.EQUIPMENT.DELETE;
+                const url = API_ENDPOINTS.POST.DELETE;
                 const response = await apiClient
                     .delete<ApiResponse<void>>(url, data.id)
                     .execute();
@@ -87,8 +87,8 @@ export const useEquipmentService = () => {
                 if (error instanceof ApiException) {
                     throw error;
                 }
-                throw new ApiException('Failed to delete equipment', 500, 'Unknown error');
+                throw new ApiException('Failed to delete post', 500, 'Unknown error');
             }
         }
     };
-}; 
+};

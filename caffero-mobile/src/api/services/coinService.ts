@@ -1,76 +1,63 @@
 import { ApiException } from 'exceptions';
-import { API_BASE_URL, API_ENDPOINTS } from '../config';
+import { API_ENDPOINTS } from '../config';
 import { ApiResponse } from '../models/ApiResponse';
 import { UserCoin, UpdateUserCoinRequest } from '../models/UserCoin';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { cafferoBackendBuilder } from '../utils/CafferoBackendBuilder';
 
 export const useCoinService = () => {
+    const { token } = useAuth();
     const { currentLanguage } = useLanguage();
-
-    const getHeaders = (token?: string): HeadersInit => ({
-        'Content-Type': 'application/json',
-        'X-Language': currentLanguage?.id || 'tr',
-        ...(token && { 'Authorization': `Bearer ${token}` })
-    });
+    const apiClient = cafferoBackendBuilder()
+        .withDefaultHeader('X-Language', currentLanguage?.id || 'tr')
+        .withDefaultHeader('Authorization', token ? `Bearer ${token}` : '')
+        .build();
 
     return {
-        async getCurrentUserCoins(token: string): Promise<UserCoin> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.COIN.GET_CURRENT_USER}`, {
-                method: 'GET',
-                headers: getHeaders(token)
-            });
+        async getCurrentUserCoins(): Promise<UserCoin> {
+            try {
+                const response = await apiClient
+                    .get<ApiResponse<UserCoin>>(API_ENDPOINTS.COIN.GET_CURRENT_USER)
+                    .execute();
 
-            const result: ApiResponse<UserCoin> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to get user coins',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to get user coins', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
-        async increaseUserCoins(request: UpdateUserCoinRequest, token: string): Promise<UserCoin> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.COIN.INCREASE}`, {
-                method: 'PATCH',
-                headers: getHeaders(token),
-                body: JSON.stringify(request)
-            });
+        async increaseUserCoins(request: UpdateUserCoinRequest): Promise<UserCoin> {
+            try {
+                const response = await apiClient
+                    .post<ApiResponse<UserCoin>>(API_ENDPOINTS.COIN.INCREASE, request)
+                    .execute();
 
-            const result: ApiResponse<UserCoin> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to increase user coins',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to increase user coins', 500, 'Unknown error');
             }
-
-            return result.result.data;
         },
 
-        async decreaseUserCoins(request: UpdateUserCoinRequest, token: string): Promise<UserCoin> {
-            const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.COIN.DECREASE}`, {
-                method: 'PATCH',
-                headers: getHeaders(token),
-                body: JSON.stringify(request)
-            });
+        async decreaseUserCoins(request: UpdateUserCoinRequest): Promise<UserCoin> {
+            try {
+                const response = await apiClient
+                    .post<ApiResponse<UserCoin>>(API_ENDPOINTS.COIN.DECREASE, request)
+                    .execute();
 
-            const result: ApiResponse<UserCoin> = await response.json();
-
-            if (!result.isSuccess || !result.result) {
-                throw new ApiException(
-                    result.errorResult?.data.message || 'Failed to decrease user coins',
-                    result.errorResult?.status || response.status,
-                    result.errorResult?.data.detail || response.statusText
-                );
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to decrease user coins', 500, 'Unknown error');
             }
-
-            return result.result.data;
         }
     };
 }; 

@@ -16,7 +16,7 @@ interface User {
     authProperties: UserToken;
 }
 
-interface AuthContextType {
+export interface AuthContextType {
     user: User | null;
     token: string | null;
     isAuthenticated: boolean;
@@ -31,6 +31,7 @@ interface AuthContextType {
     forgotPassword: (email: string) => Promise<void>;
     resetForgottenPassword: (newPassword: string) => Promise<void>;
     resetPassword: (currentPassword: string, newPassword: string) => Promise<void>;
+    refreshToken: () => Promise<void>;
     logout: () => Promise<void>;
 }
 
@@ -247,6 +248,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
     };
 
+    const refreshToken = async () => {
+        try {
+            var response = await authService.refreshToken(user?.email, user?.authProperties.clientId);
+            const userData: User = {
+                userId: response.userId,
+                email: response.email,
+                fullName: response.fullName,
+                roles: response.roles,
+                authProperties: response.authProperties,
+                isPremium: response.isPremium
+            };
+            setUser(userData);
+            setToken(response.authProperties.token);
+            await storeAuthData(userData, response.authProperties.token);
+        } catch (error) {
+            console.error('Refresh token failed:', error);
+            throw error;
+        }
+    };
+
     const logout = async () => {
         try {
             setIsLoading(true);
@@ -284,6 +305,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 forgotPassword,
                 resetForgottenPassword,
                 resetPassword,
+                refreshToken,
                 logout,
             }}
         >

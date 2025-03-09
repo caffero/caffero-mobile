@@ -22,46 +22,13 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { SearchItem } from '../api/models/SearchItem';
-import { searchItems } from '../api/services/searchService';
+import { useSearchService } from '../api/services/searchService';
 import { useCoffeeService } from '../api/services/coffeeService';
 import { GetCoffeeList } from '../api/models/Coffee';
-
-// Dummy data (replace with API calls later)
-const trendingRecipes = [
-  { 
-    id: '1', 
-    title: 'V60 Pour Over', 
-    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&auto=format'
-  },
-  { 
-    id: '2', 
-    title: 'Aeropress Recipe', 
-    imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&auto=format'
-  },
-  { 
-    id: '3', 
-    title: 'French Press Classic', 
-    imageUrl: 'https://images.unsplash.com/photo-1544233726-9f1d2b27be8b?w=500&auto=format'
-  },
-];
-
-const blogPosts = [
-  { 
-    id: '1', 
-    title: 'The Art of Coffee Roasting', 
-    imageUrl: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=500&auto=format'
-  },
-  { 
-    id: '2', 
-    title: 'Understanding Coffee Origins', 
-    imageUrl: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=500&auto=format'
-  },
-  { 
-    id: '3', 
-    title: 'Brewing the Perfect Cup', 
-    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&auto=format'
-  },
-];
+import { useRecipeService } from '../api/services/recipeService';
+import { GetRecipeList } from '../api/models/Recipe';
+import { usePostService } from '../api/services/postService';
+import { GetPostList } from '../api/models/Post';
 
 export const HomeScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
@@ -73,30 +40,55 @@ export const HomeScreen = () => {
   const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [recommendedBeans, setRecommendedBeans] = useState<GetCoffeeList[]>([]);
+  const [trendingRecipes, setTrendingRecipes] = useState<GetRecipeList[]>([]);
+  const [blogPosts, setBlogPosts] = useState<GetPostList[]>([]);
   const coffeeService = useCoffeeService();
+  const recipeService = useRecipeService();
+  const postService = usePostService();
+  const searchService = useSearchService();
 
   const fetchCoffees = async () => {
-    try {
+    try { 
       const coffees = await coffeeService.getAll(new URLSearchParams({
-        pageNumber: '5',
+        pageNumber: '1',
         pageSize: '10'
-    }));
+      })); 
       setRecommendedBeans(coffees);
     } catch (error) {
-      console.error('Error fetching coffees:', error);
+      console.error('Error setting recommended beans:', error);
+    }
+  };
+  
+  const fetchRecipes = async () => {
+    try {
+      const recipes = await recipeService.getAll();
+      setTrendingRecipes(recipes);
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    }
+  };
+
+  const fetchPosts = async () => {
+    try {
+      const posts = await postService.getAll();
+      setBlogPosts(posts);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
     }
   };
 
   useEffect(() => {
     fetchCoffees();
+    fetchRecipes();
+    fetchPosts();
   }, []);
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
     try {
-      await fetchCoffees();
+      await Promise.all([fetchCoffees(), fetchRecipes(), fetchPosts()]);
     } catch (error) {
-      console.error('Error refreshing coffees:', error);
+      console.error('Error refreshing data:', error);
     } finally {
       setRefreshing(false);
     }
@@ -119,7 +111,7 @@ export const HomeScreen = () => {
     
     setIsLoading(true);
     try {
-      const results = await searchItems(searchQuery);
+      const results = await searchService.search(searchQuery);
       setSearchResults(results);
       setIsSearching(true);
     } catch (error) {
@@ -136,7 +128,7 @@ export const HomeScreen = () => {
       case 'Recipe':
         navigation.navigate('RecipeDetail', { id: item.id });
         setIsSearching(false);
-        break;
+        break; 
       case 'CoffeeBean':
         navigation.navigate('CoffeeBeanDetail', { id: item.id });
         setIsSearching(false);
@@ -145,7 +137,7 @@ export const HomeScreen = () => {
         navigation.navigate('RoasteryDetail', { id: item.id });
         setIsSearching(false);
         break;
-      case 'Post':
+      case 'Post': 
         navigation.navigate('PostDetail', { id: item.id });
         setIsSearching(false);
         break;
@@ -180,7 +172,7 @@ export const HomeScreen = () => {
         />
         <View style={styles.searchItemText}>
           <Text style={[styles.searchItemTitle, { color: theme.colors.text.primary }]}>
-            {item.title}
+            {item.name}
           </Text>
           <Text style={[styles.searchItemType, { color: theme.colors.text.secondary }]}>
             {item.type}
@@ -246,7 +238,11 @@ export const HomeScreen = () => {
         }]}>
           <Carousel
             title={getText('trending')}
-            items={trendingRecipes}
+            items={trendingRecipes.map(recipe => ({
+              id: recipe.id,
+              title: recipe.title,
+              imageUrl: recipe.imageUrl || 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&auto=format', // fallback image
+            }))}
             onItemPress={handleTrendingPress}
           />
           <Carousel
@@ -261,7 +257,11 @@ export const HomeScreen = () => {
           />
           <Carousel
             title={getText('discoverCoffee')}
-            items={blogPosts}
+            items={blogPosts.map(post => ({
+              id: post.id,
+              title: post.title,
+              imageUrl: post.imageUrl || 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&auto=format', // fallback image
+            }))}
             onItemPress={handleBlogPress}
           />
         </View>

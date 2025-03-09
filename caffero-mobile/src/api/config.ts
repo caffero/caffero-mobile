@@ -1,4 +1,11 @@
-export const API_BASE_URL = 'http://app-caffero-api-002-egbmbacsdgh3fncg.northeurope-01.azurewebsites.net/api';
+//export const API_BASE_URL = 'https://app-caffero-api-02-d2bvd8gyf6bpeve5.northeurope-01.azurewebsites.net/api';
+
+import Constants from 'expo-constants';
+const BASE_URL = Constants.expoConfig?.hostUri 
+  ? `http://${Constants.expoConfig.hostUri.split(':')[0]}:6001` 
+  : 'http://localhost:6001';
+
+export const API_BASE_URL = `${BASE_URL}/api`;
 
 export const API_ENDPOINTS = {
     ACCOUNT: {
@@ -37,6 +44,14 @@ export const API_ENDPOINTS = {
         UPDATE: '/equipment/:id',
         DELETE: '/equipment/:id'
     },
+    POST: {
+        BASE: '/post',
+        GET_ALL: '/post',
+        GET: '/post/:id',
+        CREATE: '/post',
+        UPDATE: '/post/:id',
+        DELETE: '/post/:id'
+    },
     RECIPE: {
         BASE: '/recipe',
         GET_ALL: '/recipe',
@@ -64,9 +79,9 @@ export const API_ENDPOINTS = {
         GET_ALL: '/language',
         GET_LOCALIZATIONS: '/language/:id/localizations'
     },
-    SEARCH: {
-        BASE: '/search',
-        SEARCH: '/search'
+    HOME: {
+        BASE: '/home',
+        SEARCH: '/home/search'
     },
     COIN: {
         BASE: '/coin',
@@ -74,4 +89,10 @@ export const API_ENDPOINTS = {
         INCREASE: '/coin/current-user/increase',
         DECREASE: '/coin/current-user/decrease'
     }
+};
+
+export const API_TIMEOUT = 30000; // 30 seconds
+export const DEFAULT_HEADERS = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
 }; 
