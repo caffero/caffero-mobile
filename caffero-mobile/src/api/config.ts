@@ -60,6 +60,15 @@ export const API_ENDPOINTS = {
         UPDATE: '/recipe/:id',
         DELETE: '/recipe/:id'
     },
+    ROASTERY: {
+        BASE: '/roastery',
+        GET_ALL: '/roastery',
+        GET: '/roastery/:id',
+        CREATE: '/roastery',
+        UPDATE: '/roastery/:id',
+        DELETE: '/roastery/:id',
+        BEANS: '/roastery/:id/beans'
+    },
     USER: {
         BASE: '/user',
         GET: '/user/:id',

@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
   Text,
   StyleSheet,
   TouchableOpacity,
+  Image,
+  ActivityIndicator,
+  Dimensions
 } from 'react-native';
 import Screen from '../components/Screen';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { Header } from '../components/Header';
+import { GetRecipe } from '../api/models/Recipe';
+import { useRecipeService } from '../api/services/recipeService';
+import { spacing, borderRadius } from '../theme';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'RecipeDetail'>['route'];
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+type RecipeDetailScreenRouteProp = RouteProp<RootStackParamList, 'RecipeDetail'>;
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface PouringStep {
   volume: number;
@@ -49,10 +59,47 @@ export const RecipeDetailScreen = () => {
   const { theme } = useTheme();
   const { getText } = useLanguage();
   const navigation = useNavigation<NavigationProp>();
-  const route = useRoute<RouteProps>();
-  const { id } = route.params;
+  const route = useRoute<RecipeDetailScreenRouteProp>();
+  const recipeService = useRecipeService();
   
-  const recipe = getRecipe(id);
+  const [recipe, setRecipe] = useState<GetRecipe | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    const fetchRecipe = async () => {
+      try {
+        const data = await recipeService.getById(route.params.id);
+        setRecipe(data);
+      } catch (error) {
+        console.error('Error fetching recipe:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchRecipe();
+  }, [route.params.id]);
+
+  const toggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+    // Here you would typically call an API to update the favorite status
+  };
+
+  if (isLoading || !recipe) {
+    return (
+      <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+        <Header
+          title={getText('recipe')}
+          showBack
+          onBack={() => navigation.goBack()}
+        />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.colors.primary.main} />
+        </View>
+      </Screen>
+    );
+  }
 
   const renderPouringStep = (step: PouringStep, index: number) => (
     <View key={index} style={[styles.stepContainer, { borderBottomColor: theme.colors.border.primary }]}>
@@ -90,70 +137,86 @@ export const RecipeDetailScreen = () => {
 
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
-      <ScrollView style={styles.content}>
-        <Text style={[styles.title, { color: theme.colors.text.primary }]}>
+      <Header
+        title={getText('recipe')}
+        showBack
+        onBack={() => navigation.goBack()}
+        rightIcon={isFavorite ? "favorite" : "favorite-outline"}
+        onRightPress={toggleFavorite}
+      />
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={[styles.recipeTitle, { color: theme.colors.text.primary }]}>
           {recipe.title}
         </Text>
         
-        <View style={[styles.privacyContainer, { backgroundColor: theme.colors.surface.primary }]}>
-          <Icon 
-            name={recipe.isPublic ? "public" : "lock"} 
-            size={20} 
-            color={theme.colors.text.secondary} 
-          />
-          <Text style={[styles.privacyText, { color: theme.colors.text.secondary }]}>
-            {recipe.isPublic ? getText('publicRecipe') : getText('privateRecipe')}
-          </Text>
-        </View>
-
-        <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-            {getText('equipment')}
-          </Text>
-          <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
-            {recipe.equipment}
-          </Text>
-        </View>
-
-        <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-            {getText('coffee')}
-          </Text>
-          <Text style={[styles.sectionText, { color: theme.colors.text.primary }]}>
-            {recipe.coffee.name}
-          </Text>
-          <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
-            {`${getText('amount')}: ${recipe.coffee.amount}${getText('grams')}`}
-          </Text>
-        </View>
-
-        {recipe.useMilk && (
-          <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
-            <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-              {getText('milk')}
+        <Image 
+          source={{ uri: recipe.imageUrl || 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&auto=format' }} 
+          style={styles.image} 
+        />
+        
+        <View style={styles.infoContainer}>
+          <View style={styles.infoItem}>
+            <Icon name="access-time" size={20} color={theme.colors.text.secondary} />
+            <Text style={[styles.infoText, { color: theme.colors.text.secondary }]}>
+              {recipe.brewTime} min
             </Text>
-            <View style={styles.milkDetails}>
-              <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
-                {`${getText('volume')}: ${recipe.milk.volume}${getText('milliliters')}`}
-              </Text>
-              <Text style={[styles.sectionSubtext, { color: theme.colors.text.secondary }]}>
-                {`${getText('temperature')}: ${recipe.milk.temperature}${getText('celsius')}`}
-              </Text>
-            </View>
+          </View>
+          <View style={styles.infoItem}>
+            <Icon name="coffee" size={20} color={theme.colors.text.secondary} />
+            <Text style={[styles.infoText, { color: theme.colors.text.secondary }]}>
+              {recipe.coffeeAmount} g
+            </Text>
+          </View>
+          <View style={styles.infoItem}>
+            <Icon name="opacity" size={20} color={theme.colors.text.secondary} />
+            <Text style={[styles.infoText, { color: theme.colors.text.secondary }]}>
+              {recipe.waterAmount} ml
+            </Text>
+          </View>
+        </View>
+        
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+            {getText('description')}
+          </Text>
+          <Text style={[styles.sectionContent, { color: theme.colors.text.primary }]}>
+            {recipe.description}
+          </Text>
+        </View>
+        
+        {recipe.steps && recipe.steps.length > 0 && (
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+              {getText('steps')}
+            </Text>
+            {recipe.steps.map((step, index) => (
+              <View key={index} style={styles.stepItem}>
+                <View style={[styles.stepNumber, { backgroundColor: theme.colors.primary.main }]}>
+                  <Text style={styles.stepNumberText}>{index + 1}</Text>
+                </View>
+                <Text style={[styles.stepText, { color: theme.colors.text.primary }]}>
+                  {step}
+                </Text>
+              </View>
+            ))}
           </View>
         )}
-
-        <View style={[styles.section, { backgroundColor: theme.colors.surface.primary }]}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-            {getText('pouringSteps')}
-          </Text>
-          {recipe.pouringSteps.map((step, index) => renderPouringStep(step, index))}
-        </View>
+        
+        {recipe.notes && (
+          <View style={styles.section}>
+            <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+              {getText('notes')}
+            </Text>
+            <Text style={[styles.sectionContent, { color: theme.colors.text.primary }]}>
+              {recipe.notes}
+            </Text>
+          </View>
+        )}
       </ScrollView>
 
       <TouchableOpacity
         style={styles.fab}
-        onPress={() => navigation.navigate('UpdateRecipe', { id })}
+        onPress={() => navigation.navigate('UpdateRecipe', { id: recipe.id })}
       >
         <Icon name="edit" size={24} color="#fff" />
       </TouchableOpacity>
@@ -166,44 +229,78 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    flex: 1,
-    padding: 16,
+    padding: spacing.md,
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 24,
-    textAlign: 'center',
-    fontFamily: 'System', // Consider using a handwriting font
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  recipeTitle: {
+    fontSize: 24,
+    fontWeight: '600',
+    marginBottom: spacing.md,
+    lineHeight: 32,
+  },
+  image: {
+    width: SCREEN_WIDTH - (spacing.md * 2),
+    height: 250,
+    resizeMode: 'cover',
+    marginBottom: spacing.md,
+    borderRadius: borderRadius.md,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: spacing.md,
+    paddingVertical: spacing.md,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: 'rgba(0,0,0,0.1)',
+  },
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  infoText: {
+    marginLeft: spacing.xs,
+    fontSize: 14,
   },
   section: {
-    marginBottom: 24,
-    padding: 16,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    marginVertical: spacing.md,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600',
-    marginBottom: 12,
-    color: '#34495e',
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-    paddingBottom: 8,
+    marginBottom: spacing.sm,
   },
-  sectionText: {
+  sectionContent: {
     fontSize: 16,
-    color: '#2c3e50',
-    marginBottom: 4,
+    lineHeight: 24,
   },
-  sectionSubtext: {
+  stepItem: {
+    flexDirection: 'row',
+    marginBottom: spacing.md,
+    alignItems: 'flex-start',
+  },
+  stepNumber: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: spacing.sm,
+    marginTop: 2,
+  },
+  stepNumberText: {
+    color: '#FFFFFF',
+    fontWeight: '600',
     fontSize: 14,
-    color: '#7f8c8d',
+  },
+  stepText: {
+    flex: 1,
+    fontSize: 16,
+    lineHeight: 24,
   },
   stepContainer: {
     flexDirection: 'row',
@@ -211,12 +308,6 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
-  },
-  stepNumber: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginRight: 12,
-    color: '#3498db',
   },
   stepDetails: {
     flex: 1,
@@ -235,10 +326,6 @@ const styles = StyleSheet.create({
     color: '#2c3e50',
     fontWeight: '500',
   },
-  milkDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
   fab: {
     position: 'absolute',
     right: 16,
@@ -254,16 +341,5 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-  },
-  privacyContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 8,
-    borderRadius: 8,
-    marginBottom: 16,
-  },
-  privacyText: {
-    marginLeft: 8,
-    fontSize: 14,
   },
 }); 

@@ -9,7 +9,7 @@ export class LoggingInterceptor implements RequestInterceptor {
         }
 
         console.log(`${request.method} ${request.url}`);
-        console.log(request);
+        //console.log(request);
         return request;
     }
 } 
@@ -20,7 +20,9 @@ export class LoggingResponseInterceptor implements ResponseInterceptor {
         const clonedResponse = response.clone();
         clonedResponse.json().then(data => {
             if (data && 'isSuccess' in data && 'result' in data) {
-                console.log('ApiResponse data count:', data.result.pagination);
+                if (data.result.pagination) {
+                    console.log('ApiResponse data count:', data.result.pagination);
+                }
             }
         }).catch(() => {
             // Silently fail if response is not JSON or ApiResponse

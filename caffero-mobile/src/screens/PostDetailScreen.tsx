@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { RootStackNavigator, RootStackParamList } from '../navigation/types';
@@ -7,18 +7,9 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Header } from '../components/Header';
 import Screen from '../components/Screen';
-import { Post } from '../api/models/Post';
+import { GetPost } from '../api/models/Post';
 import { spacing } from '../theme';
-
-// Dummy data - replace with API call
-const post: Post = {
-  id: '1',
-  title: 'My First Coffee Experience',
-  content: 'Today I tried a new Ethiopian coffee and it was an amazing experience. The fruity notes and floral aroma were absolutely stunning. I used my trusty V60 dripper with a medium-fine grind setting. The brewing process took about 3 minutes and the result was a clean, bright cup with hints of bergamot and jasmine.',
-  imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085',
-  likeCount: 12,
-  dislikeCount: 2,
-};
+import { usePostService } from '../api/services/postService';
 
 type PostDetailScreenRouteProp = RouteProp<RootStackParamList, 'PostDetail'>;
 
@@ -27,11 +18,31 @@ export const PostDetailScreen = () => {
   const route = useRoute<PostDetailScreenRouteProp>();
   const { theme } = useTheme();
   const { getText } = useLanguage();
+  const postService = usePostService();
   
+  const [post, setPost] = useState<GetPost | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
-  const [likeCount, setLikeCount] = useState(post.likeCount);
-  const [dislikeCount, setDislikeCount] = useState(post.dislikeCount);
+  const [likeCount, setLikeCount] = useState(0);
+  const [dislikeCount, setDislikeCount] = useState(0);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const data = await postService.getById(route.params.id);
+        setPost(data);
+        setLikeCount(data.likeCount);
+        setDislikeCount(data.dislikeCount);
+      } catch (error) {
+        console.error('Error fetching post:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchPost();
+  }, [route.params.id]);
 
   const handleLike = () => {
     if (liked) {
@@ -61,6 +72,21 @@ export const PostDetailScreen = () => {
     }
   };
 
+  if (isLoading || !post) {
+    return (
+      <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+        <Header
+          title={getText('appName')}
+          showBack
+          onBack={() => navigation.goBack()}
+        />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.colors.primary.main} />
+        </View>
+      </Screen>
+    );
+  }
+
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
@@ -74,9 +100,12 @@ export const PostDetailScreen = () => {
         <Text style={[styles.postTitle, { color: theme.colors.text.primary }]}>
           {post.title}
         </Text>
-        <Image source={{ uri: post.imageUrl }} style={styles.image} />
+        <Image 
+          source={{ uri: post.imageUrl || 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085' }} 
+          style={styles.image} 
+        />
         <Text style={[styles.postContent, { color: theme.colors.text.primary }]}>
-          {post.content}
+          {post.description}
         </Text>
         <View style={styles.actions}>
           <TouchableOpacity
@@ -164,5 +193,10 @@ const styles = StyleSheet.create({
     marginLeft: spacing.sm,
     fontSize: 16,
     fontWeight: '500',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }); 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   Text, 
@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Dimensions,
   StatusBar,
-  FlatList
+  FlatList,
+  ActivityIndicator
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -18,6 +19,10 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import { RootStackParamList } from '../navigation/types';
 import { spacing, borderRadius, typography, layout, fonts } from '../theme';
+import { useRoasteryService } from '../api/services/roasteryService';
+import { useCoffeeService } from '../api/services/coffeeService';
+import { GetRoastery } from '../api/models/Roastery';
+import { GetCoffeeList } from '../api/models/Coffee';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'RoasteryDetail'>;
 
@@ -25,63 +30,44 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const IMAGE_HEIGHT = SCREEN_HEIGHT * 0.4;
 const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
 
-// Dummy data for the roastery
-const DUMMY_ROASTERY = {
-  id: '1',
-  name: 'Artisan Coffee Roasters',
-  image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24',
-  location: {
-    address: '123 Coffee Street',
-    city: 'Seattle',
-    state: 'WA',
-    country: 'USA'
-  },
-  description: 'A passionate coffee roastery dedicated to sourcing and roasting the finest single-origin coffees. Our master roasters carefully craft each batch to bring out the unique characteristics of every bean.',
-  established: '2015',
-  specialties: [
-    'Single Origin',
-    'Light Roasts',
-    'Direct Trade',
-    'Seasonal Selections'
-  ],
-  coffeeBeans: [
-    {
-      id: '1',
-      name: 'Ethiopian Yirgacheffe',
-      image: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9',
-      roastLevel: 'Light Medium',
-      price: '$18.99'
-    },
-    {
-      id: '2',
-      name: 'Colombian Supremo',
-      image: 'https://images.unsplash.com/photo-1611854779393-1b2da9d400fe',
-      roastLevel: 'Medium',
-      price: '$17.99'
-    },
-    {
-      id: '3',
-      name: 'Sumatra Mandheling',
-      image: 'https://images.unsplash.com/photo-1559525839-8b46be0f6f54',
-      roastLevel: 'Dark',
-      price: '$19.99'
-    },
-    // Add more coffee beans as needed
-  ]
-};
-
-type CoffeeBean = {
-  id: string;
-  name: string;
-  image: string;
-  roastLevel: string;
-  price: string;
-};
+type CoffeeBean = GetCoffeeList;
 
 export const RoasteryDetailScreen = ({ route, navigation }: Props) => {
   const { id } = route.params;
   const { theme } = useTheme();
   const { getText } = useLanguage();
+  const roasteryService = useRoasteryService();
+  const coffeeService = useCoffeeService();
+  
+  const [roastery, setRoastery] = useState<GetRoastery | null>(null);
+  const [coffees, setCoffees] = useState<GetCoffeeList[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        // Fetch roastery details
+        const roasteryData = await roasteryService.getById(id);
+        setRoastery(roasteryData);
+        
+        // Fetch coffee beans for this roastery
+        const params = new URLSearchParams({
+          roasteryId: id,
+          pageNumber: '1',
+          pageSize: '20'
+        });
+        const coffeesData = await coffeeService.getAll(params);
+        setCoffees(coffeesData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, [id]);
 
   const renderCoffeeBean = ({ item }: { item: CoffeeBean }) => (
     <TouchableOpacity
@@ -94,7 +80,10 @@ export const RoasteryDetailScreen = ({ route, navigation }: Props) => {
       ]}
       onPress={() => navigation.navigate('CoffeeBeanDetail', { id: item.id })}
     >
-      <Image source={{ uri: item.image }} style={styles.coffeeBeanImage} />
+      <Image 
+        source={{ uri: item.imageUrl || 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9' }} 
+        style={styles.coffeeBeanImage} 
+      />
       <View style={styles.coffeeCardContent}>
         <Text 
           style={[styles.coffeeBeanName, { color: theme.colors.text.primary }]}
@@ -105,23 +94,34 @@ export const RoasteryDetailScreen = ({ route, navigation }: Props) => {
         <Text 
           style={[styles.coffeeBeanInfo, { color: theme.colors.text.secondary }]}
         >
-          {item.roastLevel}
+          {item.countryName}, {item.county}
         </Text>
         <Text 
           style={[styles.coffeeBeanPrice, { color: theme.colors.primary.main }]}
         >
-          {item.price}
+          {item.operationName}
         </Text>
       </View>
     </TouchableOpacity>
   );
+
+  if (isLoading || !roastery) {
+    return (
+      <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.colors.primary.main} />
+        </View>
+      </Screen>
+    );
+  }
 
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <ScrollView style={styles.scrollView} bounces={false}>
         <View style={styles.imageContainer}>
           <Image
-            source={{ uri: DUMMY_ROASTERY.image }}
+            // TODO: Replace with actual roastery image when available
+            source={{ uri: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24' }}
             style={styles.image}
             resizeMode="cover"
           />
@@ -146,56 +146,60 @@ export const RoasteryDetailScreen = ({ route, navigation }: Props) => {
 
         <View style={[styles.content, { backgroundColor: theme.colors.surface.primary }]}>
           <Text style={[styles.title, { color: theme.colors.text.primary }]}>
-            {DUMMY_ROASTERY.name}
+            {roastery.name}
           </Text>
           
           <View style={styles.locationContainer}>
             <Icon name="location-on" size={20} color={theme.colors.text.secondary} />
             <Text style={[styles.location, { color: theme.colors.text.secondary }]}>
-              {`${DUMMY_ROASTERY.location.city}, ${DUMMY_ROASTERY.location.country}`}
+              {roastery.contactemail}
             </Text>
           </View>
 
-          <View style={styles.section}>
+          {/* <View style={styles.section}>
             <Text style={[styles.description, { color: theme.colors.text.primary }]}>
-              {DUMMY_ROASTERY.description}
+              {roastery.description}
             </Text>
-          </View>
+          </View> */}
 
-          <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-              Specialties
-            </Text>
-            <View style={styles.specialtiesContainer}>
-              {DUMMY_ROASTERY.specialties.map((specialty, index) => (
-                <View
-                  key={index}
-                  style={[
-                    styles.specialtyPill,
-                    { backgroundColor: theme.colors.background.accent }
-                  ]}
-                >
-                  <Text style={[styles.specialtyText, { color: theme.colors.text.primary }]}>
-                    {specialty}
-                  </Text>
-                </View>
-              ))}
+          {/* {roastery.specialties && roastery.specialties.length > 0 && (
+            <View style={styles.section}>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+                Specialties
+              </Text>
+              <View style={styles.specialtiesContainer}>
+                {roastery.specialties.map((specialty, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.specialtyPill,
+                      { backgroundColor: theme.colors.background.accent }
+                    ]}
+                  >
+                    <Text style={[styles.specialtyText, { color: theme.colors.text.primary }]}>
+                      {specialty}
+                    </Text>
+                  </View>
+                ))}
+              </View>
             </View>
-          </View>
+          )} */}
 
-          <View style={styles.section}>
-            <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
-              Our Coffee Selection
-            </Text>
-            <FlatList
-              data={DUMMY_ROASTERY.coffeeBeans}
-              renderItem={renderCoffeeBean}
-              keyExtractor={(item) => item.id}
-              numColumns={2}
-              columnWrapperStyle={styles.coffeeBeansGrid}
-              scrollEnabled={false}
-            />
-          </View>
+          {coffees.length > 0 && (
+            <View style={styles.section}>
+              <Text style={[styles.sectionTitle, { color: theme.colors.text.primary }]}>
+                Our Coffee Selection
+              </Text>
+              <FlatList
+                data={coffees}
+                renderItem={renderCoffeeBean}
+                keyExtractor={(item) => item.id}
+                numColumns={2}
+                columnWrapperStyle={styles.coffeeBeansGrid}
+                scrollEnabled={false}
+              />
+            </View>
+          )}
         </View>
       </ScrollView>
     </Screen>
@@ -208,6 +212,11 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imageContainer: {
     height: IMAGE_HEIGHT,

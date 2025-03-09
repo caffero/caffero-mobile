@@ -1,48 +1,24 @@
 import { API_ENDPOINTS } from '../config';
-import { GetCoffee, GetCoffeeList, CreateCoffee, UpdateCoffee, DeleteCoffee } from '../models/Coffee';
+import { GetRoastery, GetRoasteryList, CreateRoastery, UpdateRoastery, DeleteRoastery, GetRoasteryBeans } from '../models/Roastery';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { ApiResponse } from '../models/ApiResponse';
 import { ApiException } from 'exceptions';
 import { cafferoBackendBuilder } from '../utils/CafferoBackendBuilder';
-import { RefreshTokenInterceptor } from '../utils/interceptors/refreshTokenInterceptor';
 
-export const useCoffeeService = () => {
+export const useRoasteryService = () => {
     const { token } = useAuth();
-    const auth = useAuth();
     const { currentLanguage } = useLanguage();
     const apiClient = cafferoBackendBuilder()
-        //.withDefaultHeader('Authorization', token ? `Bearer ${token}` : '')
+        .withDefaultHeader('Authorization', token ? `Bearer ${token}` : '')
         .withDefaultHeader('X-Language', currentLanguage?.id || 'tr')
-        .withDefaultHeader('Authorization', token ? `${token}` : '')
-        .withResponseInterceptor(new RefreshTokenInterceptor(auth))
         .build();
 
     return {
-        async getAll(params: URLSearchParams | undefined = undefined): Promise<GetCoffeeList[]> {
+        async getAll(): Promise<GetRoasteryList[]> {
             try {
-                const url = `${API_ENDPOINTS.COFFEE.GET_ALL}?${params}`;
                 const response = await apiClient
-                    .get<ApiResponse<GetCoffeeList[]>>(url)
-                    .execute();
-                    
-                return response.result!.data;
-            } catch (error) {
-                console.log("Error fetching coffees:", error);
-                if (error instanceof ApiException) {
-                    throw error;
-                }
-                throw new ApiException('Failed to fetch coffees', 500, 'Unknown error');
-            }
-        },
-
-        async getById(id: string): Promise<GetCoffee> {
-            try {
-                const url = API_ENDPOINTS.COFFEE.GET.replace(':id', id);
-                console.log(url);
-                
-                const response = await apiClient
-                    .get<ApiResponse<GetCoffee>>(url)
+                    .get<ApiResponse<GetRoasteryList[]>>(API_ENDPOINTS.ROASTERY.GET_ALL)
                     .execute();
 
                 return response.result!.data;
@@ -50,14 +26,15 @@ export const useCoffeeService = () => {
                 if (error instanceof ApiException) {
                     throw error;
                 }
-                throw new ApiException('Failed to fetch coffee', 500, 'Unknown error');
+                throw new ApiException('Failed to fetch roasteries', 500, 'Unknown error');
             }
         },
 
-        async create(data: CreateCoffee): Promise<GetCoffee> {
+        async getById(id: string): Promise<GetRoastery> {
             try {
+                const url = API_ENDPOINTS.ROASTERY.GET.replace(':id', id);
                 const response = await apiClient
-                    .post<ApiResponse<GetCoffee>>(API_ENDPOINTS.COFFEE.CREATE, data)
+                    .get<ApiResponse<GetRoastery>>(url)
                     .execute();
 
                 return response.result!.data;
@@ -65,15 +42,20 @@ export const useCoffeeService = () => {
                 if (error instanceof ApiException) {
                     throw error;
                 }
-                throw new ApiException('Failed to create coffee', 500, 'Unknown error');
+                throw new ApiException('Failed to fetch roastery', 500, 'Unknown error');
             }
         },
 
-        async update(data: UpdateCoffee): Promise<GetCoffee> {
+        async getBeans(id: string): Promise<GetRoasteryBeans> {
+            const url = API_ENDPOINTS.ROASTERY.BEANS.replace(':id', id);
+            const response = await apiClient.get<ApiResponse<GetRoasteryBeans>>(url).execute();
+            return response.result!.data;
+        },
+
+        async create(data: CreateRoastery): Promise<GetRoastery> {
             try {
-                const url = API_ENDPOINTS.COFFEE.UPDATE;
                 const response = await apiClient
-                    .put<ApiResponse<GetCoffee>>(url, data.id, data)
+                    .post<ApiResponse<GetRoastery>>(API_ENDPOINTS.ROASTERY.CREATE, data)
                     .execute();
 
                 return response.result!.data;
@@ -81,13 +63,29 @@ export const useCoffeeService = () => {
                 if (error instanceof ApiException) {
                     throw error;
                 }
-                throw new ApiException('Failed to update coffee', 500, 'Unknown error');
+                throw new ApiException('Failed to create roastery', 500, 'Unknown error');
             }
         },
 
-        async delete(data: DeleteCoffee): Promise<void> {
+        async update(data: UpdateRoastery): Promise<GetRoastery> {
             try {
-                const url = API_ENDPOINTS.COFFEE.DELETE;
+                const url = API_ENDPOINTS.ROASTERY.UPDATE;
+                const response = await apiClient
+                    .put<ApiResponse<GetRoastery>>(url, data.id, data)
+                    .execute();
+
+                return response.result!.data;
+            } catch (error) {
+                if (error instanceof ApiException) {
+                    throw error;
+                }
+                throw new ApiException('Failed to update roastery', 500, 'Unknown error');
+            }
+        },
+
+        async delete(data: DeleteRoastery): Promise<void> {
+            try {
+                const url = API_ENDPOINTS.ROASTERY.DELETE;
                 const response = await apiClient
                     .delete<ApiResponse<void>>(url, data.id)
                     .execute();
@@ -95,8 +93,8 @@ export const useCoffeeService = () => {
                 if (error instanceof ApiException) {
                     throw error;
                 }
-                throw new ApiException('Failed to delete coffee', 500, 'Unknown error');
+                throw new ApiException('Failed to delete roastery', 500, 'Unknown error');
             }
         }
     };
-}; 
+};
