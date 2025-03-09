@@ -62,6 +62,7 @@ import { SuggestProductScreen } from '../screens/SuggestProductScreen';
 import { RoasteryDetailScreen } from '../screens/RoasteryDetailScreen';
 import { PromotionCodeDetailScreen } from '../screens/PromotionCodeDetailScreen';
 import { PaymentScreen } from '../screens/PaymentScreen';
+import { RemoveCoffeeBeanScreen } from 'screens/RemoveCoffeeBeanScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();
@@ -165,6 +166,7 @@ export const Navigation = () => {
                 <Stack.Screen name="WhatIBrew" component={WhatIBrewScreen} />
                 <Stack.Screen name="CoffeeBeanDetail" component={CoffeeBeanDetailScreen} />
                 <Stack.Screen name="AddCoffeeBean" component={AddCoffeeBeanScreen} />
+                <Stack.Screen name="RemoveCoffeeBean" component={RemoveCoffeeBeanScreen} />
               </Stack.Group>
 
               <Stack.Group screenOptions={{ presentation: 'card' }}>

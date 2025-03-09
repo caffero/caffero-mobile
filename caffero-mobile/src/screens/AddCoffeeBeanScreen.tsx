@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import {
   Modal,
   ScrollView,
   Alert,
+  ActivityIndicator,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { Header } from '../components/Header';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -20,190 +22,175 @@ import Slider from '@react-native-community/slider';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
 import Screen from '../components/Screen';
+import { useCoffeeService } from '../api/services/coffeeService';
+import { useCoffeeBeanService } from '../api/services/coffeeBeanService';
+import { GetCoffeeList } from '../api/models/Coffee';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
-
-interface CoffeeBean {
-  id: string;
-  name: string;
-  roastery: string;
-  country: string;
-  imageUrl: string;
-  acidity: number;
-  body: number;
-  intensity: number;
-}
-
-// Dummy data
-const searchResults: CoffeeBean[] = [
-  {
-    id: '1',
-    name: 'Ethiopian Yirgacheffe',
-    roastery: 'Specialty Roasters',
-    country: 'Ethiopia',
-    imageUrl: 'https://example.com/coffee1.jpg',
-    acidity: 4.5,
-    body: 3.8,
-    intensity: 3.5,
-  },
-  // Add more items...
-];
-
-const countries = ['Ethiopia', 'Colombia', 'Brazil', 'Kenya', 'Guatemala'];
-const roasteries = ['Specialty Roasters', 'Coffee Lab', 'Artisan Coffee'];
 
 export const AddCoffeeBeanScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const { getText } = useLanguage();
+  const { theme } = useTheme();
+  const coffeeService = useCoffeeService();
+  const coffeeBeanService = useCoffeeBeanService();
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
-    roastery: '',
-    country: '',
+    roasteryId: '',
+    countryId: '',
     acidity: 3,
     body: 3,
     intensity: 3,
   });
-  const { theme } = useTheme();
+  const [searchResults, setSearchResults] = useState<GetCoffeeList[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [countries, setCountries] = useState<{id: string, name: string}[]>([]);
+  const [roasteries, setRoasteries] = useState<{id: string, name: string}[]>([]);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
 
-  const handleAddBean = (beanId: string) => {
-    Alert.alert(
-      getText('success'),
-      getText('coffeeAddedToShelf'),
-      [{ text: getText('ok'), onPress: () => navigation.goBack() }]
-    );
+  useEffect(() => {
+    // Load initial data (countries, roasteries)
+    const loadInitialData = async () => {
+      try {
+        setIsInitialLoading(true);
+        // Here you would fetch countries and roasteries from API
+        // For now, we'll use dummy data
+        setCountries([
+          { id: '1', name: 'Ethiopia' },
+          { id: '2', name: 'Colombia' },
+          { id: '3', name: 'Brazil' },
+          { id: '4', name: 'Kenya' },
+          { id: '5', name: 'Guatemala' }
+        ]);
+        
+        setRoasteries([
+          { id: '1', name: 'Specialty Roasters' },
+          { id: '2', name: 'Coffee Lab' },
+          { id: '3', name: 'Artisan Coffee' }
+        ]);
+        
+        // Initial search with empty parameters
+        await searchCoffees();
+      } catch (error) {
+        console.error('Error loading initial data:', error);
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+    
+    loadInitialData();
+  }, []);
+
+  const searchCoffees = async () => {
+    try {
+      setIsLoading(true);
+      
+      // Build query parameters
+      const params = new URLSearchParams();
+      
+      if (searchQuery) {
+        params.append('name', searchQuery);
+      }
+      
+      if (filters.roasteryId) {
+        params.append('roasteryId', filters.roasteryId);
+      }
+      
+      if (filters.countryId) {
+        params.append('countryId', filters.countryId);
+      }
+      
+      // Add other filter parameters as needed
+      params.append('pageNumber', '1');
+      params.append('pageSize', '20');
+      
+      const results = await coffeeService.getAll(params);
+      setSearchResults(results);
+    } catch (error) {
+      console.error('Error searching coffees:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const renderCoffeeBean = ({ item }: { item: CoffeeBean }) => (
-    <View style={styles.coffeeCard}>
-      <Image source={{ uri: item.imageUrl }} style={styles.coffeeImage} />
+  const handleAddBean = async (coffeeId: string) => {
+    try {
+      setIsLoading(true);
+      await coffeeBeanService.create({
+        id: coffeeId, 
+        hasTasted: false
+      });
+      
+      Alert.alert(
+        getText('success'),
+        getText('coffeeAddedToShelf'),
+        [{ text: getText('ok'), onPress: () => navigation.goBack() }]
+      );
+    } catch (error) {
+      console.error('Error adding coffee bean:', error);
+      Alert.alert(
+        getText('error'),
+        getText('failedToAddCoffee'),
+        [{ text: getText('ok') }]
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const renderCoffeeBean = ({ item }: { item: GetCoffeeList }) => (
+    <View style={[styles.coffeeCard, { backgroundColor: theme.colors.surface.primary }]}>
+      <Image 
+        source={{ uri: item.imageUrl || 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9' }} 
+        style={styles.coffeeImage} 
+      />
       <View style={styles.coffeeInfo}>
-        <Text style={styles.coffeeName}>{item.name}</Text>
-        <Text style={styles.coffeeDetails}>{item.roastery}</Text>
+        <Text style={[styles.coffeeName, { color: theme.colors.text.primary }]}>{item.name}</Text>
+        <Text style={[styles.coffeeDetails, { color: theme.colors.text.secondary }]}>
+          {item.roasteryName || ''}
+        </Text>
         <TouchableOpacity
-          style={styles.addButton}
+          style={[styles.addButton, { backgroundColor: theme.colors.primary.main }]}
           onPress={() => handleAddBean(item.id)}
         >
-          <Icon name="add" size={20} color="#fff" />
+          <Icon name="add" size={20} color={theme.colors.text.inverse} />
         </TouchableOpacity>
       </View>
     </View>
   );
 
-  const FilterModal = () => (
-    <Modal
-      visible={showFilters}
-      animationType="slide"
-      transparent
-      onRequestClose={() => setShowFilters(false)}
-    >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>{getText('filterCoffeeBeans')}</Text>
-          
-          <TextInput
-            style={styles.searchInput}
-            placeholder={getText('searchByName')}
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
+  const handleApplyFilters = useCallback(() => {
+    searchCoffees();
+    setShowFilters(false);
+  }, [searchQuery, filters]);
 
-          <View style={styles.dropdown}>
-            <Text style={styles.dropdownLabel}>{getText('roastery')}</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {roasteries.map((roastery) => (
-                <TouchableOpacity
-                  key={roastery}
-                  style={[
-                    styles.dropdownItem,
-                    filters.roastery === roastery && styles.selectedItem,
-                  ]}
-                  onPress={() => setFilters({ ...filters, roastery })}
-                >
-                  <Text style={[styles.dropdownItemText, { color: theme.colors.text.primary }]}>
-                    {roastery}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
+  const handleClearFilters = useCallback(() => {
+    setFilters({
+      roasteryId: '',
+      countryId: '',
+      acidity: 3,
+      body: 3,
+      intensity: 3,
+    });
+    setSearchQuery('');
+  }, []);
 
-          <View style={styles.dropdown}>
-            <Text style={styles.dropdownLabel}>{getText('country')}</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {countries.map((country) => (
-                <TouchableOpacity
-                  key={country}
-                  style={[
-                    styles.dropdownItem,
-                    filters.country === country && styles.selectedItem,
-                  ]}
-                  onPress={() => setFilters({ ...filters, country })}
-                >
-                  <Text style={[styles.dropdownItemText, { color: theme.colors.text.primary }]}>
-                    {country}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
-
-          <View style={styles.sliderContainer}>
-            <Text style={styles.sliderLabel}>{getText('acidity')}</Text>
-            <Slider
-              style={styles.slider}
-              minimumValue={1}
-              maximumValue={5}
-              step={0.5}
-              value={filters.acidity}
-              onValueChange={(value) => setFilters({ ...filters, acidity: value })}
-            />
-            <Text style={[styles.sliderValue, { color: theme.colors.text.secondary }]}>
-              {filters.acidity}
-            </Text>
-          </View>
-
-          <View style={styles.sliderContainer}>
-            <Text style={styles.sliderLabel}>{getText('body')}</Text>
-            <Slider
-              style={styles.slider}
-              minimumValue={1}
-              maximumValue={5}
-              step={0.5}
-              value={filters.body}
-              onValueChange={(value) => setFilters({ ...filters, body: value })}
-            />
-            <Text style={[styles.sliderValue, { color: theme.colors.text.secondary }]}>
-              {filters.body}
-            </Text>
-          </View>
-
-          <View style={styles.modalButtons}>
-            <TouchableOpacity
-              style={styles.clearButton}
-              onPress={() => {
-                setFilters({
-                  roastery: '',
-                  country: '',
-                  acidity: 3,
-                  body: 3,
-                  intensity: 3,
-                });
-              }}
-            >
-              <Text style={styles.clearButtonText}>{getText('clearFilters')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.applyButton}
-              onPress={() => setShowFilters(false)}
-            >
-              <Text style={styles.applyButtonText}>{getText('applyFilters')}</Text>
-            </TouchableOpacity>
-          </View>
+  if (isInitialLoading) {
+    return (
+      <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+        <Header
+          title={getText('addCoffeeBean')}
+          showBack
+          onBack={() => navigation.goBack()}
+        />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.colors.primary.main} />
         </View>
-      </View>
-    </Modal>
-  );
+      </Screen>
+    );
+  }
 
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
@@ -212,46 +199,243 @@ export const AddCoffeeBeanScreen = () => {
         showBack
         onBack={() => navigation.goBack()}
       />
-      <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
-          <Icon name="search" size={24} color="#666" style={styles.searchIcon} />
+      <View style={[styles.searchContainer, { backgroundColor: theme.colors.surface.primary }]}>
+        <View style={[styles.searchBar, { backgroundColor: theme.colors.surface.secondary }]}>
+          <Icon
+            name="search"
+            size={24}
+            color={theme.colors.text.secondary}
+            style={styles.searchIcon}
+          />
           <TextInput
-            style={styles.searchInput}
+            style={[styles.searchInput, { color: theme.colors.text.primary }]}
             placeholder={getText('searchCoffeeBeans')}
+            placeholderTextColor={theme.colors.text.secondary}
             value={searchQuery}
             onChangeText={setSearchQuery}
+            onSubmitEditing={searchCoffees}
+            returnKeyType="search"
           />
         </View>
         <TouchableOpacity
           style={styles.filterButton}
           onPress={() => setShowFilters(true)}
         >
-          <Icon name="filter-list" size={24} color="#007AFF" />
+          <Icon name="filter-list" size={24} color={theme.colors.text.primary} />
         </TouchableOpacity>
       </View>
 
-      <FlatList
-        data={searchResults}
-        renderItem={renderCoffeeBean}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        contentContainerStyle={styles.listContent}
-        ListEmptyComponent={
-          <View style={styles.emptyContainer}>
-            <Text style={[styles.emptyText, { color: theme.colors.text.secondary }]}>
-              {getText('cantFindCoffee')}
-            </Text>
-            <TouchableOpacity
-              style={styles.suggestButton}
-              onPress={() => navigation.navigate('SuggestProduct')}
-            >
-              <Text style={styles.suggestButtonText}>{getText('suggestProduct')}</Text>
-            </TouchableOpacity>
-          </View>
-        }
-      />
+      {isLoading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.colors.primary.main} />
+        </View>
+      ) : (
+        <FlatList
+          data={searchResults}
+          renderItem={renderCoffeeBean}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          contentContainerStyle={styles.listContent}
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <Text style={[styles.emptyText, { color: theme.colors.text.secondary }]}>
+                {getText('cantFindCoffee')}
+              </Text>
+              <TouchableOpacity
+                style={[styles.suggestButton, { backgroundColor: theme.colors.primary.main }]}
+                onPress={() => navigation.navigate('SuggestProduct')}
+              >
+                <Text style={[styles.suggestButtonText, { color: theme.colors.text.inverse }]}>
+                  {getText('suggestProduct')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          }
+        />
+      )}
 
-      <FilterModal />
+      {/* Filter Modal */}
+      <Modal
+        visible={showFilters}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setShowFilters(false)}
+      >
+        <TouchableWithoutFeedback onPress={() => setShowFilters(false)}>
+          <View style={styles.modalOverlay}>
+            <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+              <View style={[styles.modalContent, { backgroundColor: theme.colors.surface.primary }]}>
+                <View style={styles.modalHeader}>
+                  <View style={styles.modalHandle} />
+                  <TouchableOpacity 
+                    style={styles.closeButton}
+                    onPress={() => setShowFilters(false)}
+                  >
+                    <Icon name="close" size={24} color={theme.colors.text.secondary} />
+                  </TouchableOpacity>
+                </View>
+                
+                <Text style={[styles.modalTitle, { color: theme.colors.text.primary }]}>
+                  {getText('filterCoffeeBeans')}
+                </Text>
+                
+                <TextInput
+                  style={[styles.searchInput, { 
+                    backgroundColor: theme.colors.surface.secondary,
+                    color: theme.colors.text.primary,
+                    borderColor: theme.colors.border.primary,
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    padding: 10,
+                    marginBottom: 16
+                  }]}
+                  placeholder={getText('searchByName')}
+                  placeholderTextColor={theme.colors.text.secondary}
+                  value={searchQuery}
+                  onChangeText={setSearchQuery}
+                />
+
+                <View style={styles.dropdown}>
+                  <Text style={[styles.dropdownLabel, { color: theme.colors.text.primary }]}>
+                    {getText('roastery')}
+                  </Text>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {roasteries.map((roastery) => (
+                      <TouchableOpacity
+                        key={roastery.id}
+                        style={[
+                          styles.dropdownItem,
+                          { backgroundColor: theme.colors.surface.secondary },
+                          filters.roasteryId === roastery.id && { 
+                            backgroundColor: theme.colors.primary.main 
+                          },
+                        ]}
+                        onPress={() => setFilters({ 
+                          ...filters, 
+                          roasteryId: filters.roasteryId === roastery.id ? '' : roastery.id 
+                        })}
+                      >
+                        <Text style={[
+                          styles.dropdownItemText, 
+                          { 
+                            color: filters.roasteryId === roastery.id 
+                              ? theme.colors.text.inverse 
+                              : theme.colors.text.primary 
+                          }
+                        ]}>
+                          {roastery.name}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+
+                <View style={styles.dropdown}>
+                  <Text style={[styles.dropdownLabel, { color: theme.colors.text.primary }]}>
+                    {getText('country')}
+                  </Text>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {countries.map((country) => (
+                      <TouchableOpacity
+                        key={country.id}
+                        style={[
+                          styles.dropdownItem,
+                          { backgroundColor: theme.colors.surface.secondary },
+                          filters.countryId === country.id && { 
+                            backgroundColor: theme.colors.primary.main 
+                          },
+                        ]}
+                        onPress={() => setFilters({ 
+                          ...filters, 
+                          countryId: filters.countryId === country.id ? '' : country.id 
+                        })}
+                      >
+                        <Text style={[
+                          styles.dropdownItemText, 
+                          { 
+                            color: filters.countryId === country.id 
+                              ? theme.colors.text.inverse 
+                              : theme.colors.text.primary 
+                          }
+                        ]}>
+                          {country.name}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+
+                <View style={styles.sliderContainer}>
+                  <Text style={[styles.sliderLabel, { color: theme.colors.text.primary }]}>
+                    {getText('acidity')}
+                  </Text>
+                  <Slider
+                    style={styles.slider}
+                    minimumValue={1}
+                    maximumValue={5}
+                    step={0.5}
+                    value={filters.acidity}
+                    minimumTrackTintColor={theme.colors.primary.main}
+                    maximumTrackTintColor={theme.colors.border.primary}
+                    thumbTintColor={theme.colors.primary.main}
+                    onValueChange={(value) => setFilters({ ...filters, acidity: value })}
+                  />
+                  <Text style={[styles.sliderValue, { color: theme.colors.text.secondary }]}>
+                    {filters.acidity}
+                  </Text>
+                </View>
+
+                <View style={styles.sliderContainer}>
+                  <Text style={[styles.sliderLabel, { color: theme.colors.text.primary }]}>
+                    {getText('body')}
+                  </Text>
+                  <Slider
+                    style={styles.slider}
+                    minimumValue={1}
+                    maximumValue={5}
+                    step={0.5}
+                    value={filters.body}
+                    minimumTrackTintColor={theme.colors.primary.main}
+                    maximumTrackTintColor={theme.colors.border.primary}
+                    thumbTintColor={theme.colors.primary.main}
+                    onValueChange={(value) => setFilters({ ...filters, body: value })}
+                  />
+                  <Text style={[styles.sliderValue, { color: theme.colors.text.secondary }]}>
+                    {filters.body}
+                  </Text>
+                </View>
+
+                <View style={styles.modalButtons}>
+                  <TouchableOpacity
+                    style={[
+                      styles.clearButton,
+                      { 
+                        borderColor: theme.colors.primary.main,
+                      }
+                    ]}
+                    onPress={handleClearFilters}
+                  >
+                    <Text style={[styles.clearButtonText, { color: theme.colors.primary.main }]}>
+                      {getText('clear')}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.applyButton,
+                      { backgroundColor: theme.colors.primary.main }
+                    ]}
+                    onPress={handleApplyFilters}
+                  >
+                    <Text style={[styles.applyButtonText, { color: theme.colors.text.inverse }]}>
+                      {getText('apply')}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </Screen>
   );
 };
@@ -259,7 +443,6 @@ export const AddCoffeeBeanScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   searchContainer: {
     flexDirection: 'row',
@@ -270,7 +453,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f5f5f5',
     borderRadius: 8,
     paddingHorizontal: 12,
     marginRight: 12,
@@ -293,12 +475,12 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 8,
     borderRadius: 8,
-    backgroundColor: '#fff',
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
+    overflow: 'hidden',
   },
   coffeeImage: {
     width: '100%',
@@ -316,30 +498,44 @@ const styles = StyleSheet.create({
   },
   coffeeDetails: {
     fontSize: 14,
-    color: '#666',
   },
   addButton: {
     position: 'absolute',
     right: 12,
     bottom: 12,
-    backgroundColor: '#007AFF',
     width: 32,
     height: 32,
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  modalContainer: {
+  modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
+    paddingTop: 16,
     maxHeight: '80%',
+  },
+  modalHandle: {
+    width: 40,
+    height: 5,
+    backgroundColor: '#CCCCCC',
+    borderRadius: 3,
+    alignSelf: 'center',
+    marginBottom: 16,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  closeButton: {
+    padding: 8,
   },
   modalTitle: {
     fontSize: 20,
@@ -357,11 +553,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: '#f5f5f5',
     marginRight: 8,
-  },
-  selectedItem: {
-    backgroundColor: '#007AFF',
   },
   dropdownItemText: {
     fontSize: 14,
@@ -391,10 +583,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#007AFF',
   },
   clearButtonText: {
-    color: '#007AFF',
     textAlign: 'center',
     fontSize: 16,
   },
@@ -403,10 +593,8 @@ const styles = StyleSheet.create({
     padding: 12,
     marginLeft: 8,
     borderRadius: 8,
-    backgroundColor: '#007AFF',
   },
   applyButtonText: {
-    color: '#fff',
     textAlign: 'center',
     fontSize: 16,
   },
@@ -421,10 +609,13 @@ const styles = StyleSheet.create({
   suggestButton: {
     padding: 12,
     borderRadius: 8,
-    backgroundColor: '#007AFF',
   },
   suggestButtonText: {
-    color: '#fff',
     fontSize: 16,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }); 

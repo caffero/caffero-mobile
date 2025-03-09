@@ -50,6 +50,7 @@ export const useCoffeeBeanService = () => {
             try {
                 const response = await apiClient
                     .post<ApiResponse<GetCoffeeBean>>(API_ENDPOINTS.COFFEE_BEAN.CREATE, data)
+                    .withHeader('Content-Type', 'application/json')
                     .execute();
 
                 return response.result!.data;
@@ -79,7 +80,7 @@ export const useCoffeeBeanService = () => {
 
         async delete(data: DeleteCoffeeBean): Promise<void> {
             try {
-                const url = API_ENDPOINTS.COFFEE_BEAN.DELETE.replace(':id', data.id);
+                const url = API_ENDPOINTS.COFFEE_BEAN.BASE;
                 const response = await apiClient
                     .delete<ApiResponse<void>>(url, data.id)
                     .execute();

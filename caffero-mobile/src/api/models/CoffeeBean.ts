@@ -7,6 +7,8 @@ export interface GetCoffeeBeanList {
     acidity: number;
     body: number;
     intensity: number;
+    likePoint?: number | null;
+    coffeeId: string;
 }
 
 export interface GetCoffeeBean extends GetCoffeeBeanList {

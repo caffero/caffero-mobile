@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   View, 
   StyleSheet, 
@@ -6,7 +6,8 @@ import {
   TouchableOpacity, 
   Image, 
   Text,
-  Alert 
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import Screen from '../components/Screen';
 import { Header } from '../components/Header';
@@ -16,62 +17,37 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useTheme } from '../contexts/ThemeContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useCoffeeBeanService } from '../api/services/coffeeBeanService';
+import { GetCoffeeBeanList } from '../api/models/CoffeeBean';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
-
-interface CoffeeBean {
-  id: string;
-  name: string;
-  imageUrl: string;
-  rating: number;
-}
-
-// Dummy data
-const coffeeBeans: CoffeeBean[] = [
-  {
-    id: '1',
-    name: 'Ethiopian Yirgacheffe',
-    imageUrl: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9',
-    rating: 4.5,
-  },
-  {
-    id: '2',
-    name: 'Colombian Supremo',
-    imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd',
-    rating: 4.0,
-  },
-  {
-    id: '3',
-    name: 'Kenya AA',
-    imageUrl: 'https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb',
-    rating: 4.8,
-  },
-  {
-    id: '4',
-    name: 'Guatemala Antigua',
-    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085',
-    rating: 4.3,
-  },
-  {
-    id: '5',
-    name: 'Costa Rica Tarrazu',
-    imageUrl: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf',
-    rating: 4.6,
-  },
-  {
-    id: '6',
-    name: 'Brazil Santos',
-    imageUrl: 'https://images.unsplash.com/photo-1442550528053-c431ecb55509',
-    rating: 4.2,
-  },
-];
 
 export const WhatIBrewScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const { theme } = useTheme();
   const { getText } = useLanguage();
+  const coffeeBeanService = useCoffeeBeanService();
+  
+  const [coffeeBeans, setCoffeeBeans] = useState<GetCoffeeBeanList[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const renderCoffeeBean = ({ item }: { item: CoffeeBean }) => (
+  useEffect(() => {
+    fetchCoffeeBeans();
+  }, []);
+
+  const fetchCoffeeBeans = async () => {
+    try {
+      setIsLoading(true);
+      const data = await coffeeBeanService.getAll();
+      setCoffeeBeans(data);
+    } catch (error) {
+      console.error('Error fetching coffee beans:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const renderCoffeeBean = ({ item }: { item: GetCoffeeBeanList }) => (
     <TouchableOpacity 
       style={[
         styles.coffeeCard,
@@ -81,9 +57,12 @@ export const WhatIBrewScreen = () => {
           ...theme.shadows.medium,
         }
       ]}
-      onPress={() => navigation.navigate('CoffeeBeanDetail', { id: item.id })}
+      onPress={() => navigation.navigate('CoffeeBeanDetail', { id: item.coffeeId })}
     >
-      <Image source={{ uri: item.imageUrl }} style={styles.coffeeImage} />
+      <Image 
+        source={{ uri: item.imageUrl || 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9' }} 
+        style={styles.coffeeImage} 
+      />
       <View style={[styles.coffeeInfo, { backgroundColor: theme.colors.surface.elevated }]}>
         <Text 
           style={[
@@ -98,12 +77,27 @@ export const WhatIBrewScreen = () => {
         <View style={styles.ratingContainer}>
           <Icon name="coffee" size={20} color={theme.colors.primary.main} />
           <Text style={[styles.ratingText, { color: theme.colors.text.secondary }]}>
-            {item.rating}
+            {item.likePoint ? item.likePoint.toFixed(1) : '—'}
           </Text>
         </View>
       </View>
     </TouchableOpacity>
   );
+
+  if (isLoading) {
+    return (
+      <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
+        <Header 
+          title={getText('whatIBrew')} 
+          rightIcon="delete"
+          onRightPress={() => navigation.navigate('RemoveCoffeeBean')}
+        />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={theme.colors.primary.main} />
+        </View>
+      </Screen>
+    );
+  }
 
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
@@ -112,13 +106,24 @@ export const WhatIBrewScreen = () => {
         rightIcon="delete"
         onRightPress={() => navigation.navigate('RemoveCoffeeBean')}
       />
-      <FlatList
-        data={coffeeBeans}
-        renderItem={renderCoffeeBean}
-        keyExtractor={(item) => item.id}
-        numColumns={2}
-        contentContainerStyle={styles.listContent}
-      />
+      {coffeeBeans.length > 0 ? (
+        <FlatList
+          data={coffeeBeans}
+          renderItem={renderCoffeeBean}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          contentContainerStyle={styles.listContent}
+          refreshing={isLoading}
+          onRefresh={fetchCoffeeBeans}
+        />
+      ) : (
+        <View style={styles.emptyContainer}>
+          <Icon name="coffee" size={64} color={theme.colors.text.secondary} />
+          <Text style={[styles.emptyText, { color: theme.colors.text.secondary }]}>
+            {getText('noCoffeeBeans')}
+          </Text>
+        </View>
+      )}
       <TouchableOpacity
         style={[styles.fab, { backgroundColor: theme.colors.primary.main }]}
         onPress={() => {
@@ -193,5 +198,21 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  emptyText: {
+    marginTop: 16,
+    fontSize: 16,
+    textAlign: 'center',
   },
 }); 
