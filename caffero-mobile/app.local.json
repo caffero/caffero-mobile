@@ -1,0 +1,50 @@
+{
+    "expo": {
+      "name": "Caffero",
+      "slug": "caffero-mobile",
+      "owner": "cafferobrew",
+      "version": "1.0.0",
+      "orientation": "portrait",
+      "icon": "./assets/coffee-maker-logo.png",
+      "userInterfaceStyle": "light",
+      "splash": {
+        "image": "./assets/coffee-maker-logo.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff"
+      },
+      "ios": {
+        "supportsTablet": true,
+        "bundleIdentifier": "com.caffero.app",
+        "infoPlist": {
+          "NSAppTransportSecurity": {
+            "NSAllowsArbitraryLoads": true
+          }
+        }
+      },
+      "android": {
+        "adaptiveIcon": {
+          "foregroundImage": "./assets/coffee-maker-logo.png",
+          "backgroundColor": "#ffffff",
+          "useCleartextTraffic": true
+        },
+        "package": "com.caffero.app"
+      },
+      "web": {
+        "favicon": "./assets/coffee-maker-logo.png"
+      },
+      "extra": {
+        "eas": {
+          "projectId": "e200074a-fd6f-4b2d-a6ab-634fb4ba3c56"
+        },
+        "ENVIRONMENT": "local",
+        "API_BASE_URL": ""
+      },
+      "runtimeVersion": {
+        "policy": "appVersion"
+      },
+      "updates": {
+        "url": "https://u.expo.dev/e200074a-fd6f-4b2d-a6ab-634fb4ba3c56"
+      }
+    }
+  }
+  

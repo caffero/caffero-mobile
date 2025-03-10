@@ -35,7 +35,9 @@
     "extra": {
       "eas": {
         "projectId": "e200074a-fd6f-4b2d-a6ab-634fb4ba3c56"
-      }
+      },
+      "ENVIRONMENT": "prod",
+      "API_BASE_URL": "https://app-caffero-api-02-d2bvd8gyf6bpeve5.northeurope-01.azurewebsites.net"
     },
     "runtimeVersion": {
       "policy": "appVersion"

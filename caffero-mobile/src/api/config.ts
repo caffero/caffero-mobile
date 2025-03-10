@@ -1,11 +1,25 @@
-//export const API_BASE_URL = 'https://app-caffero-api-02-d2bvd8gyf6bpeve5.northeurope-01.azurewebsites.net/api';
-
 import Constants from 'expo-constants';
-const BASE_URL = Constants.expoConfig?.hostUri 
-  ? `http://${Constants.expoConfig.hostUri.split(':')[0]}:6001` 
-  : 'http://localhost:6001';
+const { expoConfig } = Constants;
 
-export const API_BASE_URL = `${BASE_URL}/api`;
+let API_BASE_URL: string;
+let url: string;
+
+switch (expoConfig?.extra?.ENVIRONMENT) {
+    case 'prod':
+        url = expoConfig?.extra?.API_BASE_URL;
+        API_BASE_URL = url.endsWith('/api') ? url : `${url}/api`;
+        break;
+    case 'dev':
+        url = expoConfig?.extra?.API_BASE_URL;
+        API_BASE_URL = url.endsWith('/api') ? url : `${url}/api`;
+        break;
+    case 'local':
+        const localIP = expoConfig?.hostUri?.split(':')[0];  
+        API_BASE_URL = `http://${localIP}:6001/api`;
+        break;
+    default:
+        API_BASE_URL = expoConfig?.extra?.API_BASE_URL;
+}
 
 export const API_ENDPOINTS = {
     ACCOUNT: {

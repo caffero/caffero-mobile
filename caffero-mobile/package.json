@@ -5,6 +5,9 @@
   "scripts": {
     "start": "expo start",
     "start:fresh": "npx tsc --build --clean && expo start -c",
+    "start:local": "expo start --config app.local.json",
+    "start:dev": "expo start --config app.dev.json",
+    "start:prod": "expo start --config app.json",
     "clean": "npx tsc --build --clean",
     "android": "expo start --android",
     "ios": "expo start --ios",
