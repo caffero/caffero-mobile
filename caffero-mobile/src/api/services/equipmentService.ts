@@ -1,5 +1,5 @@
 import { API_ENDPOINTS } from '../config';
-import { GetEquipment, GetEquipmentList, CreateEquipment, UpdateEquipment, DeleteEquipment } from '../models/Equipment';
+import { GetEquipment, GetEquipmentList, CreateEquipment, UpdateEquipment, DeleteEquipment, GetEquipmentType } from '../models/Equipment';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { ApiResponse } from '../models/ApiResponse';
@@ -36,6 +36,8 @@ export const useEquipmentService = () => {
                 const response = await apiClient
                     .get<ApiResponse<GetEquipment>>(url)
                     .execute();
+
+                console.log(response.result!.data);
 
                 return response.result!.data;
             } catch (error) {
@@ -89,6 +91,14 @@ export const useEquipmentService = () => {
                 }
                 throw new ApiException('Failed to delete equipment', 500, 'Unknown error');
             }
+        },
+
+        async getEquipmentTypes(): Promise<GetEquipmentType[]> {
+            const response = await apiClient
+                .get<ApiResponse<GetEquipmentType[]>>(API_ENDPOINTS.EQUIPMENT.GET_TYPES)
+                .execute();
+
+            return response.result!.data;
         }
     };
 }; 

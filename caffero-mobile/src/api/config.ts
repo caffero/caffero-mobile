@@ -37,12 +37,13 @@ export const API_ENDPOINTS = {
         DELETE: '/coffee/:id'
     },
     EQUIPMENT: {
-        BASE: '/equipment',
-        GET_ALL: '/equipment',
-        GET: '/equipment/:id',
-        CREATE: '/equipment',
-        UPDATE: '/equipment/:id',
-        DELETE: '/equipment/:id'
+        BASE: '/user-equipment',
+        GET_ALL: '/user-equipment',
+        GET: '/user-equipment/:id',
+        CREATE: '/user-equipment',
+        UPDATE: '/user-equipment/:id',
+        DELETE: '/user-equipment/:id',
+        GET_TYPES: '/equipment',
     },
     POST: {
         BASE: '/post',

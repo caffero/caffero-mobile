@@ -13,11 +13,8 @@ export interface GetEquipment extends GetEquipmentList {
 
 export interface CreateEquipment {
     title: string;
-    typeId: string;
-    kindId: string;
+    equipmentId: string;
     imageUrl: string;
-    description?: string;
-    specifications?: Record<string, string>;
 }
 
 export interface UpdateEquipment {
@@ -33,3 +30,10 @@ export interface UpdateEquipment {
 export interface DeleteEquipment {
     id: string;
 } 
+
+export interface GetEquipmentType {
+    id: string;
+    text: string;
+    imageUrl: string;
+    equipmentTypeName: string;
+}

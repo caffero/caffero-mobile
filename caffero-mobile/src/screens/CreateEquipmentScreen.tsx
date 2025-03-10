@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,42 +7,97 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import { Header } from '../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useTheme } from '../contexts/ThemeContext';
 import Screen from '../components/Screen';
+import { useEquipmentService } from '../api/services/equipmentService';
+import { CreateEquipment } from '../api/models/Equipment';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
-const equipmentKinds = ['Chemex', 'V60', 'Aeropress', 'French Press', 'Moka Pot'];
-const equipmentTypes = ['Dripper', 'Immersion', 'Espresso', 'Grinder', 'Scale', 'Kettle'];
+type EquipmentType = {
+  id: string;
+  name: string;
+};
 
 export const CreateEquipmentScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const { getText } = useLanguage();
+  const { theme } = useTheme();
+  const equipmentService = useEquipmentService();
+  
   const [title, setTitle] = useState('');
-  const [selectedKind, setSelectedKind] = useState('');
   const [selectedType, setSelectedType] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [equipmentTypes, setEquipmentTypes] = useState<EquipmentType[]>([]);
+  const [isLoadingTypes, setIsLoadingTypes] = useState(true);
 
-  const handleSave = () => {
-    if (!title || !selectedKind || !selectedType) {
+  useEffect(() => {
+    fetchEquipmentTypes();
+  }, []);
+
+  const fetchEquipmentTypes = async () => {
+    try {
+      setIsLoadingTypes(true);
+      const types = await equipmentService.getEquipmentTypes();
+      const formattedTypes = types.map(type => ({
+        id: type.id,
+        name: type.equipmentTypeName
+      }));
+      setEquipmentTypes(formattedTypes);
+      setIsLoadingTypes(false);
+    } catch (error) {
+      console.error('Error fetching equipment types:', error);
+      Alert.alert(
+        getText('error'),
+        getText('failedToLoadEquipmentTypes')
+      );
+      setIsLoadingTypes(false);
+    }
+  };
+
+  const handleSave = async () => {
+    if (!title || !selectedType) {
       Alert.alert(getText('error'), getText('fillAllFields'));
       return;
     }
 
-    // Save equipment logic here
-    Alert.alert(
-      getText('success'),
-      getText('equipmentAddedSuccess'),
-      [{ text: getText('ok'), onPress: () => navigation.goBack() }]
-    );
+    try {
+      setIsLoading(true);
+      
+      const newEquipment: CreateEquipment = {
+        title,
+        equipmentId: selectedType,
+        imageUrl: '', // This would typically come from an image upload feature
+      };
+      
+      await equipmentService.create(newEquipment);
+      
+      Alert.alert(
+        getText('success'),
+        getText('equipmentAddedSuccess'),
+        [{ text: getText('ok'), onPress: () => navigation.goBack() }]
+      );
+    } catch (error) {
+      console.error('Error creating equipment:', error);
+      Alert.alert(
+        getText('error'),
+        getText('failedToCreateEquipment'),
+        [{ text: getText('ok') }]
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleBack = () => {
-    if (title || selectedKind || selectedType) {
+    if (title || selectedType) {
       Alert.alert(
         getText('discardChanges'),
         getText('discardChangesMessage'),
@@ -57,7 +112,7 @@ export const CreateEquipmentScreen = () => {
   };
 
   return (
-    <Screen style={styles.container}>
+    <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
       <Header
         title={getText('createEquipment')}
         showBack
@@ -65,67 +120,80 @@ export const CreateEquipmentScreen = () => {
       />
       <ScrollView style={styles.content}>
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>{getText('title')}</Text>
+          <Text style={[styles.label, { color: theme.colors.text.primary }]}>
+            {getText('title')}
+          </Text>
           <TextInput
-            style={styles.input}
+            style={[
+              styles.input, 
+              { 
+                backgroundColor: theme.colors.surface.secondary,
+                color: theme.colors.text.primary,
+                borderColor: theme.colors.border.primary
+              }
+            ]}
             value={title}
             onChangeText={setTitle}
             placeholder={getText('enterEquipmentName')}
+            placeholderTextColor={theme.colors.text.secondary}
           />
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>{getText('equipmentKind')}</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {equipmentKinds.map((kind) => (
-              <TouchableOpacity
-                key={kind}
-                style={[
-                  styles.optionButton,
-                  selectedKind === kind && styles.selectedOption,
-                ]}
-                onPress={() => setSelectedKind(kind)}
-              >
-                <Text
+          <Text style={[styles.label, { color: theme.colors.text.primary }]}>
+            {getText('equipmentType')}
+          </Text>
+          
+          {isLoadingTypes ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="small" color={theme.colors.primary.main} />
+              <Text style={[styles.loadingText, { color: theme.colors.text.secondary }]}>
+                {getText('loadingEquipmentTypes')}
+              </Text>
+            </View>
+          ) : (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {equipmentTypes.map((type) => (
+                <TouchableOpacity
+                  key={type.id}
                   style={[
-                    styles.optionText,
-                    selectedKind === kind && styles.selectedOptionText,
+                    styles.optionButton,
+                    { backgroundColor: theme.colors.surface.secondary },
+                    selectedType === type.id && { backgroundColor: theme.colors.primary.main },
                   ]}
+                  onPress={() => setSelectedType(type.id)}
                 >
-                  {getText(`equipmentKind.${kind}`)}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+                  <Text
+                    style={[
+                      styles.optionText,
+                      { color: theme.colors.text.primary },
+                      selectedType === type.id && { color: theme.colors.text.inverse },
+                    ]}
+                  >
+                    {getText(`equipmentType.${type.name}`) || type.name}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          )}
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>{getText('equipmentType')}</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {equipmentTypes.map((type) => (
-              <TouchableOpacity
-                key={type}
-                style={[
-                  styles.optionButton,
-                  selectedType === type && styles.selectedOption,
-                ]}
-                onPress={() => setSelectedType(type)}
-              >
-                <Text
-                  style={[
-                    styles.optionText,
-                    selectedType === type && styles.selectedOptionText,
-                  ]}
-                >
-                  {getText(`equipmentType.${type}`)}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>{getText('saveEquipment')}</Text>
+        <TouchableOpacity 
+          style={[
+            styles.saveButton, 
+            { backgroundColor: theme.colors.primary.main },
+            (isLoading || isLoadingTypes) && { opacity: 0.7 }
+          ]} 
+          onPress={handleSave}
+          disabled={isLoading || isLoadingTypes}
+        >
+          {isLoading ? (
+            <ActivityIndicator size="small" color={theme.colors.text.inverse} />
+          ) : (
+            <Text style={[styles.saveButtonText, { color: theme.colors.text.inverse }]}>
+              {getText('saveEquipment')}
+            </Text>
+          )}
         </TouchableOpacity>
       </ScrollView>
     </Screen>
@@ -135,7 +203,6 @@ export const CreateEquipmentScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
@@ -151,7 +218,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
@@ -160,29 +226,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: '#f5f5f5',
     marginRight: 8,
-  },
-  selectedOption: {
-    backgroundColor: '#007AFF',
   },
   optionText: {
     fontSize: 14,
-    color: '#333',
-  },
-  selectedOptionText: {
-    color: '#fff',
   },
   saveButton: {
-    backgroundColor: '#007AFF',
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 24,
+    marginBottom: 32,
   },
   saveButtonText: {
-    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 16,
+  },
+  loadingText: {
+    marginLeft: 8,
+    fontSize: 14,
   },
 }); 
