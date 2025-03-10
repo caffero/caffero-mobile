@@ -5,17 +5,8 @@ import { LanguageProvider } from './src/contexts/LanguageContext';
 import { ExceptionProvider } from './src/contexts/ExceptionContext';
 import { Navigation } from './src/navigation/Navigation';
 import { SplashScreen } from './src/components/SplashScreen';
-import LanguageService, { useLanguageService } from './src/api/services/languageService';
-
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate some initialization time
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000); // Show splash screen for 2 seconds
-  }, []);
 
   if (isLoading) {
     return <SplashScreen />;

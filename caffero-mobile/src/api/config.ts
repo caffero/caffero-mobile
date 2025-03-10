@@ -1,25 +1,29 @@
 import Constants from 'expo-constants';
 const { expoConfig } = Constants;
 
-let API_BASE_URL: string;
+const environment = process.env.EXPO_PUBLIC_ENVIRONMENT;
+let BASE_URL: string;
 let url: string;
 
-switch (expoConfig?.extra?.ENVIRONMENT) {
+switch (environment) {
     case 'prod':
         url = expoConfig?.extra?.API_BASE_URL;
-        API_BASE_URL = url.endsWith('/api') ? url : `${url}/api`;
+        BASE_URL = url.endsWith('/api') ? url : `${url}/api`;
         break;
     case 'dev':
         url = expoConfig?.extra?.API_BASE_URL;
-        API_BASE_URL = url.endsWith('/api') ? url : `${url}/api`;
+        BASE_URL = url.endsWith('/api') ? url : `${url}/api`;
         break;
     case 'local':
         const localIP = expoConfig?.hostUri?.split(':')[0];  
-        API_BASE_URL = `http://${localIP}:6001/api`;
+        BASE_URL = `http://${localIP}:6001/api`;
         break;
     default:
-        API_BASE_URL = expoConfig?.extra?.API_BASE_URL;
+        BASE_URL = expoConfig?.extra?.API_BASE_URL;
 }
+
+export const API_BASE_URL = BASE_URL;
+export const ENVIRONMENT = process.env.EXPO_PUBLIC_ENVIRONMENT;
 
 export const API_ENDPOINTS = {
     ACCOUNT: {

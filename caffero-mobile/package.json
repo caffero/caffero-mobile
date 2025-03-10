@@ -5,9 +5,7 @@
   "scripts": {
     "start": "expo start",
     "start:fresh": "npx tsc --build --clean && expo start -c",
-    "start:local": "expo start --config app.local.json",
-    "start:dev": "expo start --config app.dev.json",
-    "start:prod": "expo start --config app.json",
+    "start:local": "cross-env ENVFILE=.env expo start",
     "clean": "npx tsc --build --clean",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -22,6 +20,7 @@
     "@react-navigation/native": "6.1.9",
     "@react-navigation/native-stack": "6.9.17",
     "axios": "^1.8.2",
+    "cross-env": "^7.0.3",
     "expo": "^52.0.0",
     "expo-camera": "~16.0.16",
     "expo-image-picker": "~16.0.6",
