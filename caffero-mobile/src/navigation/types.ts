@@ -34,11 +34,21 @@ export type RootStackParamList = {
   DeleteEquipment: { id: string };
   HowIBrew: undefined;
   RecipeDetail: { id: string };
-  CreateRecipe: undefined;
+  CreateRecipe: {
+    recipeId?: string;
+    selectedCoffeeId?: string;
+    selectedCoffeeName?: string;
+    selectedEquipmentId?: string;
+    selectedEquipmentName?: string;
+  } | undefined;
   UpdateRecipe: { id: string };
   DeleteRecipe: { id: string };
   SuggestProduct: undefined;
   Subscription: undefined;
+
+  // Selection screens
+  SelectCoffeeBean: undefined;
+  SelectEquipment: undefined;
 
   // Post screens
   WhatIThink: undefined;

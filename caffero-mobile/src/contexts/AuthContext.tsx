@@ -250,6 +250,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const refreshToken = async () => {
         try {
+            console.log('Refreshing token for user:', user?.email, user?.authProperties);
             var response = await authService.refreshToken(user?.email, user?.authProperties.clientId);
             const userData: User = {
                 userId: response.userId,

@@ -9,10 +9,10 @@ export class ExceptionInterceptor implements ResponseInterceptor {
         }
 
         const clonedResponse = response.clone();
-        const json =clonedResponse.json().then(data => {
-            if (data && 'isSuccess' in data && 'errorResult' in data) {
-                console.log('ExceptionInterceptor: ApiResponse error:', data.errorResult);
-                console.log('ExceptionInterceptor: ApiResponse error:', data.errorResult.data);
+        const json =clonedResponse.json().then(res => {
+            if (res && 'isSuccess' in res && 'errorResult' in res) {
+                console.log('ExceptionInterceptor: ApiResponse error:', res.errorResult);
+                console.log('ExceptionInterceptor: ApiResponse error:', res.errorResult.data);
                 
             }
         }).catch(() => {

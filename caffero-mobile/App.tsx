@@ -8,6 +8,13 @@ import { SplashScreen } from './src/components/SplashScreen';
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    // Simulate some initialization time
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // Show splash screen for 2 seconds
+  }, []);
+
   if (isLoading) {
     return <SplashScreen />;
   }

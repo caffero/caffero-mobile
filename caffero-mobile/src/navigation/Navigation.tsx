@@ -43,11 +43,13 @@ import { EquipmentDetailScreen } from '../screens/EquipmentDetailScreen';
 import { CreateEquipmentScreen } from '../screens/CreateEquipmentScreen';
 import { UpdateEquipmentScreen } from '../screens/UpdateEquipmentScreen';
 import { DeleteEquipmentScreen } from '../screens/DeleteEquipmentScreen';
+import { SelectEquipment } from '../screens/SelectEquipment';
 
 // Coffee Bean Related Screens
 import { WhatIBrewScreen } from '../screens/WhatIBrewScreen';
 import { CoffeeBeanDetailScreen } from '../screens/CoffeeBeanDetailScreen';
 import { AddCoffeeBeanScreen } from '../screens/AddCoffeeBeanScreen';
+import { SelectCoffeeBean } from '../screens/SelectCoffeeBean';
 
 // Post Related Screens
 import { WhatIThinkScreen } from '../screens/WhatIThinkScreen';
@@ -167,6 +169,7 @@ export const Navigation = () => {
                 <Stack.Screen name="CoffeeBeanDetail" component={CoffeeBeanDetailScreen} />
                 <Stack.Screen name="AddCoffeeBean" component={AddCoffeeBeanScreen} />
                 <Stack.Screen name="RemoveCoffeeBean" component={RemoveCoffeeBeanScreen} />
+                <Stack.Screen name="SelectCoffeeBean" component={SelectCoffeeBean} />
               </Stack.Group>
 
               <Stack.Group screenOptions={{ presentation: 'card' }}>
@@ -175,6 +178,7 @@ export const Navigation = () => {
                 <Stack.Screen name="CreateEquipment" component={CreateEquipmentScreen} />
                 <Stack.Screen name="UpdateEquipment" component={UpdateEquipmentScreen} />
                 <Stack.Screen name="DeleteEquipment" component={DeleteEquipmentScreen} />
+                <Stack.Screen name="SelectEquipment" component={SelectEquipment} />
               </Stack.Group>
 
               <Stack.Group screenOptions={{ presentation: 'card' }}>

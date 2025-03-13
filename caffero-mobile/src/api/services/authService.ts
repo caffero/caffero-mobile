@@ -75,6 +75,7 @@ export const useAuthService = () => {
 
                 const response = await apiClient
                     .post<ApiResponse<UserTokenView>>(API_ENDPOINTS.ACCOUNT.REFRESH_TOKEN, { email, clientId })
+                    .withHeader('Content-Type', 'application/json')
                     .execute();
 
                 return response.result!.data;
