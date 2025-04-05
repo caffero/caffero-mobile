@@ -12,7 +12,6 @@ export type RootStackParamList = {
   
   // Main App Stack
   MainTabs: undefined;
-  Scan: undefined;
 
   // Profile screens
   EditProfile: undefined;
@@ -22,47 +21,15 @@ export type RootStackParamList = {
   Privacy: undefined;
   ContactUs: undefined;
 
-  // Main screens
-  WhatIBrew: undefined;
-  CoffeeBeanDetail: { id: string };
-  AddCoffeeBean: undefined;
-  RemoveCoffeeBean: undefined;
-  WhatIBrewWith: undefined;
-  EquipmentDetail: { id: string };
-  CreateEquipment: undefined;
-  UpdateEquipment: { id: string };
-  DeleteEquipment: { id: string };
-  HowIBrew: undefined;
-  RecipeDetail: { id: string };
-  CreateRecipe: undefined;
-  UpdateRecipe: { id: string };
-  DeleteRecipe: { id: string };
-  SuggestProduct: undefined;
-  Subscription: undefined;
-
-  // Post screens
-  WhatIThink: undefined;
-  PostDetail: { id: string };
-  CreatePost: undefined;
-  UpdatePost: { id: string };
-  DeletePosts: undefined;
-
-  // Premium features
-  Coupons: undefined;
-  Events: undefined;
-  EventDetail: { event: { title: string; imageUrl: string } };
-  TasteMatches: undefined;
-  TasteMatchDetail: { match: { title: string; imageUrl: string } };
-
-  // New routes
-  RoasteryDetail: { id: string };
+  // New Cafe Discount App Screens
+  CafeDetail: { id: string };
+  CampaignScreen: undefined;
+  UseCampaignScreen: { campaignId: string };
 }; 
 
 export type BottomTabParamList = {
   Home: undefined;
-  Shelf: undefined;
-  Scan: undefined;
-  Premium: undefined;
+  Campaigns: undefined;
   Profile: undefined;
 }; 
 

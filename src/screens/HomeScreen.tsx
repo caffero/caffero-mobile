@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   ScrollView,
@@ -11,6 +11,7 @@ import {
   FlatList,
   ActivityIndicator,
   Text,
+  Image,
 } from 'react-native';
 import Screen from '../components/Screen';
 import { Header } from '../components/Header';
@@ -24,131 +25,186 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { SearchItem } from '../api/models/SearchItem';
 import { searchItems } from '../api/services/searchService';
 
-// Dummy data (replace with API calls later)
-const trendingRecipes = [
-  { 
-    id: '1', 
-    title: 'V60 Pour Over', 
-    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&auto=format'
-  },
-  { 
-    id: '2', 
-    title: 'Aeropress Recipe', 
-    imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500&auto=format'
-  },
-  { 
-    id: '3', 
-    title: 'French Press Classic', 
-    imageUrl: 'https://images.unsplash.com/photo-1544233726-9f1d2b27be8b?w=500&auto=format'
-  },
-];
+interface Cafe {
+  id: string;
+  name: string;
+  district: string;
+  city: string;
+  imageUrl: string;
+}
 
-const recommendedBeans = [
-  { 
-    id: '1', 
-    title: 'Ethiopian Yirgacheffe', 
-    imageUrl: 'https://images.unsplash.com/photo-1587734195503-904fca47e0e9?w=500&auto=format'
+// Dummy cafe data
+const cafes: Cafe[] = [
+  {
+    id: '1',
+    name: 'Cafe Luminosa',
+    district: 'Downtown',
+    city: 'Istanbul',
+    imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=500&auto=format',
   },
-  { 
-    id: '2', 
-    title: 'Colombian Supremo', 
-    imageUrl: 'https://images.unsplash.com/photo-1611854779393-1b2da9d400fe?w=500&auto=format'
+  {
+    id: '2',
+    name: 'Sweet Corner',
+    district: 'Kadıköy',
+    city: 'Istanbul',
+    imageUrl: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=500&auto=format',
   },
-  { 
-    id: '3', 
-    title: 'Brazilian Santos', 
-    imageUrl: 'https://images.unsplash.com/photo-1587734005433-78ec37761d12?w=500&auto=format'
+  {
+    id: '3',
+    name: 'Urban Roasters',
+    district: 'Beşiktaş',
+    city: 'Istanbul',
+    imageUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500&auto=format',
   },
-];
-
-const blogPosts = [
-  { 
-    id: '1', 
-    title: 'The Art of Coffee Roasting', 
-    imageUrl: 'https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?w=500&auto=format'
+  {
+    id: '4',
+    name: 'Brew Haven',
+    district: 'Nişantaşı',
+    city: 'Istanbul',
+    imageUrl: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=500&auto=format',
   },
-  { 
-    id: '2', 
-    title: 'Understanding Coffee Origins', 
-    imageUrl: 'https://images.unsplash.com/photo-1497935586351-b67a49e012bf?w=500&auto=format'
+  {
+    id: '5',
+    name: 'Coffee Lab',
+    district: 'Bebek',
+    city: 'Istanbul',
+    imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=500&auto=format',
   },
-  { 
-    id: '3', 
-    title: 'Brewing the Perfect Cup', 
-    imageUrl: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&auto=format'
+  {
+    id: '6',
+    name: 'Espresso Junction',
+    district: 'Şişli',
+    city: 'Istanbul',
+    imageUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500&auto=format',
+  },
+  {
+    id: '7',
+    name: 'Bean & Gone',
+    district: 'Etiler',
+    city: 'Istanbul',
+    imageUrl: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=500&auto=format',
+  },
+  {
+    id: '8',
+    name: 'Cuppa Joy',
+    district: 'Levent',
+    city: 'Istanbul',
+    imageUrl: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=500&auto=format',
+  },
+  {
+    id: '9',
+    name: 'Latte Lane',
+    district: 'Üsküdar',
+    city: 'Istanbul',
+    imageUrl: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500&auto=format',
+  },
+  {
+    id: '10',
+    name: 'Morning Brew',
+    district: 'Moda',
+    city: 'Istanbul',
+    imageUrl: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=500&auto=format',
   },
 ];
 
 export const HomeScreen = () => {
   const navigation = useNavigation<RootStackNavigator>();
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const { theme, isDark } = useTheme();
   const { getText } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
-  const [searchResults, setSearchResults] = useState<SearchItem[]>([]);
+  const [searchResults, setSearchResults] = useState<Cafe[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [cafeList, setCafeList] = useState<Cafe[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMoreData, setHasMoreData] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    // TODO: Add refresh logic here
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1000);
+  useEffect(() => {
+    fetchCafes();
   }, []);
 
-  const handleTrendingPress = (id: string) => {
-    navigation.navigate('RecipeDetail', { id });
+  const fetchCafes = (refresh = false) => {
+    // In a real app, this would be an API call with pagination
+    // For demo purposes, we're simulating pagination with the dummy data
+    if (refresh) {
+      setPage(1);
+      setCafeList([]);
+      setHasMoreData(true);
+    }
+
+    const pageSize = 5;
+    const startIndex = (refresh ? 0 : (page - 1) * pageSize);
+    const endIndex = startIndex + pageSize;
+    
+    // Simulate API call delay
+    setIsLoading(startIndex === 0);
+    setIsLoadingMore(startIndex > 0);
+    
+    setTimeout(() => {
+      const newCafes = cafes.slice(startIndex, endIndex);
+      
+      if (refresh) {
+        setCafeList(newCafes);
+      } else {
+        // Make sure we're not adding duplicates
+        const existingIds = new Set(cafeList.map(cafe => cafe.id));
+        const uniqueNewCafes = newCafes.filter(cafe => !existingIds.has(cafe.id));
+        
+        setCafeList(prevList => [...prevList, ...uniqueNewCafes]);
+      }
+      
+      // Check if we've reached the end of the data
+      if (endIndex >= cafes.length) {
+        setHasMoreData(false);
+      } else {
+        setPage(prevPage => refresh ? 2 : prevPage + 1);
+      }
+      
+      setIsLoading(false);
+      setIsLoadingMore(false);
+      setRefreshing(false);
+    }, 1000);
   };
 
-  const handleBeanPress = (id: string) => {
-    navigation.navigate('CoffeeBeanDetail', { id });
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchCafes(true);
   };
 
-  const handleBlogPress = (id: string) => {
-    navigation.navigate('PostDetail', { id });
+  const handleLoadMore = () => {
+    if (!isLoadingMore && hasMoreData) {
+      fetchCafes();
+    }
   };
 
   const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
+    if (!searchQuery.trim()) {
+      setIsSearching(false);
+      setSearchResults([]);
+      return;
+    }
     
     setIsLoading(true);
-    try {
-      const results = await searchItems(searchQuery);
-      setSearchResults(results);
-      setIsSearching(true);
-    } catch (error) {
-      console.error('Search error:', error);
-    } finally {
+    setIsSearching(true);
+    
+    // In a real app, this would be an API call to search cafes
+    // For demo purposes, we're simulating a search with the dummy data
+    setTimeout(() => {
+      const filteredCafes = cafes.filter(cafe => 
+        cafe.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        cafe.district.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        cafe.city.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      
+      setSearchResults(filteredCafes);
       setIsLoading(false);
-    }
+    }, 500);
   };
 
-  const handleSearchItemPress = (item: SearchItem) => {
-    console.log('Search item pressed:', item);
-    
-    switch (item.type) {
-      case 'Recipe':
-        navigation.navigate('RecipeDetail', { id: item.id });
-        setIsSearching(false);
-        break;
-      case 'CoffeeBean':
-        navigation.navigate('CoffeeBeanDetail', { id: item.id });
-        setIsSearching(false);
-        break;
-      case 'Roastery':
-        navigation.navigate('RoasteryDetail', { id: item.id });
-        setIsSearching(false);
-        break;
-      case 'Post':
-        navigation.navigate('PostDetail', { id: item.id });
-        setIsSearching(false);
-        break;
-    }
-    
-    // Clear search state after navigation
-    setSearchQuery('');
-    setSearchResults([]);
+  const handleCafePress = (id: string) => {
+    navigation.navigate('CafeDetail', { id });
   };
 
   const handleCancelSearch = () => {
@@ -157,107 +213,47 @@ export const HomeScreen = () => {
     setSearchResults([]);
   };
 
-  const renderSearchItem = ({ item }: { item: SearchItem }) => (
+  const renderCafeItem = ({ item }: { item: Cafe }) => (
     <TouchableOpacity
-      style={[styles.searchItem, { backgroundColor: theme.colors.surface.primary }]}
-      onPress={() => handleSearchItemPress(item)}
+      style={[styles.cafeCard, { backgroundColor: theme.colors.surface.primary }]}
+      onPress={() => handleCafePress(item.id)}
     >
-      <View style={styles.searchItemContent}>
-        <Icon 
-          name={
-            item.type === 'Recipe' ? 'restaurant-menu' :
-            item.type === 'CoffeeBean' ? 'coffee' :
-            item.type === 'Roastery' ? 'store' : 'article'
-          }
-          size={24}
-          color={theme.colors.text.secondary}
-          style={styles.searchItemIcon}
-        />
-        <View style={styles.searchItemText}>
-          <Text style={[styles.searchItemTitle, { color: theme.colors.text.primary }]}>
-            {item.title}
-          </Text>
-          <Text style={[styles.searchItemType, { color: theme.colors.text.secondary }]}>
-            {item.type}
-          </Text>
-        </View>
+      <Image source={{ uri: item.imageUrl }} style={styles.cafeImage} />
+      <View style={styles.cafeInfo}>
+        <Text style={[styles.cafeName, { color: theme.colors.text.primary }]}>
+          {item.name}
+        </Text>
+        <Text style={[styles.cafeLocation, { color: theme.colors.text.secondary }]}>
+          {item.district}, {item.city}
+        </Text>
       </View>
     </TouchableOpacity>
   );
 
-  const renderContent = () => {
-    if (isSearching) {
+  const renderFooter = () => {
+    if (isSearching) return null;
+    
+    if (isLoadingMore) {
       return (
-        <View style={styles.searchResultsContainer}>
-          <View style={[styles.searchHeader, { borderBottomColor: theme.colors.border.primary }]}>
-            <Text style={[styles.searchResultsTitle, { color: theme.colors.text.primary }]}>
-              {searchResults.length > 0 
-                ? `${searchResults.length} ${getText('searchResults')}` 
-                : getText('noSearchResults')}
-            </Text>
-            <TouchableOpacity onPress={handleCancelSearch}>
-              <Text style={[styles.cancelButton, { color: theme.colors.primary.main }]}>
-                {getText('cancel')}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <FlatList
-            data={searchResults}
-            renderItem={renderSearchItem}
-            keyExtractor={item => item.id}
-            contentContainerStyle={styles.searchResults}
-            keyboardShouldPersistTaps="handled"
-            ListEmptyComponent={
-              <View style={styles.emptyState}>
-                <Text style={[styles.emptyStateText, { color: theme.colors.text.secondary }]}>
-                  {getText('noSearchResults')}
-                </Text>
-              </View>
-            }
-          />
+        <View style={styles.footerLoading}>
+          <ActivityIndicator size="small" color={theme.colors.primary.main} />
+          <Text style={[styles.footerText, { color: theme.colors.text.secondary }]}>
+            {getText('loadingMore')}
+          </Text>
         </View>
       );
     }
-
-    return (
-      <ScrollView
-        style={styles.content}
-        contentContainerStyle={styles.scrollContent}
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={theme.colors.background.accent}
-            colors={[theme.colors.background.accent]}
-          />
-        }
-      >
-        <View style={[styles.carouselContainer, { 
-          backgroundColor: Platform.select({
-            ios: theme.colors.background.primary,
-            android: theme.colors.background.secondary,
-          })
-        }]}>
-          <Carousel
-            title={getText('trending')}
-            items={trendingRecipes}
-            onItemPress={handleTrendingPress}
-          />
-          <Carousel
-            title={getText('forYourTaste')}
-            items={recommendedBeans}
-            onItemPress={handleBeanPress}
-          />
-          <Carousel
-            title={getText('discoverCoffee')}
-            items={blogPosts}
-            onItemPress={handleBlogPress}
-          />
-        </View>
-      </ScrollView>
-    );
+    
+    return null;
   };
+
+  const renderEmptyState = () => (
+    <View style={styles.emptyState}>
+      <Text style={[styles.emptyStateText, { color: theme.colors.text.secondary }]}>
+        {isLoading ? '' : getText('noCafesAvailable')}
+      </Text>
+    </View>
+  );
 
   return (
     <Screen style={[styles.container, { backgroundColor: theme.colors.background.primary }]}>
@@ -266,54 +262,65 @@ export const HomeScreen = () => {
         backgroundColor={theme.colors.background.primary}
       />
       <Header title={getText('appName')} />
-      <View style={[styles.searchContainer, { 
-        borderBottomColor: theme.colors.border.primary,
-        backgroundColor: theme.colors.background.primary,
-        ...theme.shadows.small
-      }]}>
-        <View style={[styles.searchBar, { 
-          backgroundColor: theme.colors.surface.primary,
-          ...theme.shadows.small
-        }]}>
+      <View style={[styles.searchContainer, { borderBottomColor: theme.colors.border.primary }]}>
+        <View style={[styles.searchBar, { backgroundColor: theme.colors.background.secondary }]}>
           <Icon 
             name="search" 
             size={20} 
-            color={theme.colors.text.secondary}
-            style={styles.searchIcon}
+            color={theme.colors.text.secondary} 
+            style={styles.searchIcon} 
           />
           <TextInput
             style={[styles.searchInput, { color: theme.colors.text.primary }]}
-            placeholder={getText('search')}
+            placeholder={getText('searchCafes')}
             placeholderTextColor={theme.colors.text.secondary}
             value={searchQuery}
-            onChangeText={(text) => {
-              setSearchQuery(text);
-              if (text.length === 0) {
-                setIsSearching(false);
-                setSearchResults([]);
-              }
-            }}
-            onFocus={() => setIsSearching(true)}
-            returnKeyType="search"
+            onChangeText={setSearchQuery}
             onSubmitEditing={handleSearch}
+            returnKeyType="search"
           />
           {searchQuery.length > 0 && (
-            <TouchableOpacity
-              style={styles.searchButton}
-              onPress={handleSearch}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <ActivityIndicator color={theme.colors.text.secondary} />
-              ) : (
-                <Icon name="arrow-forward" size={24} color={theme.colors.text.secondary} />
-              )}
+            <TouchableOpacity onPress={() => setSearchQuery('')}>
+              <Icon name="close" size={20} color={theme.colors.text.secondary} />
             </TouchableOpacity>
           )}
         </View>
       </View>
 
-      {renderContent()}
+      {isSearching && (
+        <View style={[styles.searchHeader, { borderBottomColor: theme.colors.border.primary }]}>
+          <Text style={[styles.searchResultsTitle, { color: theme.colors.text.primary }]}>
+            {searchResults.length > 0 
+              ? `${searchResults.length} ${getText('searchResults')}` 
+              : getText('noSearchResults')}
+          </Text>
+          <TouchableOpacity onPress={handleCancelSearch}>
+            <Text style={[styles.cancelButton, { color: theme.colors.primary.main }]}>
+              {getText('cancel')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      
+      <FlatList
+        data={isSearching ? searchResults : cafeList}
+        renderItem={renderCafeItem}
+        keyExtractor={(item, index) => `${item.id}-${index}`}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={renderEmptyState}
+        ListFooterComponent={renderFooter}
+        onEndReached={!isSearching ? handleLoadMore : null}
+        onEndReachedThreshold={0.3}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.colors.background.accent}
+            colors={[theme.colors.background.accent]}
+          />
+        }
+      />
     </Screen>
   );
 };
@@ -431,5 +438,45 @@ const styles = StyleSheet.create({
   cancelButton: {
     fontSize: 16,
     fontWeight: '500',
+  },
+  listContent: {
+    padding: spacing.md,
+    flexGrow: 1,
+  },
+  cafeCard: {
+    marginBottom: spacing.md,
+    borderRadius: borderRadius.md,
+    overflow: 'hidden',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  cafeImage: {
+    width: '100%',
+    height: 150,
+    resizeMode: 'cover',
+  },
+  cafeInfo: {
+    padding: spacing.md,
+  },
+  cafeName: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: spacing.xs,
+  },
+  cafeLocation: {
+    fontSize: 14,
+  },
+  footerLoading: {
+    paddingVertical: spacing.md,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  footerText: {
+    marginLeft: spacing.sm,
+    fontSize: 14,
   },
 }); 
