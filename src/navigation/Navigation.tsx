@@ -10,26 +10,26 @@ import { RootStackParamList, BottomTabParamList } from './types';
 import { LoadingScreen } from '../components/LoadingScreen';
 
 // Auth Screens
-import { LoginScreen } from '../screens/LoginScreen';
-import { RegisterScreen } from '../screens/RegisterScreen';
-import { OtpScreen } from '../screens/OtpScreen';
-import { ForgotPasswordScreen } from '../screens/ForgotPasswordScreen';
-import { ResetForgottenPasswordScreen } from '../screens/ResetForgottenPasswordScreen';
-import { ResetPasswordScreen } from '../screens/ResetPasswordScreen';
+import { LoginScreen } from '../screens/authentication/LoginScreen';
+import { RegisterScreen } from '../screens/authentication/RegisterScreen';
+import { OtpScreen } from '../screens/authentication/OtpScreen';
+import { ForgotPasswordScreen } from '../screens/authentication/ForgotPasswordScreen';
+import { ResetForgottenPasswordScreen } from '../screens/authentication/ResetForgottenPasswordScreen';
+import { ResetPasswordScreen } from '../screens/authentication/ResetPasswordScreen';
 
 // Main Tab Screens
 import { HomeScreen } from '../screens/HomeScreen';
-import { ProfileScreen } from '../screens/ProfileScreen';
+import { ProfileScreen } from '../screens/settings-and-profile/ProfileScreen';
 import { CampaignScreen } from '../screens/CampaignScreen';
 import { CafeDetailScreen } from '../screens/CafeDetailScreen';
 import { UseCampaignScreen } from '../screens/UseCampaignScreen';
 
 // Profile Related Screens
-import { EditProfileScreen } from '../screens/EditProfileScreen';
-import { AppSettingsScreen } from '../screens/AppSettingsScreen';
-import { NotificationSettingsScreen } from '../screens/NotificationSettingsScreen';
-import { PrivacyScreen } from '../screens/PrivacyScreen';
-import { ContactUsScreen } from '../screens/ContactUsScreen';
+import { EditProfileScreen } from '../screens/settings-and-profile/EditProfileScreen';
+import { AppSettingsScreen } from '../screens/settings-and-profile/AppSettingsScreen';
+import { NotificationSettingsScreen } from '../screens/settings-and-profile/NotificationSettingsScreen';
+import { PrivacyScreen } from '../screens/settings-and-profile/PrivacyScreen';
+import { ContactUsScreen } from '../screens/settings-and-profile/ContactUsScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<BottomTabParamList>();

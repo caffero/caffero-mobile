@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { Header } from '../components/Header';
+import { Header } from '../../components/Header';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackNavigator } from '../navigation/types';
-import { useAuth } from '../contexts/AuthContext';
-import { useTheme } from '../contexts/ThemeContext';
-import { spacing } from '../theme';
-import { useLanguage } from '../contexts/LanguageContext';
-import Screen from '../components/Screen';
+import { RootStackNavigator } from '../../navigation/types';
+import { useAuth } from '../../contexts/AuthContext';
+import { useTheme } from '../../contexts/ThemeContext';
+import { spacing } from '../../theme';
+import { useLanguage } from '../../contexts/LanguageContext';
+import Screen from '../../components/Screen';
 
 interface SettingsTabProps {
   title: string;
