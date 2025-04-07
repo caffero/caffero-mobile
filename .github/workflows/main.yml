@@ -1,0 +1,55 @@
+name: Docker Image Build and Azure Container Registry Push
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - test*
+      - production*
+
+env:
+  REGISTRY: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+  APP_NAME: "caffero-mobile" # Change this with the name of the app in question
+  DOCKER_FILEPATH: "Caffero.API/Dockerfile" # Change this with the path to the Dockerfile
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Build
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ env.REGISTRY }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Build and push Docker image to ACR
+        id: build
+        env:
+          IS_BUGFIX: ${{ contains(github.event.head_commit.message,'bugfix') }}
+          IS_HOTFIX: ${{ contains(github.event.head_commit.message,'hotfix') }}
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/test* ]] || [[ "$IS_BUGFIX" == "true" ]];
+          then
+               docker pull ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.APP_NAME }}:latest
+               docker tag ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.APP_NAME }}:latest ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.APP_NAME }}:qa
+               docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.APP_NAME }}:qa
+
+          elif [[ "$GITHUB_REF" == refs/tags/production* ]] || [[ "$IS_HOTFIX" == "true" ]]; then
+               docker pull ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.APP_NAME }}:qa
+               docker tag ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.APP_NAME }}:qa ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.APP_NAME }}:production
+               docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.APP_NAME }}:production
+
+          else
+                docker build -f ${{ env.DOCKER_FILEPATH }} -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.APP_NAME }}:latest . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.APP_NAME }}:${{github.sha}}
+
+          fi
+                docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/${{ env.APP_NAME }} --all-tags
