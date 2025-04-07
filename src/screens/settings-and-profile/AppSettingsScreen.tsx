@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Switch, ScrollView, Platform } from 'react-native';
-import { Header } from '../components/Header';
-import { useTheme } from '../contexts/ThemeContext';
-import { useLanguage } from '../contexts/LanguageContext';
-import { spacing, typography, borderRadius, shadows } from '../theme';
-import { LanguageSelector } from '../components/LanguageSelector';
-import Screen from '../components/Screen';
+import { Header } from '../../components/Header';
+import { useTheme } from '../../contexts/ThemeContext';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { spacing, typography, borderRadius, shadows } from '../../theme';
+import { LanguageSelector } from '../../components/LanguageSelector';
+import Screen from '../../components/Screen';
 import { useNavigation } from '@react-navigation/native';
 
 export const AppSettingsScreen = () => {

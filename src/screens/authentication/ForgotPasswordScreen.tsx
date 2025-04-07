@@ -8,13 +8,13 @@ import {
   Alert,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/types';
-import { useTheme } from '../contexts/ThemeContext';
-import { useLanguage } from '../contexts/LanguageContext';
-import { useAuth } from '../contexts/AuthContext';
-import Screen from '../components/Screen';
-import { Header } from '../components/Header';
-import { spacing, borderRadius } from '../theme';
+import { RootStackParamList } from '../../navigation/types';
+import { useTheme } from '../../contexts/ThemeContext';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
+import Screen from '../../components/Screen';
+import { Header } from '../../components/Header';
+import { spacing, borderRadius } from '../../theme';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ForgotPassword'>;
 

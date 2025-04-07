@@ -287,6 +287,41 @@ export const mockLocalizations: LocalizationMap = {
         { id: 207, propertyName: 'likes', value: 'Likes', languageId: 'en' },
         { id: 208, propertyName: 'dislikes', value: 'Dislikes', languageId: 'en' },
         { id: 209, propertyName: 'addPostImage', value: 'Add Post Image', languageId: 'en' },
+
+        // Home Screen - Additional Properties
+        { id: 210, propertyName: 'searchCafes', value: 'Search cafes...', languageId: 'en' },
+        { id: 211, propertyName: 'loadingMore', value: 'Loading more...', languageId: 'en' },
+        { id: 212, propertyName: 'noCafesAvailable', value: 'No cafes available', languageId: 'en' },
+        
+        // Cafe Details Screen
+        { id: 213, propertyName: 'cafeDetails', value: 'Cafe Details', languageId: 'en' },
+        { id: 214, propertyName: 'errorLoadingCafe', value: 'Error loading cafe details. Please try again.', languageId: 'en' },
+        { id: 215, propertyName: 'about', value: 'About', languageId: 'en' },
+        { id: 216, propertyName: 'availableCampaigns', value: 'Available Campaigns', languageId: 'en' },
+        
+        // Campaigns Screen
+        { id: 217, propertyName: 'campaigns', value: 'Campaigns', languageId: 'en' },
+        { id: 218, propertyName: 'tailoredForYou', value: 'Tailored for You', languageId: 'en' },
+        { id: 219, propertyName: 'yourNeighborhood', value: 'Your Neighborhood', languageId: 'en' },
+        { id: 220, propertyName: 'general', value: 'General', languageId: 'en' },
+        { id: 221, propertyName: 'noCampaignsAvailable', value: 'No campaigns available at the moment', languageId: 'en' },
+        { id: 222, propertyName: 'campaignDetails', value: 'Campaign Details', languageId: 'en' },
+        { id: 223, propertyName: 'validFrom', value: 'Valid From', languageId: 'en' },
+        { id: 224, propertyName: 'validUntil', value: 'Valid Until', languageId: 'en' },
+        { id: 225, propertyName: 'usageFrequency', value: 'Usage Frequency', languageId: 'en' },
+        { id: 226, propertyName: 'maxUsage', value: 'Maximum Usage', languageId: 'en' },
+        { id: 227, propertyName: 'validLocations', value: 'Valid Locations', languageId: 'en' },
+        { id: 228, propertyName: 'useCampaign', value: 'Use Campaign', languageId: 'en' },
+        { id: 229, propertyName: 'times', value: 'times', languageId: 'en' },
+        
+        // Use Campaign Screen
+        { id: 230, propertyName: 'generatingQrCode', value: 'Generating QR Code...', languageId: 'en' },
+        { id: 231, propertyName: 'showQrToCashier', value: 'Show this QR code to the cashier', languageId: 'en' },
+        { id: 232, propertyName: 'qrValidFor', value: 'QR code valid for', languageId: 'en' },
+        { id: 233, propertyName: 'qrExpired', value: 'QR Code Expired', languageId: 'en' },
+        { id: 234, propertyName: 'refreshQrCode', value: 'Refresh QR Code', languageId: 'en' },
+        { id: 235, propertyName: 'campaignSuccessTitle', value: 'Success!', languageId: 'en' },
+        { id: 236, propertyName: 'campaignSuccessMessage', value: 'Your campaign has been successfully applied.', languageId: 'en' },
     ],
     tr: [
         // App Settings Screen
@@ -558,5 +593,40 @@ export const mockLocalizations: LocalizationMap = {
         { id: 207, propertyName: 'likes', value: 'Beğeniler', languageId: 'tr' },
         { id: 208, propertyName: 'dislikes', value: 'Beğenmemeler', languageId: 'tr' },
         { id: 209, propertyName: 'addPostImage', value: 'Gönderi Resmi Ekle', languageId: 'tr' },
+
+        // Home Screen - Additional Properties
+        { id: 210, propertyName: 'searchCafes', value: 'Kafe ara...', languageId: 'tr' },
+        { id: 211, propertyName: 'loadingMore', value: 'Daha fazla yükleniyor...', languageId: 'tr' },
+        { id: 212, propertyName: 'noCafesAvailable', value: 'Kafe bulunamadı', languageId: 'tr' },
+        
+        // Cafe Details Screen
+        { id: 213, propertyName: 'cafeDetails', value: 'Kafe Detayları', languageId: 'tr' },
+        { id: 214, propertyName: 'errorLoadingCafe', value: 'Kafe detayları yüklenirken hata oluştu. Lütfen tekrar deneyin.', languageId: 'tr' },
+        { id: 215, propertyName: 'about', value: 'Hakkında', languageId: 'tr' },
+        { id: 216, propertyName: 'availableCampaigns', value: 'Mevcut Kampanyalar', languageId: 'tr' },
+        
+        // Campaigns Screen
+        { id: 217, propertyName: 'campaigns', value: 'Kampanyalar', languageId: 'tr' },
+        { id: 218, propertyName: 'tailoredForYou', value: 'Size Özel', languageId: 'tr' },
+        { id: 219, propertyName: 'yourNeighborhood', value: 'Semtinizdekiler', languageId: 'tr' },
+        { id: 220, propertyName: 'general', value: 'Genel', languageId: 'tr' },
+        { id: 221, propertyName: 'noCampaignsAvailable', value: 'Şu anda mevcut kampanya bulunmamaktadır', languageId: 'tr' },
+        { id: 222, propertyName: 'campaignDetails', value: 'Kampanya Detayları', languageId: 'tr' },
+        { id: 223, propertyName: 'validFrom', value: 'Geçerlilik Başlangıcı', languageId: 'tr' },
+        { id: 224, propertyName: 'validUntil', value: 'Geçerlilik Bitişi', languageId: 'tr' },
+        { id: 225, propertyName: 'usageFrequency', value: 'Kullanım Sıklığı', languageId: 'tr' },
+        { id: 226, propertyName: 'maxUsage', value: 'Maksimum Kullanım', languageId: 'tr' },
+        { id: 227, propertyName: 'validLocations', value: 'Geçerli Lokasyonlar', languageId: 'tr' },
+        { id: 228, propertyName: 'useCampaign', value: 'Kampanyayı Kullan', languageId: 'tr' },
+        { id: 229, propertyName: 'times', value: 'kez', languageId: 'tr' },
+        
+        // Use Campaign Screen
+        { id: 230, propertyName: 'generatingQrCode', value: 'QR Kod Oluşturuluyor...', languageId: 'tr' },
+        { id: 231, propertyName: 'showQrToCashier', value: 'Bu QR kodu kasiyere gösterin', languageId: 'tr' },
+        { id: 232, propertyName: 'qrValidFor', value: 'QR kod geçerlilik süresi', languageId: 'tr' },
+        { id: 233, propertyName: 'qrExpired', value: 'QR Kod Süresi Doldu', languageId: 'tr' },
+        { id: 234, propertyName: 'refreshQrCode', value: 'QR Kodu Yenile', languageId: 'tr' },
+        { id: 235, propertyName: 'campaignSuccessTitle', value: 'Başarılı!', languageId: 'tr' },
+        { id: 236, propertyName: 'campaignSuccessMessage', value: 'Kampanyanız başarıyla uygulandı.', languageId: 'tr' },
     ]
 }; 

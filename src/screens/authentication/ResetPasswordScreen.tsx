@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,25 +8,26 @@ import {
   Alert,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/types';
-import { useTheme } from '../contexts/ThemeContext';
-import { useLanguage } from '../contexts/LanguageContext';
-import { useAuth } from '../contexts/AuthContext';
-import Screen from '../components/Screen';
-import { Header } from '../components/Header';
-import { spacing, borderRadius } from '../theme';
+import { RootStackParamList } from '../../navigation/types';
+import { useTheme } from '../../contexts/ThemeContext';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
+import Screen from '../../components/Screen';
+import { Header } from '../../components/Header';
+import { spacing, borderRadius } from '../../theme';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'ResetForgottenPassword'>;
+type Props = NativeStackScreenProps<RootStackParamList, 'ResetPassword'>;
 
-export const ResetForgottenPasswordScreen: React.FC<Props> = ({ navigation }) => {
+export const ResetPasswordScreen: React.FC<Props> = ({ navigation }) => {
   const { theme } = useTheme();
   const { getText } = useLanguage();
-  const { resetForgottenPassword } = useAuth();
+  const { resetPassword } = useAuth();
+  const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = async () => {
-    if (!newPassword.trim() || !confirmPassword.trim()) {
+    if (!currentPassword.trim() || !newPassword.trim() || !confirmPassword.trim()) {
       Alert.alert(getText('error'), getText('fillAllFields'));
       return;
     }
@@ -37,14 +38,14 @@ export const ResetForgottenPasswordScreen: React.FC<Props> = ({ navigation }) =>
     }
 
     try {
-      await resetForgottenPassword(newPassword);
+      await resetPassword(currentPassword, newPassword);
       Alert.alert(
         getText('success'),
-        getText('passwordResetSuccess'),
+        getText('passwordChangeSuccess'),
         [
           {
             text: getText('ok'),
-            onPress: () => navigation.navigate('Login')
+            onPress: () => navigation.navigate('EditProfile')
           }
         ]
       );
@@ -61,13 +62,21 @@ export const ResetForgottenPasswordScreen: React.FC<Props> = ({ navigation }) =>
         onBack={() => navigation.goBack()} 
       />
       <View style={styles.content}>
-        <Text style={[
-          styles.description,
-          theme.typography.body.large,
-          { color: theme.colors.text.primary }
-        ]}>
-          {getText('resetPasswordDescription')}
-        </Text>
+        <TextInput
+          style={[
+            styles.input,
+            {
+              backgroundColor: theme.colors.surface.primary,
+              borderColor: theme.colors.border.primary,
+              color: theme.colors.text.primary
+            }
+          ]}
+          placeholder={getText('enterCurrentPassword')}
+          placeholderTextColor={theme.colors.text.tertiary}
+          value={currentPassword}
+          onChangeText={setCurrentPassword}
+          secureTextEntry
+        />
 
         <TextInput
           style={[
@@ -125,10 +134,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     padding: spacing.lg,
-  },
-  description: {
-    marginBottom: spacing.xl,
-    textAlign: 'center',
   },
   input: {
     height: 48,

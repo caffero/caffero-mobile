@@ -5,6 +5,7 @@ import { LanguageProvider } from './src/contexts/LanguageContext';
 import { ExceptionProvider } from './src/contexts/ExceptionContext';
 import { Navigation } from './src/navigation/Navigation';
 import { SplashScreen } from './src/components/SplashScreen';
+import { NotificationProvider } from './src/contexts/NotificationContext';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +26,9 @@ const App = () => {
       <ThemeProvider>
         <LanguageProvider>
           <AuthProvider>
-            <Navigation />
+            <NotificationProvider>
+              <Navigation />
+            </NotificationProvider>
           </AuthProvider>
         </LanguageProvider>
       </ThemeProvider>

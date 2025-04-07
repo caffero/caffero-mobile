@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { View, TextInput, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/types';
-import { useTheme } from '../contexts/ThemeContext';
-import { useLanguage } from '../contexts/LanguageContext';
-import { useAuth } from '../contexts/AuthContext';
-import { spacing, borderRadius } from '../theme';
-import Screen from '../components/Screen';
+import { RootStackParamList } from '../../navigation/types';
+import { useTheme } from '../../contexts/ThemeContext';
+import { useLanguage } from '../../contexts/LanguageContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { spacing, borderRadius } from '../../theme';
+import Screen from '../../components/Screen';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Otp'>;
 

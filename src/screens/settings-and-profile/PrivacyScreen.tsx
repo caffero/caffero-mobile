@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, ScrollView, Text, StyleSheet } from 'react-native';
-import { Header } from '../components/Header';
-import { useTheme } from '../contexts/ThemeContext';
-import { useLanguage } from '../contexts/LanguageContext';
-import Screen from '../components/Screen';
+import { Header } from '../../components/Header';
+import { useTheme } from '../../contexts/ThemeContext';
+import { useLanguage } from '../../contexts/LanguageContext';
+import Screen from '../../components/Screen';
 import { useNavigation } from '@react-navigation/native';
 // Add import if not present:
 // import { Screen } from '@components/Screen';

@@ -9,10 +9,10 @@ import {
   ScrollView,
   Platform,
 } from 'react-native';
-import { Header } from '../components/Header';
-import { useTheme } from '../contexts/ThemeContext';
-import { useLanguage } from '../contexts/LanguageContext';
-import Screen from '../components/Screen';
+import { Header } from '../../components/Header';
+import { useTheme } from '../../contexts/ThemeContext';
+import { useLanguage } from '../../contexts/LanguageContext';
+import Screen from '../../components/Screen';
 
 export const ContactUsScreen = () => {
   const [name, setName] = useState('');

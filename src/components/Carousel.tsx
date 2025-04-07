@@ -30,6 +30,9 @@ interface CarouselProps {
   title: string;
   items: CarouselItem[];
   onItemPress: (id: string) => void;
+  fullWidth?: boolean;
+  autoplay?: boolean;
+  autoplayInterval?: number;
 }
 
 const { width: WINDOW_WIDTH } = Dimensions.get('window');
@@ -37,36 +40,79 @@ const ITEM_WIDTH = Math.min(WINDOW_WIDTH * 0.6, layout.contentMaxWidth);
 const ITEM_HEIGHT = ITEM_WIDTH * 1.5;
 const SPACING = spacing.md;
 
-const CarouselContent: React.FC<CarouselProps> = ({ title, items, onItemPress }) => {
+const CarouselContent: React.FC<CarouselProps> = ({ 
+  title, 
+  items, 
+  onItemPress, 
+  fullWidth = false,
+  autoplay = false,
+  autoplayInterval = 4000 
+}) => {
   const scrollX = React.useRef(new Animated.Value(0)).current;
+  const scrollViewRef = React.useRef<ScrollView>(null);
   const { theme } = useTheme();
+  
+  // Use different dimensions for full-width carousel
+  const itemWidth = fullWidth ? WINDOW_WIDTH : ITEM_WIDTH;
+  const itemHeight = fullWidth ? 250 : ITEM_HEIGHT;
+  const itemSpacing = fullWidth ? 0 : SPACING;
+
+  // Autoplay functionality
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  
+  React.useEffect(() => {
+    let interval: NodeJS.Timeout;
+    
+    if (autoplay && items.length > 1) {
+      interval = setInterval(() => {
+        if (scrollViewRef.current) {
+          const nextIndex = (currentIndex + 1) % items.length;
+          scrollViewRef.current.scrollTo({
+            x: nextIndex * itemWidth,
+            animated: true
+          });
+          setCurrentIndex(nextIndex);
+        }
+      }, autoplayInterval);
+    }
+    
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [autoplay, autoplayInterval, currentIndex, items.length, itemWidth]);
 
   const handleScroll = Animated.event(
     [{ nativeEvent: { contentOffset: { x: scrollX } } }],
     { 
-      useNativeDriver: false, // TODO: change to true in production
+      useNativeDriver: false,
       listener: (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-        // You can add additional scroll handling here if needed
+        if (fullWidth) {
+          const scrollPosition = event.nativeEvent.contentOffset.x;
+          const index = Math.round(scrollPosition / itemWidth);
+          setCurrentIndex(index);
+        }
       }
     }
   );
 
   const renderItem = ({ item, index }: { item: CarouselItem; index: number }) => {
     const inputRange = [
-      (index - 1) * (ITEM_WIDTH + SPACING),
-      index * (ITEM_WIDTH + SPACING),
-      (index + 1) * (ITEM_WIDTH + SPACING),
+      (index - 1) * (itemWidth + itemSpacing),
+      index * (itemWidth + itemSpacing),
+      (index + 1) * (itemWidth + itemSpacing),
     ];
 
     const scale = scrollX.interpolate({
       inputRange,
-      outputRange: [0.95, 1, 0.95],
+      outputRange: fullWidth ? [1, 1, 1] : [0.95, 1, 0.95],
       extrapolate: 'clamp',
     });
 
     const opacity = scrollX.interpolate({
       inputRange,
-      outputRange: [0.6, 1, 0.6],
+      outputRange: fullWidth ? [1, 1, 1] : [0.6, 1, 0.6],
       extrapolate: 'clamp',
     });
 
@@ -78,6 +124,9 @@ const CarouselContent: React.FC<CarouselProps> = ({ title, items, onItemPress })
           {
             transform: [{ scale }],
             opacity,
+            width: itemWidth,
+            height: itemHeight,
+            marginRight: itemSpacing,
           },
         ]}
       >
@@ -137,16 +186,26 @@ const CarouselContent: React.FC<CarouselProps> = ({ title, items, onItemPress })
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={[styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
+    <View style={[
+      styles.container, 
+      fullWidth && { marginVertical: 0 }
+    ]}>
+      {title ? (
+        <Text style={[styles.title, { color: theme.colors.text.primary }]}>{title}</Text>
+      ) : null}
       <ScrollView
+        ref={scrollViewRef}
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          fullWidth && { paddingHorizontal: 0 }
+        ]}
         decelerationRate="fast"
-        snapToInterval={ITEM_WIDTH + SPACING}
+        snapToInterval={itemWidth + itemSpacing}
         onScroll={handleScroll}
         scrollEventThrottle={16}
+        pagingEnabled={fullWidth}
       >
         {items.map((item, index) => renderItem({ item, index }))}
       </ScrollView>
@@ -181,8 +240,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.gutter,
   } as ViewStyle,
   animatedContainer: {
-    width: ITEM_WIDTH,
-    height: ITEM_HEIGHT,
     marginRight: SPACING,
   } as ViewStyle,
   touchable: {
