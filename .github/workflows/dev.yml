@@ -1,36 +1,37 @@
-name: Docker Build and Push to ACR (dev)
-
 on:
   push:
     branches:
       - dev
-
-env:
-  REGISTRY: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-  APP_NAME: "caffero-api"
-  DOCKER_FILEPATH: "Caffero.API/Dockerfile"
-
 jobs:
-  build-and-push-dev:
+  publish:
     runs-on: ubuntu-latest
-
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to ACR
-        uses: azure/docker-login@v1
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v3
         with:
-          login-server: ${{ env.REGISTRY }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+          node-version: 18.x
+          cache: yarn
 
-      - name: Build and Push Docker image to ACR (dev)
-        run: |
-          IMAGE_NAME=${{ env.REGISTRY }}/${{ env.APP_NAME }}:dev
+      - name: 🏗 Setup Expo
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
 
-          docker build -f ${{ env.DOCKER_FILEPATH }} -t $IMAGE_NAME .
-          docker push $IMAGE_NAME
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 🐛 Debug EXPO_TOKEN
+        run: if [ -z "$EXPO_TOKEN" ]; then echo "EXPO_TOKEN is not set"; else echo "EXPO_TOKEN is set"; fi
+
+      - name: 🐛 Check EAS CLI version
+        run: eas --version
+
+      - name: 🚀 Publish app
+        run: eas update --branch dev --message dev --non-interactive
