@@ -1,36 +1,38 @@
-name: Docker Build and Push to ACR (production)
-
 on:
-  push:
-    branches:
-      - main
-
-env:
-  REGISTRY: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-  APP_NAME: "caffero-api"
-  DOCKER_FILEPATH: "Caffero.API/Dockerfile"
-
+    push:
+      branches:
+        - main
+    
 jobs:
-  build-and-push-prod:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Login to ACR
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ env.REGISTRY }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-
-      - name: Build and Push Docker image to ACR (production)
-        run: |
-          IMAGE_NAME=${{ env.REGISTRY }}/${{ env.APP_NAME }}:production
-
-          docker build -f ${{ env.DOCKER_FILEPATH }} -t $IMAGE_NAME .
-          docker push $IMAGE_NAME
+    publish:
+      runs-on: ubuntu-latest
+      steps:
+        - name: 🏗 Setup repo
+          uses: actions/checkout@v2
+  
+  
+  
+        - name: 🏗 Setup Node
+          uses: actions/setup-node@v2
+          with:
+            node-version: 18.x
+            cache: yarn
+  
+  
+  
+        - name: 🏗 Setup Expo
+          uses: expo/expo-github-action@v7
+          with:
+            expo-version: latest
+            eas-version: latest
+            token: ${{ secrets.EXPO_TOKEN }}
+  
+  
+  
+        - name: 📦 Install dependencies
+          run: yarn install
+  
+  
+  
+        - name: 🚀 Publish app
+          run: eas update --branch main --message main --non-interactive
